@@ -43,4 +43,20 @@ $api->version('v1', function ($api) {
     $api->get('/TotaleTick', 'App\Http\Controllers\Api\LigneTicketController@TotaleTick');
     $api->get('/TotalVenteDate', 'App\Http\Controllers\Api\LigneTicketController@TotalVenteDate');
     $api->get('/test', 'App\Http\Controllers\Api\AchatController@test');
+
+
+    $api->get('/home', 'HomeController@index')->name('home');
+    $api->get('/chart', 'App\Http\Controllers\Api\chartController@index')->name('chart');
+    $api->get('/chartachat', 'App\Http\Controllers\Api\achatController@index')->name('chartachat');
+    $api->get('/fourn', 'App\Http\Controllers\Api\AchatController@listfournisseur');
+    $api->get('/Top10artAchat', 'App\Http\Controllers\Api\AchatController@Top10artAchat');
+    $api->get('/prodParYear', 'App\Http\Controllers\Api\AchatController@TotaleProdExercice');
+    $api->get('/Top10Famil', 'App\Http\Controllers\Api\AchatController@Top10Famil');
+    $api->get('/Top10Marque', 'App\Http\Controllers\Api\AchatController@Top10Marque');
+    $api->get('/Top10Fournisseur', 'App\Http\Controllers\Api\AchatController@Top10Fournisseur');
+    $api->get('/parProduit', 'App\Http\Controllers\Api\AchatController@Produit');
+    $api->get('/parFamille', 'App\Http\Controllers\Api\AchatController@Famille');
+    $api->get('/parMarque', 'App\Http\Controllers\Api\AchatController@Marque');
+    $api->get('/parFournisseur', 'App\Http\Controllers\Api\AchatController@Fournisseur');
+    $api->get('/filterProduit', 'App\Http\Controllers\Api\AchatController@filterProduit');
 });

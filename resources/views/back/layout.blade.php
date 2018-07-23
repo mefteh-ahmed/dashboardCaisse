@@ -303,16 +303,40 @@ desired effect
     </ul>
   </li>
   <li class="treeview">
-    <a href="#"><i class="fa fa-pie-chart"></i> <span>Dashboard Achat</span>
+    <a href="{{ URL::to('api/chartachat') }}"><i class="fa fa-pie-chart"></i> <span>Dashboard Achat</span>
       <span class="pull-right-container">
           <i class="fa fa-angle-left pull-right"></i>
         </span>
     </a>
     <ul class="treeview-menu">
-    <li class="nav-item ">
-                                    <a class="nav-link" href="{{ URL::to('api/reglement') }}">
+      <li class="nav-item ">
+                                    <a class="nav-link" href="{{ URL::to('api/chartachat') }}">
                       
-                                        <span class="sidebar-normal">réglement</span>
+                                        <span class="sidebar-normal">Total</span>
+                                    </a>
+                                </li>
+      <li class="nav-item ">
+                                    <a class="nav-link" href="{{ URL::to('api/parProduit') }}">
+                      
+                                        <span class="sidebar-normal">Par Produit</span>
+                                    </a>
+                                </li>
+      <li class="nav-item ">
+                                    <a class="nav-link" href="{{ URL::to('api/parFamille') }}">
+                      
+                                        <span class="sidebar-normal">Par Famille</span>
+                                    </a>
+                                </li>
+      <li class="nav-item ">
+                                    <a class="nav-link" href="{{ URL::to('api/parMarque') }}">
+                      
+                                        <span class="sidebar-normal">Par Marque</span>
+                                    </a>
+                                </li>
+      <li class="nav-item ">
+                                    <a class="nav-link" href="{{ URL::to('api/parFournisseur') }}">
+                      
+                                        <span class="sidebar-normal">Par Fournisseur</span>
                                     </a>
                                 </li>
     </ul>

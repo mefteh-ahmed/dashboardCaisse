@@ -163,7 +163,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Dingo\Api\Provider\LaravelServiceProvider::class,
-
+        Barryvdh\Cors\ServiceProvider::class,
         /*
          * Package Service Providers...
          */

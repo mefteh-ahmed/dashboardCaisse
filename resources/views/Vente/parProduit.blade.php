@@ -1,33 +1,51 @@
 @extends('back.layout')
 
 @section('main')
-<script >
-    $(document).ready(function() {
-  $(function() {
-    $('#datetimepicker6').datetimepicker();
-    $('#datetimepicker7').datetimepicker({
-      useCurrent: false //Important! See issue #1075
-    });
-    $("#datetimepicker6").on("dp.change", function(e) {
-      $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
-    });
-    $("#datetimepicker7").on("dp.change", function(e) {
-      $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
-    });
-  });
-});
-</script>
 
 
 <script type="text/javascript">
+$(function() {
 
+    var start = moment().subtract(29, 'days');
+    var end = moment();
+
+    function cb(start, end) {
+        $('#reportrange span').html(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+    }
+
+    $('#reportrange').daterangepicker({
+        startDate: start,
+        endDate: end,
+        ranges: {
+           'Today': [moment(), moment()],
+           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+           'This Month': [moment().startOf('month'), moment().endOf('month')],
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+           'Last 365 jour': [moment().subtract(1, 'year')
+           .startOf('days')],
+           'Last year': [moment().subtract(1, 'year')
+           .startOf('year'), moment().subtract(1, 'year').endOf('year')]
+
+        }
+    }, cb);
+
+    cb(start, end);
+
+});
+</script>
+
+<script type="text/javascript" >
 function changeFunc() {
-   
+  var from= $("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD');
+  var to=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD');
+
  if(document.getElementById('sel1').value==1){
     var chart = c3.generate({
     data: {
-        url: 'http://127.0.0.1:8000/api/Top10art/'+document.getElementById('sel2').value+'/'
-        +document.getElementById('sel3').value,
+        url: '/api/Top10art/'+document.getElementById('sel2').value+'/'
+        +from+'/'+to,
         mimeType: 'json',
             keys: {
                x: 'ART_Designation', // it's possible to specify 'x' when category axis
@@ -53,7 +71,7 @@ function changeFunc() {
         },bindto: '#chart'
 });
 
-$.getJSON('http://127.0.0.1:8000/api/Top10art/'+document.getElementById('sel2').value+'/'+document.getElementById('sel3').value, function(jsonData) {
+$.getJSON('/api/Top10art/'+document.getElementById('sel2').value+'/'+from+'/'+to, function(jsonData) {
 var measdata = jsonData.map(o => {
           return  [o['ART_Designation'], o['TotaleVente']] ;
         });
@@ -73,9 +91,9 @@ var chart = c3.generate({
  {
     var chart = c3.generate({
     data: {
-        url: 'http://127.0.0.1:8000/api/Top10fam/'+document.getElementById('sel2').value
+        url: '/api/Top10fam/'+document.getElementById('sel2').value
         +'/'
-        +document.getElementById('sel3').value,
+        +from+'/'+to,
         mimeType: 'json',
             keys: {
                x: 'FAM_Lib', // it's possible to specify 'x' when category axis
@@ -100,8 +118,8 @@ var chart = c3.generate({
             }
         },bindto: '#chart'
 });
-$.getJSON('http://127.0.0.1:8000/api/Top10fam/'+document.getElementById('sel2').value
-+'/'+document.getElementById('sel3').value, function(jsonData) {
+$.getJSON('/api/Top10fam/'+document.getElementById('sel2').value
++'/'+from+'/'+to, function(jsonData) {
 var measdata = jsonData.map(o => {
           return  [o['FAM_Lib'], o['TotaleVente']] ;
         });
@@ -122,8 +140,8 @@ var chart = c3.generate({
  {
     var chart = c3.generate({
     data: {
-        url: 'http://127.0.0.1:8000/api/Top10mar/'+document.getElementById('sel2').value
-        +'/'+document.getElementById('sel3').value,
+        url: '/api/Top10mar/'+document.getElementById('sel2').value
+        +'/'+from+'/'+to,
         mimeType: 'json',
             keys: {
                x: 'MAR_Designation', // it's possible to specify 'x' when category axis
@@ -149,8 +167,8 @@ var chart = c3.generate({
         },bindto: '#chart'
 });
 
-$.getJSON('http://127.0.0.1:8000/api/Top10mar/'+document.getElementById('sel2').value
-+'/'+document.getElementById('sel3').value, function(jsonData) {
+$.getJSON('/api/Top10mar/'+document.getElementById('sel2').value
++'/'+from+'/'+to, function(jsonData) {
 var measdata = jsonData.map(o => {
           return  [o['MAR_Designation'], o['TotaleVente']] ;
         });
@@ -197,21 +215,16 @@ var chart = c3.generate({
   </select>
 </div>
 </div>
-<div class="col-md-2">
-    <div class="form-group">
-        <label for="sel1">Par Année:</label>
-        <select class="form-control" id="sel3">
- 
-         <?php 
-  $year=date('Y');
- echo "<option>$year</option>";
-   for($i = 2000 ; $i < date('Y')+1; $i++){
-      echo "<option value=$i>$i</option>";
-   }
-?>
-</select>
+    <div class='col-md-4'>
+      <div class="form-group">
+      <label for="sel1">entre:</label>
+
+<div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+    <i class="fa fa-calendar"></i>&nbsp;
+    <span></span> <i class="fa fa-caret-down"></i>
 </div>
-</div>
+      </div>
+      </div>
 <div class="col-md-2">
     <div class="form-group mx-sm-3 mb-2">
         <label for="sel1">Valider:</label>
@@ -221,28 +234,7 @@ var chart = c3.generate({
 </div>
 </div>
 
-  <div class="container">
-    <div class='col-md-5'>
-      <div class="form-group">
-        <div class='input-group date' id='datetimepicker6'>
-          <input type='text' class="form-control" />
-          <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-          </span>
-        </div>
-      </div>
-    </div>
-    <div class='col-md-5'>
-      <div class="form-group">
-        <div class='input-group date' id='datetimepicker7'>
-          <input type='text' class="form-control" />
-          <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-          </span>
-        </div>
-      </div>
-    </div>
-  </div>
+  
 
 <br>
 

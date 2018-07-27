@@ -91,14 +91,15 @@ class LigneTicketController extends Controller
                 $join->on('LigneTicket.LT_Exerc', '=', 'Ticket .TIK_Exerc');
                 $join->on('LigneTicket.LT_IdCarnet', '=', 'Ticket .TIK_IdCarnet');
             })
-            ->select( DB::raw("SUM(LigneTicket.LT_MtTTC) as TotaleVente ,article.ART_Designation"))
-            ->whereRaw(DB::raw("FORMAT(Ticket.TIK_DateHeureTicket,'yyyy')=$request->year"))
+            ->select( DB::raw("sUM(LigneTicket.LT_MtTTC) as TotaleVente ,article.ART_Designation"))
+            // ->whereRaw(DB::raw("FORMAT(Ticket.TIK_DateHeureTicket,'yyyy')=$request->year"))
+            ->whereRaw(DB::raw("TIK_DateHeureTicket between '$request->from' and '$request->to'"))
             ->where('LigneTicket.LT_Annuler', '<>', true)->orWhereNull('LigneTicket.LT_Annuler')
             ->groupBy(DB::raw("LigneTicket.LT_CodArt,article.ART_Designation"))->orderByRaw(DB::raw('sum(LigneTicket.LT_MtTTC) DESC' ))->take($request->req)->get();
-            if($ticket->count()>0){
+           
                 return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
   
-        }}
+        }
         public function Top10fam(Request $request) { 
     
             $ticket = DB::table('LigneTicket')
@@ -111,13 +112,13 @@ class LigneTicketController extends Controller
                 $join->on('LigneTicket.LT_IdCarnet', '=', 'Ticket .TIK_IdCarnet');
             })
             ->select( DB::raw("famille.FAM_Lib , SUM(LigneTicket.LT_MtTTC) as TotaleVente"))
-            ->whereRaw(DB::raw("FORMAT(Ticket.TIK_DateHeureTicket,'yyyy')=$request->year"))
+            ->whereRaw(DB::raw("TIK_DateHeureTicket between '$request->from' and '$request->to'"))
             ->where('LigneTicket.LT_Annuler', '<>', true)->orWhereNull('LigneTicket.LT_Annuler')
             ->groupBy(DB::raw("article.ART_Famille,famille.FAM_Lib"))->orderByRaw(DB::raw('sum(LigneTicket.LT_MtTTC) DESC' ))->take($request->req)->get();
-            if($ticket->count()){
+        
                 return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
   
-        }}
+        }
         public function Top10Marque(Request $request) { 
             $ticket = DB::table('LigneTicket')
             ->join('article', 'LigneTicket.LT_CodArt', '=', 'article.ART_Code')
@@ -129,14 +130,14 @@ class LigneTicketController extends Controller
             $join->on('LigneTicket.LT_IdCarnet', '=', 'Ticket .TIK_IdCarnet');
         })
             ->select( DB::raw("marque.MAR_Designation , SUM(LigneTicket.LT_MtTTC) as TotaleVente"))
-            ->whereRaw(DB::raw("FORMAT(Ticket.TIK_DateHeureTicket,'yyyy')=$request->year"))
+            ->whereRaw(DB::raw("TIK_DateHeureTicket between '$request->from' and '$request->to'"))
             ->where('LigneTicket.LT_Annuler', '<>', true)->orWhereNull('LigneTicket.LT_Annuler')
            
             ->groupBy(DB::raw("article.ART_Marque,marque.MAR_Designation"))->orderByRaw(DB::raw('sum(LigneTicket.LT_MtTTC) DESC' ))->take($request->req)->get();
-            if($ticket->count()){
+         
                 return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
   
-        }}
+        }
         public function CaParVendeur() { 
             $ticket = DB::table('Ticket')
             ->join('SessionCaisse', 'Ticket.TIK_IdSCaisse', '=', 'SessionCaisse.SC_IdSCaisse')

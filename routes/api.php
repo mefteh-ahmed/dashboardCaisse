@@ -12,12 +12,11 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
 $api = app('Dingo\Api\Routing\Router');
 
-$api->version('v1', function ($api) {
+$api->version('v1', ['middleware' => 'cors'],function ($api) {
     $api->get('/', 'App\Http\Controllers\Back\AdminController@index');
-
+    
     $api->get('produit', 'App\Http\Controllers\Api\ProduitController@index');
     $api->get('/home', 'App\Http\Controllers\Api\HomeController@index');
     $api->get('chart', 'App\Http\Controllers\Api\chartController@index');
@@ -35,9 +34,9 @@ $api->version('v1', function ($api) {
     $api->get('/tolalVente', 'App\Http\Controllers\Api\LigneTicketController@TotalVente');
     $api->get('/tolalachat', 'App\Http\Controllers\Api\LigneTicketController@TotalAchat');
     $api->get('/tolalex', 'App\Http\Controllers\Api\LigneTicketController@TotalExercice');
-    $api->get('/Top10art/{req}/{year}', 'App\Http\Controllers\Api\LigneTicketController@Top10art');
-    $api->get('/Top10fam/{req}/{year}', 'App\Http\Controllers\Api\LigneTicketController@Top10fam');
-    $api->get('/Top10mar/{req}/{year}', 'App\Http\Controllers\Api\LigneTicketController@Top10Marque');
+    $api->get('/Top10art/{req}/{from}/{to}', 'App\Http\Controllers\Api\LigneTicketController@Top10art');
+    $api->get('/Top10fam/{req}/{from}/{to}', 'App\Http\Controllers\Api\LigneTicketController@Top10fam');
+    $api->get('/Top10mar/{req}/{from}/{to}', 'App\Http\Controllers\Api\LigneTicketController@Top10Marque');
     $api->get('/CaParVendeur', 'App\Http\Controllers\Api\LigneTicketController@CaParVendeur');
     $api->get('/NBTickParCaisse', 'App\Http\Controllers\Api\LigneTicketController@NBTickParCaisse');
     $api->get('/TotaleTick', 'App\Http\Controllers\Api\LigneTicketController@TotaleTick');

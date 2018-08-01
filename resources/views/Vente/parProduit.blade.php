@@ -10,12 +10,16 @@ $(function() {
     var end = moment();
 
     function cb(start, end) {
-        $('#reportrange span').html(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+        $('#reportrange span').html(start.format('YYYY-MM-DD HH:mm:ss') + ' - ' + end.format('YYYY-MM-DD HH:mm:ss'));
     }
 
     $('#reportrange').daterangepicker({
         startDate: start,
         endDate: end,
+        timePicker:true,
+        timePicker24Hour:true,
+        timePickerSeconds:true,
+        showDropdowns:true,
         ranges: {
            'Today': [moment(), moment()],
            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -38,8 +42,8 @@ $(function() {
 
 <script type="text/javascript" >
 function changeFunc() {
-  var from= $("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD');
-  var to=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD');
+  var from= $("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD HH:mm:ss');
+  var to=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD HH:mm:ss');
 
  if(document.getElementById('sel1').value==1){
     var chart = c3.generate({

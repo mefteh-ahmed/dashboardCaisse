@@ -172,6 +172,22 @@ class LigneTicketController extends Controller
                 return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
   
         }}
+        public function ReglementTotal(Request $request) { 
+            $TotalRecu = DB::table('ReglementCaisse')
+            ->join('Ticket', function($join)
+            {
+                $join->on('ReglementCaisse.REGC_NumTicket', '=', 'Ticket.TIK_NumTicket ');
+                $join->on('ReglementCaisse.REGC_Exercice', '=', 'Ticket .TIK_Exerc');
+                $join->on('ReglementCaisse.REGC_IdCarnet', '=', 'Ticket .TIK_IdCarnet');
+            })
+            ->select( DB::raw(" sum(REGC_MntTotalRecue) as MontantTotale"))
+            ->whereRaw(DB::raw("TIK_DateHeureTicket between '$request->from' and '$request->to'"))
+            ->where('Ticket.TIK_Annuler', '<>', true)->orWhereNull('Ticket.TIK_Annuler')
+            ->get();
+            
+            return $this->response->array($TotalRecu->toArray()); // Use this if you using Dingo Api Routing Helpers
+
+        }
     /**
      * Show the form for creating a new resource.
      *

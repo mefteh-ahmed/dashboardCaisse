@@ -42,6 +42,7 @@ $api->version('v1', ['middleware' => 'cors'],function ($api) {
     $api->get('/TotaleTick', 'App\Http\Controllers\Api\LigneTicketController@TotaleTick');
     $api->get('/TotalVenteDate', 'App\Http\Controllers\Api\LigneTicketController@TotalVenteDate');
     $api->get('/test', 'App\Http\Controllers\Api\AchatController@test');
+    $api->get('/reglementTotal/{from}/{to}', 'App\Http\Controllers\Api\LigneTicketController@ReglementTotal');
 
 
     $api->get('/home', 'HomeController@index')->name('home');
@@ -58,4 +59,5 @@ $api->version('v1', ['middleware' => 'cors'],function ($api) {
     $api->get('/parMarque', 'App\Http\Controllers\Api\AchatController@Marque');
     $api->get('/parFournisseur', 'App\Http\Controllers\Api\AchatController@Fournisseur');
     $api->get('/filterProduit', 'App\Http\Controllers\Api\AchatController@filterProduit');
+
 });

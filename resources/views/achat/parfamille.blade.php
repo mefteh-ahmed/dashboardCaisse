@@ -2,19 +2,10 @@
 
 @section('main')
 <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
+
   <title>Gestion d'Achat! </title>
   
-  <!-- Here are all the javascripts and css that you need, you can download them or linked them like here -->
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css">  
-<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-
-</head>
-<body>
+ 
 
 
 <div class="content">

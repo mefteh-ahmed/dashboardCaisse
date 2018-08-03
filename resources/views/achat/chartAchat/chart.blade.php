@@ -1,7 +1,7 @@
 <script>
 var chart = c3.generate({
     data: {
-        url: 'http://127.0.0.1:8000/api/prodParYear',
+        url: '/api/prodParYear',
         mimeType: 'json',
             keys: {
                x: 'year', // it's possible to specify 'x' when category axis
@@ -28,7 +28,7 @@ var chart = c3.generate({
 });
 </script>
 <script>
-$.getJSON('http://127.0.0.1:8000/api/prodParYear', function(jsonData) {
+$.getJSON('/api/prodParYear', function(jsonData) {
 var measdata = jsonData.map(o => {
           return  [o['year'], o['TotaleAchat']] ;
         });
@@ -48,11 +48,11 @@ var chart = c3.generate({
 <script>
 var chart = c3.generate({
     data: {
-        url: 'http://127.0.0.1:8000/api/Top10artAchat',
+        url: '/api/Top10artAchat',
         mimeType: 'json',
             keys: {
                x: 'ART_Designation', // it's possible to specify 'x' when category axis
-                value: ['LIG_BonEntree_Qte']
+                value: ['TotaleAchat']
             },type:'bar'
     },
     axis: {
@@ -75,9 +75,9 @@ var chart = c3.generate({
 });
 </script>
 <script>
-$.getJSON('http://127.0.0.1:8000/api/Top10artAchat', function(jsonData) {
+$.getJSON('/api/Top10artAchat', function(jsonData) {
 var measdata = jsonData.map(o => {
-          return  [o['ART_Designation'], o['LIG_BonEntree_Qte']] ;
+          return  [o['ART_Designation'], o['TotaleAchat']] ;
         });
 var chart = c3.generate({
                         data: {
@@ -96,11 +96,11 @@ var chart = c3.generate({
 <script>
 var chart = c3.generate({
     data: {
-        url: 'http://127.0.0.1:8000/api/Top10Famil',
+        url: '/api/Top10Famil',
         mimeType: 'json',
             keys: {
                x: 'FAM_Lib', // it's possible to specify 'x' when category axis
-                value: ['qte']
+                value: ['TotaleAchat']
             },type:'bar'
     },
     axis: {
@@ -123,9 +123,9 @@ var chart = c3.generate({
 });
 </script>
 <script>
-$.getJSON('http://127.0.0.1:8000/api/Top10Famil', function(jsonData) {
+$.getJSON('/api/Top10Famil', function(jsonData) {
 var measdata = jsonData.map(o => {
-          return  [o['FAM_Lib'], o['qte']] ;
+          return  [o['FAM_Lib'], o['TotaleAchat']] ;
         });
 var chart = c3.generate({
                         data: {
@@ -143,11 +143,11 @@ var chart = c3.generate({
 <script>
 var chart = c3.generate({
     data: {
-        url: 'http://127.0.0.1:8000/api/Top10Marque',
+        url: '/api/Top10Marque',
         mimeType: 'json',
             keys: {
                x: 'MAR_Designation', // it's possible to specify 'x' when category axis
-                value: ['qte']
+                value: ['TotaleAchat']
             },type:'bar'
     },
     axis: {
@@ -172,11 +172,11 @@ var chart = c3.generate({
 <script>
 var chart = c3.generate({
     data: {
-        url: 'http://127.0.0.1:8000/api/Top10Fournisseur',
+        url: '/api/Top10Fournisseur',
         mimeType: 'json',
             keys: {
                x: 'FRS_Nomf', // it's possible to specify 'x' when category axis
-                value: ['qte']
+                value: ['TotaleAchat']
             },type:'bar'
     },
     axis: {
@@ -199,9 +199,9 @@ var chart = c3.generate({
 });
 </script>
 <script>
-$.getJSON('http://127.0.0.1:8000/api/Top10Marque', function(jsonData) {
+$.getJSON('/api/Top10Marque', function(jsonData) {
 var measdata = jsonData.map(o => {
-          return  [o['MAR_Designation'], o['qte']] ;
+          return  [o['MAR_Designation'], o['TotaleAchat']] ;
         });
 var chart = c3.generate({
                         data: {

@@ -37,13 +37,14 @@ $api->version('v1', ['middleware' => 'cors'],function ($api) {
     $api->get('/Top10art/{req}/{from}/{to}', 'App\Http\Controllers\Api\LigneTicketController@Top10art');
     $api->get('/Top10fam/{req}/{from}/{to}', 'App\Http\Controllers\Api\LigneTicketController@Top10fam');
     $api->get('/Top10mar/{req}/{from}/{to}', 'App\Http\Controllers\Api\LigneTicketController@Top10Marque');
-    $api->get('/CaParVendeur', 'App\Http\Controllers\Api\LigneTicketController@CaParVendeur');
-    $api->get('/NBTickParCaisse', 'App\Http\Controllers\Api\LigneTicketController@NBTickParCaisse');
-    $api->get('/TotaleTick', 'App\Http\Controllers\Api\LigneTicketController@TotaleTick');
-    $api->get('/TotalVenteDate', 'App\Http\Controllers\Api\LigneTicketController@TotalVenteDate');
+    $api->get('/CaParVendeur/{from}/{to}', 'App\Http\Controllers\Api\LigneTicketController@CaParVendeur');
+    $api->get('/NBTickParCaisse/{from}/{to}', 'App\Http\Controllers\Api\LigneTicketController@NBTickParCaisse');
+    $api->get('/TotaleTick/{from}/{to}', 'App\Http\Controllers\Api\LigneTicketController@TotaleTick');
+    $api->get('/TotalVenteDate/{from}/{to}', 'App\Http\Controllers\Api\LigneTicketController@TotalVenteDate');
     $api->get('/test', 'App\Http\Controllers\Api\AchatController@test');
-    $api->get('/reglementTotal/{from}/{to}', 'App\Http\Controllers\Api\LigneTicketController@ReglementTotal');
-
+    $api->get('/reglement/{from}/{to}', 'App\Http\Controllers\Api\LigneTicketController@Reglement');
+    $api->get('/TotalVentefilter/{from}/{to}', 'App\Http\Controllers\Api\LigneTicketController@TotalVentefilter');
+    $api->get('/TotalAchatfilter/{from}/{to}', 'App\Http\Controllers\Api\LigneTicketController@TotalAchatfilter');
 
     $api->get('/home', 'HomeController@index')->name('home');
     $api->get('/chart', 'App\Http\Controllers\Api\chartController@index')->name('chart');

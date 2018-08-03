@@ -29,7 +29,7 @@ class chartController extends Controller
         $ticket = DB::table('Ticket')->select( DB::raw(" Count(*) as NBTick"))->get();
 
 
-      return view('Vente.dashboardvente',['vente'=>$ticketv->toArray(),'achat'=>$ticketa->toArray(),'TotaleTik'=>$ticket->toArray(),'title'=>"Totale"]);
+      return view('Vente.dashboardVente',['vente'=>$ticketv->toArray(),'achat'=>$ticketa->toArray(),'TotaleTik'=>$ticket->toArray(),'title'=>"Totale"]);
 
     }
     public function produit()
@@ -120,16 +120,7 @@ class chartController extends Controller
       ,'Totaltrait'=>$Totaltrait->toArray(),'vente'=>$ticketv->toArray(),'title'=>"réglement"]);
 
     }
-    public function indexachat()
-    {
-
-        $ticketv = DB::table('LigneTicket')->select(DB::raw("SUM(LT_MtTTC) as TotaleVente"))->get();
-        $ticketa = DB::table('LigneTicket')->select(DB::raw("SUM(LT_PACHAT*LT_Qte) as TotaleAchat"))->get();
-
-      return view('Vente.dashboardachat',['vente'=>$ticketv->toArray(),'achat'=>$ticketa->toArray()]);
-
-    }
-
+    
     /**
      * Show the form for creating a new resource.
      *

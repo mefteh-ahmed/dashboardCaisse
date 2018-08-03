@@ -41,7 +41,36 @@ class LigneTicketController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function TotalVentefilter(Request $request) { 
+        $ticket = DB::table('LigneTicket')
+        ->join('Ticket', function($join)
+        {
+            $join->on('LigneTicket.LT_NumTicket', '=', 'Ticket.TIK_NumTicket ');
+            $join->on('LigneTicket.LT_Exerc', '=', 'Ticket .TIK_Exerc');
+            $join->on('LigneTicket.LT_IdCarnet', '=', 'Ticket .TIK_IdCarnet');
+        })
 
+        ->select(DB::raw("SUM(LT_MtTTC) as TotaleVente"))
+       ->whereRaw(DB::raw("TIK_DateHeureTicket between '$request->from' and '$request->to'
+            and( [Ticket].[TIK_Annuler] <> 1 or [Ticket].[TIK_Annuler] is null)"))->get();
+        
+            return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
+}
+public function TotalAchatfilter(Request $request) { 
+    $ticket = DB::table('LigneTicket')
+    ->join('Ticket', function($join)
+    {
+        $join->on('LigneTicket.LT_NumTicket', '=', 'Ticket.TIK_NumTicket ');
+        $join->on('LigneTicket.LT_Exerc', '=', 'Ticket .TIK_Exerc');
+        $join->on('LigneTicket.LT_IdCarnet', '=', 'Ticket .TIK_IdCarnet');
+    })
+
+    ->select(DB::raw("SUM(LT_PACHAT*LT_Qte) as TotaleAchat"))
+    ->whereRaw(DB::raw("TIK_DateHeureTicket between '$request->from' and '$request->to'
+        and( [Ticket].[TIK_Annuler] <> 1 or [Ticket].[TIK_Annuler] is null)"))->get();
+    
+        return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
+}
         public function TotalVente() { 
             $ticket = DB::table('LigneTicket')->select(DB::raw("SUM(LT_MtTTC) as TotaleVente"))
             ->where('LT_Annuler', '<>', true)->orWhereNull('LT_Annuler')->get();
@@ -65,7 +94,7 @@ class LigneTicketController extends Controller
                 return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
   
         }}
-        public function TotalVenteDate() { 
+        public function TotalVenteDate(Request $request) { 
             $ticket = DB::table('LigneTicket')
             ->join('Ticket', function($join)
         {
@@ -74,14 +103,14 @@ class LigneTicketController extends Controller
             $join->on('LigneTicket.LT_IdCarnet', '=', 'Ticket .TIK_IdCarnet');
         })
             ->select(DB::raw("FORMAT ( Ticket.TIK_DateHeureTicket,  'yyyy-MM-dd', 'en-US' ) as year,SUM(LigneTicket.LT_MtTTC) as TotaleVente ,SUM(LT_PACHAT*LT_Qte) as TotaleAchat"))
-            ->where('LigneTicket.LT_Annuler', '<>', true)->orWhereNull('LigneTicket.LT_Annuler')
+            ->whereRaw(DB::raw("TIK_DateHeureTicket between '$request->from' and '$request->to'
+            and( [Ticket].[TIK_Annuler] <> 1 or [Ticket].[TIK_Annuler] is null)"))
             
             ->groupBy(DB::raw("FORMAT ( Ticket.TIK_DateHeureTicket, 'yyyy-MM-dd', 'en-US' )"))
             ->orderBy(DB::raw("FORMAT ( Ticket.TIK_DateHeureTicket, 'yyyy-MM-dd', 'en-US' )"))->get();
-            if($ticket->count()){
                 return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
   
-        }}
+        }
         public function Top10art(Request $request) { 
             $ticket = DB::table('LigneTicket')
             ->join('article', 'LigneTicket.LT_CodArt', '=', 'article.ART_Code')
@@ -138,41 +167,43 @@ class LigneTicketController extends Controller
                 return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
   
         }
-        public function CaParVendeur() { 
+        public function CaParVendeur(Request $request) { 
             $ticket = DB::table('Ticket')
             ->join('SessionCaisse', 'Ticket.TIK_IdSCaisse', '=', 'SessionCaisse.SC_IdSCaisse')
             ->join('Utilisateur', 'SessionCaisse.SC_CodeUtilisateur', '=', 'Utilisateur.Code_Ut')
             ->select( DB::raw("Utilisateur.Nom , SUM(Ticket.TIK_MtTTC) as TotaleVente"))
-            ->where('Ticket.TIK_Annuler', '<>', true)->orWhereNull('Ticket.TIK_Annuler')
+            ->whereRaw(DB::raw("TIK_DateHeureTicket between '$request->from' and '$request->to'
+            and( [Ticket].[TIK_Annuler] <> 1 or [Ticket].[TIK_Annuler] is null)"))
             ->groupBy(DB::raw("SessionCaisse.SC_CodeUtilisateur,Utilisateur.Nom"))
             ->orderByRaw(DB::raw('sum(Ticket.TIK_MtTTC) DESC' ))->get();
-            if($ticket->count()){
+        
                 return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
   
-        }}
-        public function NBTickParCaisse() { 
+        }
+        public function NBTickParCaisse(Request $request) { 
             $ticket = DB::table('Ticket')
             ->join('SessionCaisse', 'Ticket.TIK_IdSCaisse', '=', 'SessionCaisse.SC_IdSCaisse')
             ->join('Caisse', 'SessionCaisse.SC_Caisse', '=', 'Caisse.CAI_IdCaisse')
-            ->select( DB::raw("Caisse.CAI_DesCaisse , Count(*) as NBTick"))
-            ->where('Ticket.TIK_Annuler', '<>', true)->orWhereNull('Ticket.TIK_Annuler')
+            ->select( DB::raw("Caisse.CAI_DesCaisse , Count(*) as NBTick,SUM(Ticket.TIK_MtTTC) as TotaleVente"))
+            ->whereRaw(DB::raw("TIK_DateHeureTicket between '$request->from' and '$request->to'
+            and( [Ticket].[TIK_Annuler] <> 1 or [Ticket].[TIK_Annuler] is null)"))
             ->groupBy(DB::raw("Caisse.CAI_DesCaisse"))
             ->orderByRaw(DB::raw('Count(*) DESC' ))->get();
-            if($ticket->count()){
                 return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
   
-        }}
-        public function TotaleTick() { 
+        }
+        public function TotaleTick(Request $request) { 
             $ticket = DB::table('Ticket')
             
             ->select( DB::raw(" Count(*) as NBTick"))
-            ->where('Ticket.TIK_Annuler', '<>', true)->orWhereNull('Ticket.TIK_Annuler')
+            ->whereRaw(DB::raw("TIK_DateHeureTicket between '$request->from' and '$request->to'
+            and( [Ticket].[TIK_Annuler] <> 1 or [Ticket].[TIK_Annuler] is null)"))
             ->get();
-            if($ticket->count()){
+         
                 return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
   
-        }}
-        public function ReglementTotal(Request $request) { 
+        }
+        public function Reglement(Request $request) { 
             $TotalRecu = DB::table('ReglementCaisse')
             ->join('Ticket', function($join)
             {
@@ -180,14 +211,17 @@ class LigneTicketController extends Controller
                 $join->on('ReglementCaisse.REGC_Exercice', '=', 'Ticket .TIK_Exerc');
                 $join->on('ReglementCaisse.REGC_IdCarnet', '=', 'Ticket .TIK_IdCarnet');
             })
-            ->select( DB::raw(" sum(REGC_MntTotalRecue) as MontantTotale"))
-            ->whereRaw(DB::raw("TIK_DateHeureTicket between '$request->from' and '$request->to'"))
-            ->where('Ticket.TIK_Annuler', '<>', true)->orWhereNull('Ticket.TIK_Annuler')
+            ->select( DB::raw(" sum(REGC_MntTotalRecue) as MontantTotale, sum(REGC_MntEspece) as Totalespece
+            ,sum(ReglementCaisse.REGC_MntChéque) as Totalcheque,sum(REGC_MntCarteBancaire) as Totalcarte
+            ,sum(REGC_MntTraite) as TotaltTicketResto"))
+            ->whereRaw(DB::raw("TIK_DateHeureTicket between '$request->from' and '$request->to'
+            and( [Ticket].[TIK_Annuler] <> 1 or [Ticket].[TIK_Annuler] is null)"))
             ->get();
             
             return $this->response->array($TotalRecu->toArray()); // Use this if you using Dingo Api Routing Helpers
 
         }
+  
     /**
      * Show the form for creating a new resource.
      *

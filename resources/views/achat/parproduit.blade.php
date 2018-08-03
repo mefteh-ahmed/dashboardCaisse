@@ -1,19 +1,6 @@
 @extends('back.layout')
 
 @section('main')
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
- 
-  <!-- Here are all the javascripts and css that you need, you can download them or linked them like here -->
- <!--  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css">  
-  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.js"></script> -->
-  <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> -->
-
-</head>
-<body>
 
 
 <div class="content">
@@ -84,66 +71,5 @@
    </div>
 </div>
 @include('achat.chartAchat.chart')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script type="text/javascript">
-   $.ajaxSetup({
 
-     headers: {
-
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-
-        }});
-
-
-
- $(".btn-submit").click(function(e){
-alert('test');
-var limite = $("select[name=sel2]").val();
- aleret(limite);
-    e.preventDefault();
- 
-  
-  /*
-   var Labels = new Array();
-   var valeur = new Array();
-  $.ajax({
-     type:'get',
-     url:'/filterProduit',
-     data:{limite:limite}, 
-     }).done(function(response) {
-   
-      var chart = c3.generate({
-    data: {
-      
-        mimeType: 'json',
-            keys: {
-               x: 'ART_Designation', // it's possible to specify 'x' when category axis
-                value: ['LIG_BonEntree_Qte']
-            },type:'bar'
-    },
-    axis: {
-        y: {
-        label: { // ADD
-          text: 'Totale des achats ',
-          position: 'outer-middle'
-        },
-      
-        tick: {
-          format: d3.format(".3f") // ADD
-        }
-      },
-            x: {
-           
-               type: 'category',
-               
-            }
-        },bindto: '#chart1'
-});
-    }); */
- });
-</script>
-
-</body>
-
-</html>
 @endsection

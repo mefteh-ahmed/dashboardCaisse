@@ -22,12 +22,8 @@ class AchatController extends Controller
 public function index() { 
       $ticketa = DB::table('LigneTicket')->select(DB::raw('SUM(LT_PACHAT*LT_Qte) as TotaleAchat'))->get();
        $ticketa->toArray();
-       $tickets = DB::table('LigneTicket')->select(DB::raw("LT_Exerc,SUM(LT_PACHAT*LT_Qte) as TotaleAchat"))
-       ->groupBy(DB::raw("LT_Exerc"))                      
-       ->get();
-      // $result = (array) json_decode($json);
-       $tickets= json_decode($tickets, true);
-     return view('achat.dashboardachat',compact('ticketa','tickets'),['title'=>"Total"]);
+    
+     return view('achat.dashboardachat',compact('ticketa'),['title'=>"Total"]);
      }
 public function Produit() { 
     return view('achat.parproduit',['title'=>"Par Produit"]);
@@ -66,11 +62,9 @@ public function TotalAchat() {
   
         }}
 public function TotaleProdExercice() { 
-    $tickets = DB::table('bon_entree') ->join('ligne_bon_entree', 'bon_entree.BON_ENT_Num', '=', 'ligne_bon_entree.LIG_BonEntree_NumBon')
-                                      ->join('article', 'ligne_bon_entree.LIG_BonEntree_CodeArt', '=', 'article.ART_Code ')
-                                      ->select(DB::raw(" year(bon_entree.BON_ENT_Date) as year,sum(dbo.ligne_bon_entree.LIG_BonEntree_MntTTC) as TotaleAchat"))
-                                      ->groupBy(DB::raw("year(bon_entree.BON_ENT_Date)"))
-                                    
+    $tickets = DB::table('View_BonEntree_Lignebn_Art_fr') 
+                                      ->select(DB::raw(" BON_ENT_Exer as year,sum(LIG_BonEntree_MntTTC) as TotaleAchat"))
+                                      ->groupBy(DB::raw("BON_ENT_Exer"))
                                       ->get();
     if($tickets->count()){
         return $this->response->array($tickets->toArray()); // Use this if you using Dingo Api Routing Helpers
@@ -78,9 +72,9 @@ public function TotaleProdExercice() {
         }}
 public function Top10artAchat() { 
             $articles = DB::table('View_BonEntree_Lignebn_Art_fr')
-            ->select(DB::raw(" sum(LIG_BonEntree_Qte) as LIG_BonEntree_Qte,ART_Designation"))
+            ->select(DB::raw(" sum(LIG_BonEntree_MntTTC) as TotaleAchat,ART_Designation"))
                  ->groupBy(DB::raw("LIG_BonEntree_CodeArt,ART_Designation"))
-                  ->orderByRaw(DB::raw('LIG_BonEntree_Qte DESC' ))->take(10)->get();
+                  ->orderByRaw(DB::raw('sum(LIG_BonEntree_MntTTC) DESC' ))->take(10)->get();
                
             if($articles->count()){
                // return response()->json($articles);
@@ -89,9 +83,9 @@ public function Top10artAchat() {
         }}
 public function Top10Famil() { 
             $familles = DB::table('View_BonEntree_Lignebn_Art_fr')
-            ->select(DB::raw("ART_Famille,FAM_Lib,sum(LIG_BonEntree_Qte) as qte"))
+            ->select(DB::raw("ART_Famille,FAM_Lib,sum(LIG_BonEntree_MntTTC) as TotaleAchat"))
                  ->groupBy(DB::raw("ART_Famille,FAM_Lib"))
-                 ->orderByRaw(DB::raw('sum(LIG_BonEntree_Qte) DESC' ))->take(10)
+                 ->orderByRaw(DB::raw('sum(LIG_BonEntree_MntTTC) DESC' ))->take(10)
                  ->get();
                  
             if($familles->count()){
@@ -101,9 +95,9 @@ public function Top10Famil() {
         }}
 public function Top10Marque() { 
             $familles = DB::table('View_BonEntree_Lignebn_Art_fr')
-            ->select(DB::raw("MAR_Code,MAR_Designation,sum(LIG_BonEntree_Qte) as qte"))
+            ->select(DB::raw("MAR_Code,MAR_Designation,sum(LIG_BonEntree_MntTTC) as TotaleAchat"))
                  ->groupBy(DB::raw("MAR_Code,MAR_Designation"))
-                 ->orderByRaw(DB::raw('sum(LIG_BonEntree_Qte) DESC' ))->take(10)
+                 ->orderByRaw(DB::raw('sum(LIG_BonEntree_MntTTC) DESC' ))->take(10)
                  ->get();
                  
             if($familles->count()){
@@ -113,9 +107,9 @@ public function Top10Marque() {
         }}
 public function Top10Fournisseur() { 
             $familles = DB::table('View_BonEntree_Lignebn_Art_fr')
-            ->select(DB::raw("BON_ENT_CodeFrs,FRS_Nomf,sum(LIG_BonEntree_Qte) as qte"))
+            ->select(DB::raw("BON_ENT_CodeFrs,FRS_Nomf,sum(LIG_BonEntree_MntTTC) as TotaleAchat"))
                  ->groupBy(DB::raw("BON_ENT_CodeFrs,FRS_Nomf"))
-                 ->orderByRaw(DB::raw('sum(LIG_BonEntree_Qte) DESC' ))->take(10)
+                 ->orderByRaw(DB::raw('sum(LIG_BonEntree_MntTTC) DESC' ))->take(10)
                  ->get();
                  
             if($familles->count()){

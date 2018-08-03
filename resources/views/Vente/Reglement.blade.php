@@ -2,6 +2,7 @@
 
 
 @section('main')
+
 <script type="text/javascript">
 $(function() {
 
@@ -30,7 +31,6 @@ $(function() {
            .startOf('days')],
            'Last year': [moment().subtract(1, 'year')
            .startOf('year'), moment().subtract(1, 'year').endOf('year')]
-
         }
     }, cb);
 
@@ -43,12 +43,47 @@ function changeFunc() {
   var from= $("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD HH:mm:ss');
   var to=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD HH:mm:ss');
 
-  $.getJSON('/api/reglementTotal/'+from+'/'+to, function(data)
+  $.getJSON('/api/reglement/'+from+'/'+to, function(data)
   {
-    var da=data[0].MontantTotale;
-    document.getElementById("a").innerHTML =da;
+    $.getJSON('/api/TotalVentefilter/'+from+'/'+to, function(data1)
+  {
+    var totale=data1[0].TotaleVente;
+    document.getElementById("f").innerHTML =numeral(totale).format('0,0.000');
+    var credit=data1[0].TotaleVente-data[0].MontantTotale;
+    document.getElementById("g").innerHTML =numeral(credit).format('0,0.000');
   })
-}
+    var totale=data[0].MontantTotale;
+    var espece=data[0].Totalespece;
+    var cheque=data[0].Totalcheque;
+    var carte=data[0].Totalcarte;
+    var ticketResto=data[0].TotaltTicketResto;
+    
+    document.getElementById("a").innerHTML =numeral(totale).format('0,0.000');
+    document.getElementById("b").innerHTML =numeral(espece).format('0,0.000');
+    document.getElementById("c").innerHTML =numeral(cheque).format('0,0.000');
+    document.getElementById("d").innerHTML =numeral(carte).format('0,0.000');
+    document.getElementById("e").innerHTML =numeral(ticketResto).format('0,0.000');
+
+
+var chart = c3.generate({
+    data: {
+        // iris data from R
+        columns: [
+            ['Espéce', espece],
+            ['Chéque', cheque],
+            ['Carte Banquaire',carte],
+            ['Ticket Resto', ticketResto],
+          ],
+        type : 'pie',
+        // onclick: function (d, i) { console.log("onclick", d, i); },
+        // onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+        // onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+    },bindto:'#chart'
+});
+})
+  }
+ 
+
 </script>
 <!-- You need an element with an id called "chart" to set a place where your chart will render-->
 <!-- <div id="chart"></div> -->
@@ -82,8 +117,7 @@ function changeFunc() {
           <!-- small box -->
           <div class="small-box bg-aqua">
             <div class="inner" >
-              <h3><div id="a"><?php echo number_format($Totalespece[0]->Totalespece,3,'.', ' '); ?></div></h3>
-
+              <h3><div id="b">0.000</div></h3>
               <p>espèce</p>
             </div>
             <div class="icon">
@@ -96,7 +130,7 @@ function changeFunc() {
           <!-- small box -->
           <div class="small-box bg-yellow">
             <div class="inner">
-              <h3><?php echo number_format($Totalcheque[0]->Totalcheque,3,'.', ' '); ?></h3>
+              <h3><div id="c">0.000</div></h3>
 
               <p>chéque</p>
             </div>
@@ -110,7 +144,7 @@ function changeFunc() {
           <!-- small box -->
           <div class="small-box bg-green">
             <div class="inner">
-              <h3><?php echo number_format($Totalcarte[0]->Totalcarte,3,'.', ' '); ?></h3>
+              <h3><div id="d">0.000</div></h3>
 
               <p>carte bancaire</p>
             </div>
@@ -124,9 +158,9 @@ function changeFunc() {
           <!-- small box -->
           <div class="small-box bg-red">
             <div class="inner">
-              <h3><?php echo number_format($Totaltrait[0]->Totaltrait,3,'.', ' '); ?></h3>
+              <h3><div id="e">0.000</div></h3>
 
-              <p>Traite</p>
+              <p>Ticket Resto</p>
             </div>
             <div class="icon">
               <i class="ion ion-pie-graph"></i>
@@ -148,16 +182,16 @@ function changeFunc() {
                  
                     <div class="row">
     
-    <h4>Totale des ventes En Dinar <span class="text-primary"><?php echo number_format($vente[0]->TotaleVente,3,'.', ' '); ?></span></h4>
+    <h4>Totale des ventes En Dinar <span class="text-primary"><div id="f">0,000</div></span></h4>
 </div>
    <div class="row">
-    <h4>Totale des Réglement En Dinar<span class="text-primary">
-<?php echo number_format($TotalRecu[0]->MontantTotale,3,'.', ' '); ?></span></h4> 
+    <h4>Totale des Réglement En Dinar<span class="text-primary">   <div id="a">
+0,000</div></span></h4> 
    
   </div>
   <div class="row">
-    <h4>Credit En Dinar<span class="text-danger">
-    <?php echo number_format(($vente[0]->TotaleVente-$TotalRecu[0]->MontantTotale),3,'.', ' '); ?>  </h4> 
+    <h4>Credit En Dinar<span class="text-danger"><div id="g">
+ 0,000  </div></h4> 
   </div>
                    
                     </div>
@@ -166,23 +200,7 @@ function changeFunc() {
   
   </div>
 <script type="text/javascript">
-  var chart = c3.generate({
-    data: {
-        // iris data from R
-        columns: [
-            ['Espéce', <?php echo  ($Totalespece[0]->Totalespece); ?>],
-            ['Chéque', <?php echo ($Totalcheque[0]->Totalcheque); ?>],
-            ['Carte Banquaire',<?php echo  ($Totalcarte[0]->Totalcarte); ?>],
-            ['Traite', <?php echo ($Totaltrait[0]->Totaltrait); ?>],
-
-          ],
-        type : 'pie',
-        onclick: function (d, i) { console.log("onclick", d, i); },
-        onmouseover: function (d, i) { console.log("onmouseover", d, i); },
-        onmouseout: function (d, i) { console.log("onmouseout", d, i); }
-    },bindto:'#chart'
-});
-
+  
   </script>
 
 </html>

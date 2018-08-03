@@ -45,11 +45,11 @@
   <div class="row">
   
      <div class="col-sm">
-          <h4 class="text-primary">Les 10 premiers produits les plus achetés</h4>
+          <h4 class="text-primary">Les 10 premiers articles les plus achetés</h4>
           <div class="row" id="chart1">  </div>
       </div>
       <div class="col-sm">
-          <h4 class="text-primary">Les 10 premiers produits les plus achetés</h4>
+          <h4 class="text-primary">Les 10 premiers articles les plus achetés</h4>
           <div class="row" id="chart2">  </div>
       </div>
   </div>

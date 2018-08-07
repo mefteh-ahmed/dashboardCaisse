@@ -247,23 +247,59 @@ var chart = c3.generate({
                         
                                     <div id="chart" class="se-pre-con">
                                         
-                                    <div class="margin-0-auto text-center"><img src="../images/icon_report_flat.png" style="margin-bottom: 15px" alt="">
+                                    <div class="margin-0-auto text-center"><img src="../adminlte/img/analytics.png" style="margin-bottom: 15px  height: auto; 
+    width: auto; 
+    max-width: 50px; 
+    max-height: 50px;" alt="">
                 <div translate="NO_DATA_TO_DISPLAY" class="text-center">Aucune donnée à afficher</div>
-              </div>
+              </div>   
                                    </div>
                          
                         </div>
                         <div class="col-md-4">
                      
                                     <div id="chart1" class="se-pre-con">
+                                    <div class="margin-0-auto text-center"><img src="../adminlte/img/analytics.png" style="margin-bottom: 15px  height: auto; 
+    width: auto; 
+    max-width: 50px; 
+    max-height: 50px;" alt="">
+                <div translate="NO_DATA_TO_DISPLAY" class="text-center">Aucune donnée à afficher</div>
+              </div>   
                                    </div>
                        
                         </div>
                     </div>
-                   
+                    
+      
   </div> 
+  <select name="select1" class="selectpicker" data-show-subtext="true" data-live-search="true">
+  @foreach($ALLfamille as $fam)
+<option value='{{ $fam->FAM_Code }}'>{{ $fam->FAM_Lib }}</option>
+  @endforeach
+      
+</select>
+<select id ="select2"class="selectpicker" data-show-subtext="true" data-live-search="true"> 
+</select>
+<script type="text/javascript">
+    
+       
+    
+    $(document).ready(function() {
 
+$('select[name="select1"]').on('change', function(){
+    var countryId = $(this).val();
+    if(countryId) {
+        for (i = 0; i < 10; i++)
+{ 
+     $('#select2').html( '<option value="'+i+'">'+'Option '+i+'</option>' );
+}
+    }
 
+});
+
+});
+    
+    </script>
 
 
 @endsection

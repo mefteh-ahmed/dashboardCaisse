@@ -5,7 +5,7 @@
 <div class="content">
 <div class="row">
     <div class='col-md-4'>
-    <h3 class="text-primary">Récapitulatif des achats Par periode</h2>
+    <h3 class="text-primary">Récapitulatif des retour d'achats Par periode</h2>
     </div>
  <div class='col-md-4'>
       <div class="form-group">
@@ -50,7 +50,7 @@
    </div>
   <div class="row">
    
-  <h4 class="text-primary">Récapitulatif des achats Par anneé</h4>
+  <h4 class="text-primary">Récapitulatif des retour d'achats Par anneé</h4>
 
      <div class="col-sm-4">
           <div class="row" id="chart0">  </div>
@@ -64,7 +64,7 @@
   
   </div>
 
-@include('achat.chartAchat.chart')
+@include('retourAchat.chartAchat.chart')
 
 </body>
 

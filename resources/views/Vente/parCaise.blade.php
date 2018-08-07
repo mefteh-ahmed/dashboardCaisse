@@ -110,9 +110,12 @@ $(function() {
                     <h3 class="text-primary">Nombre de passage par Caisse </h2> 
 
                                 <div id="chart7">
-                                <div class="margin-0-auto text-center"><img src="../images/icon_report_flat.png" style="margin-bottom: 15px" alt="">
+                                <div class="margin-0-auto text-center"><img src="../adminlte/img/analytics.png" style="margin-bottom: 15px  height: auto; 
+    width: auto; 
+    max-width: 50px; 
+    max-height: 50px;" alt="">
                 <div translate="NO_DATA_TO_DISPLAY" class="text-center">Aucune donnée à afficher</div>
-              </div>
+              </div>   
                                </div>
                      
                     </div>

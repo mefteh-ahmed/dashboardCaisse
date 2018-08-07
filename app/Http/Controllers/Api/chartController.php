@@ -35,8 +35,8 @@ class chartController extends Controller
     public function produit()
     {
 
-      
-      return view('Vente.parProduit',['title'=>"Par Produit"]);
+        $ALLfamille = DB::table('famille')->select('famille.FAM_Code','famille.FAM_Lib')->get();
+      return view('Vente.parProduit',compact('ALLfamille', 'ALLfamille'),['title'=>"Par Produit"]);
 
     }
     public function vendeur()

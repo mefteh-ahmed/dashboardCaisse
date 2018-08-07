@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
 use App\Models\LigneTicket;
-class AchatController extends Controller
+class RetourAchatController extends Controller
 {    use Helpers;
 
     /**
@@ -20,77 +20,72 @@ class AchatController extends Controller
      */
    
 public function index() { 
-       $ticketa = DB::table('LigneTicket')->select(DB::raw('SUM(LT_PACHAT*LT_Qte) as TotaleAchat'))->get();
-       $ticketa->toArray();
-     return view('achat.dashboardachat',compact('ticketa'),['title'=>"Total"]);
+      
+     return view('retourAchat.dashboardAchat',['title'=>"Total"]);
      }
 public function Produit() { 
-    return view('achat.parproduit',['title'=>"Par Produit"]);
+    return view('retourAchat.parproduit',['title'=>"Par Produit"]);
 
    }
-public function filterProduit(Request $request){
+
+public function Famille() { 
+    return view('retourAchat.parfamille',['title'=>"Par Famille"]);
+
+ }
+public function Marque() { 
+    return view('retourAchat.parmarque',['title'=>"Par Marque"]);
+
+ }
+ public function Fournisseur() { 
+    return view('retourAchat.parfournisseur',['title'=>"Par Fournisseur"]);
+
+ }
+ public function filterProduit(Request $request){
  
-        $articles = DB::table('View_BonEntree_Lignebn_Art_fr')
+        $articles = DB::table('View_BonRetour_Lignebn_Art_fr')
          ->select(DB::raw(" sum(LIG_BonEntree_Qte) as LIG_BonEntree_Qte,ART_Designation"))
           ->groupBy(DB::raw("LIG_BonEntree_CodeArt,ART_Designation"))
           ->orderByRaw(DB::raw('LIG_BonEntree_Qte DESC' ))->take(5)->get();
         return $this->response->array($articles->toArray()); // Use this if you using Dingo Api Routing Helpers
    }
-public function Famille() { 
-    return view('achat.parfamille',['title'=>"Par Famille"]);
-
- }
-public function Marque() { 
-    return view('achat.parmarque',['title'=>"Par Marque"]);
-
- }
- public function Fournisseur() { 
-    return view('achat.parfournisseur',['title'=>"Par Fournisseur"]);
-
- }
-          /**
+ /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
 
-public function TotalAchat() { 
-            $ticket = DB::table('LigneTicket')->select(DB::raw("SUM(LT_PACHAT*LT_Qte) as TotaleAchat"))->get();
-            if($ticket->count()){
-                return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
-  
-        }}
-public function TotaleProdExercice() { 
-        $tickets = DB::table('View_BonEntree_Lignebn_Art_fr') 
-                                      ->select(DB::raw(" BON_ENT_Exer as year,sum(LIG_BonEntree_MntTTC) as TotaleAchat"))
-                                      ->groupBy(DB::raw("BON_ENT_Exer"))
+
+public function TotaleRetourExercice() { 
+        $tickets = DB::table('View_BonRetour_Lignebn_Art_fr') 
+                                      ->select(DB::raw(" BOR_Exercice as year,sum(LIG_BonEntree_MntTTC) as TotaleRetourAchat"))
+                                      ->groupBy(DB::raw("BOR_Exercice"))
                                       ->get();
    
         return $this->response->array($tickets->toArray()); // Use this if you using Dingo Api Routing Helpers
   
         }
-public function TotaleAchatDate(Request $request) { 
-        $tickets = DB::table('View_BonEntree_Lignebn_Art_fr') 
-                                        ->select(DB::raw(" FORMAT ( BON_ENT_Date,  'yyyy-MM-dd', 'en-US' ) as year,sum(LIG_BonEntree_MntTTC) as TotaleAchat"))
-                                        ->whereRaw(DB::raw("BON_ENT_Date between '$request->from' and '$request->to'"))
-                                        ->groupBy(DB::raw("FORMAT ( BON_ENT_Date, 'yyyy-MM-dd', 'en-US' )"))
-                                        ->orderBy(DB::raw("FORMAT ( BON_ENT_Date, 'yyyy-MM-dd', 'en-US' )"))->get();
+public function TotaleretourAchatDate(Request $request) { 
+        $tickets = DB::table('View_BonRetour_Lignebn_Art_fr') 
+                                        ->select(DB::raw(" FORMAT ( BOR_date,  'yyyy-MM-dd', 'en-US' ) as year,sum(LIG_BonEntree_MntTTC) as TotaleRetourAchat"))
+                                        ->whereRaw(DB::raw("BOR_date between '$request->from' and '$request->to'"))
+                                        ->groupBy(DB::raw("FORMAT ( BOR_date, 'yyyy-MM-dd', 'en-US' )"))
+                                        ->orderBy(DB::raw("FORMAT ( BOR_date, 'yyyy-MM-dd', 'en-US' )"))->get();
                
         return $this->response->array($tickets->toArray()); // Use this if you using Dingo Api Routing Helpers
               
         }
-public function TotaleAchat(Request $request) { 
-        $tickets = DB::table('View_BonEntree_Lignebn_Art_fr') 
-                                        ->select(DB::raw("sum(LIG_BonEntree_MntTTC) as TotaleAchat"))
-                                        ->whereRaw(DB::raw("BON_ENT_Date between '$request->from' and '$request->to'"))
+public function TotaleretourAchat(Request $request) { 
+        $tickets = DB::table('View_BonRetour_Lignebn_Art_fr') 
+                                        ->select(DB::raw("sum(LIG_BonEntree_MntTTC) as TotaleRetourAchat"))
+                                        ->whereRaw(DB::raw("BOR_date between '$request->from' and '$request->to'"))
                                         ->get();
         return $this->response->array($tickets->toArray()); // Use this if you using Dingo Api Routing Helpers
         }
 
-public function Top10artAchat(Request $request) { 
-            $articles = DB::table('View_BonEntree_Lignebn_Art_fr')
-            ->select(DB::raw(" sum(LIG_BonEntree_MntTTC) as TotaleAchat,ART_Designation"))
-            ->whereRaw(DB::raw("BON_ENT_Date between '$request->from' and '$request->to'"))
+public function Top10artretourAchat(Request $request) { 
+            $articles = DB::table('View_BonRetour_Lignebn_Art_fr')
+            ->select(DB::raw(" sum(LIG_BonEntree_MntTTC) as TotaleretourAchat,ART_Designation"))
+            ->whereRaw(DB::raw("BOR_date between '$request->from' and '$request->to'"))
                  ->groupBy(DB::raw("LIG_BonEntree_CodeArt,ART_Designation"))
                   ->orderByRaw(DB::raw('sum(LIG_BonEntree_MntTTC) DESC' ))->take($request->req)->get();
                
@@ -98,11 +93,11 @@ public function Top10artAchat(Request $request) {
                 return $this->response->array($articles->toArray()); // Use this if you using Dingo Api Routing Helpers
     
         }
-public function Top10Famil(Request $request) { 
-            $familles = DB::table('View_BonEntree_Lignebn_Art_fr')
-            ->select(DB::raw("ART_Famille,FAM_Lib,sum(LIG_BonEntree_MntTTC) as TotaleAchat"))
-            ->whereRaw(DB::raw("BON_ENT_Date between '$request->from' and '$request->to'"))
-                 ->groupBy(DB::raw("ART_Famille,FAM_Lib"))
+public function Top10FamilretourAchat(Request $request) { 
+            $familles = DB::table('View_BonRetour_Lignebn_Art_fr')
+            ->select(DB::raw("FAM_Code,FAM_Lib,sum(LIG_BonEntree_MntTTC) as TotaleRetourAchat"))
+            ->whereRaw(DB::raw("BOR_date between '$request->from' and '$request->to'"))
+                 ->groupBy(DB::raw("FAM_Code,FAM_Lib"))
                  ->orderByRaw(DB::raw('sum(LIG_BonEntree_MntTTC) DESC' ))->take($request->req)
                  ->get();
                  
@@ -111,10 +106,10 @@ public function Top10Famil(Request $request) {
                 return $this->response->array($familles->toArray()); // Use this if you using Dingo Api Routing Helpers
     
         }
-public function Top10Marque(Request $request) { 
-            $familles = DB::table('View_BonEntree_Lignebn_Art_fr')
-            ->select(DB::raw("MAR_Code,MAR_Designation,sum(LIG_BonEntree_MntTTC) as TotaleAchat"))
-            ->whereRaw(DB::raw("BON_ENT_Date between '$request->from' and '$request->to'"))
+public function Top10MarqueretourAchat(Request $request) { 
+            $familles = DB::table('View_BonRetour_Lignebn_Art_fr')
+            ->select(DB::raw("MAR_Code,MAR_Designation,sum(LIG_BonEntree_MntTTC) as TotaleRetourAchat"))
+            ->whereRaw(DB::raw("BOR_date between '$request->from' and '$request->to'"))
                  ->groupBy(DB::raw("MAR_Code,MAR_Designation"))
                  ->orderByRaw(DB::raw('sum(LIG_BonEntree_MntTTC) DESC' ))->take($request->req)
                  ->get();
@@ -123,11 +118,11 @@ public function Top10Marque(Request $request) {
                 return $this->response->array($familles->toArray()); // Use this if you using Dingo Api Routing Helpers
     
         }
-public function Top10Fournisseur(Request $request) { 
-            $familles = DB::table('View_BonEntree_Lignebn_Art_fr')
-            ->select(DB::raw("BON_ENT_CodeFrs,FRS_Nomf,sum(LIG_BonEntree_MntTTC) as TotaleAchat"))
-            ->whereRaw(DB::raw("BON_ENT_Date between '$request->from' and '$request->to'"))
-            ->groupBy(DB::raw("BON_ENT_CodeFrs,FRS_Nomf"))
+public function Top10Fournisseurretour(Request $request) { 
+            $familles = DB::table('View_BonRetour_Lignebn_Art_fr')
+            ->select(DB::raw("BOR_codefrs,FRS_Nomf,sum(LIG_BonEntree_MntTTC) as TotaleRetourAchat"))
+            ->whereRaw(DB::raw("BOR_date between '$request->from' and '$request->to'"))
+            ->groupBy(DB::raw("BOR_codefrs,FRS_Nomf"))
             ->orderByRaw(DB::raw('sum(LIG_BonEntree_MntTTC) DESC' ))->take($request->req)
             ->get();
                  
@@ -202,7 +197,7 @@ public function listfournisseur(Request $request){
         $fournisseurs = DB::table('fournisseur')->get();
                       
         $fournisseurs= json_decode($fournisseurs, true);
-      return view('achat.fournisseur',compact('fournisseurs'));
+      return view('retourAchat.fournisseur',compact('fournisseurs'));
         //return response()->json($fournisseurs);
      }
 

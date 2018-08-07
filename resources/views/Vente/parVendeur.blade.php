@@ -7,7 +7,7 @@
 <div class="content">
 <div class="row">
 <div class='col-md-4'>
-<h3 class="text-primary">Total des Réglements par :</h3>
+<h3 class="text-primary">Total des Vente par Vendeur :</h3>
 </div>
 <div class='col-md-4'>
       <div class="form-group">
@@ -30,8 +30,12 @@
 </div>
 <div class="row">
     <div class="row" id="chart6">     
-    <div translate="NO_DATA_TO_DISPLAY" class="text-center">Aucune donnée à afficher</div>
-              </div>         
+    <div class="margin-0-auto text-center"><img src="../adminlte/img/analytics.png" style="margin-bottom: 15px  height: auto; 
+    width: auto; 
+    max-width: 50px; 
+    max-height: 50px;" alt="">
+                <div translate="NO_DATA_TO_DISPLAY" class="text-center">Aucune donnée à afficher</div>
+              </div>                 </div>         
     </div>    
    </div>
    
@@ -46,7 +50,8 @@ function changeFunc() {
         url: '/api/CaParVendeur/'+from+'/'+to,
         mimeType: 'json',
             keys: {
-               x: 'Nom', // it's possible to specify 'x' when category axis
+              
+               x: 'nom', // it's possible to specify 'x' when category axis
                 value: ['TotaleVente'],
             }
     },
@@ -61,10 +66,10 @@ function changeFunc() {
           format: d3.format(".3f") // ADD
         }
       },
+     
             x: {
            
-               type: 'category',
-               
+               type: 'category'
             }
         },bindto: '#chart6'
 });

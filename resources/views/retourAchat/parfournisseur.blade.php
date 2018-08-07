@@ -8,7 +8,7 @@
 
 <div class="row">
     <div class='col-md-4'>
-    <h3 class="text-primary">Récapitulatif des achats Par Fournisseur</h2>
+    <h3 class="text-primary">Récapitulatif des retour d'achats Par Fournisseur</h2>
     </div>
     <div class="col-md-2">
 <div class="form-group">
@@ -53,5 +53,5 @@ max-height: 50px;" alt="">
 </div>
 
 </div>
-@include('achat.chartAchat.chart')
+@include('retourAchat.chartAchat.chart')
 @endsection

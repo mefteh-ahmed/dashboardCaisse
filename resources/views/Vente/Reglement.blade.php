@@ -175,6 +175,12 @@ var chart = c3.generate({
                     <div class="col-md-6">
                     
                                 <div id="chart">
+                                <div class="margin-0-auto text-center"><img src="../adminlte/img/analytics.png" style="margin-bottom: 15px  height: auto; 
+    width: auto; 
+    max-width: 50px; 
+    max-height: 50px;" alt="">
+                <div translate="NO_DATA_TO_DISPLAY" class="text-center">Aucune donnée à afficher</div>
+              </div>   
                                </div>
                      
                     </div>

@@ -21,21 +21,21 @@ class ArticleController extends Controller
      */
    
     public function index() { 
-        // $ticket = Ticket::all();
+        $ticket = Ticket::all();
         $ticket = DB::table('article')->get();
 
-        // $facture = facture::select('FACT_NomPrenomCli','FACT_CodeClient',sum('FACT_MntTTC as sum'))
-        // ->groupBy('FACT_CodeClient','FACT_NomPrenomCli')->get();
+        $facture = facture::select('FACT_NomPrenomCli','FACT_CodeClient',sum('FACT_MntTTC as sum'))
+        ->groupBy('FACT_CodeClient','FACT_NomPrenomCli')->get();
 
       
-        // $facture = facture::where('FACT_MntTTC', '>', '1000.000')->groupBy('FACT_CodeClient')->get();
-        // $produit = Produit::paginate(5);
-        //$users = Users::where('status', '=', 'active')->paginate(10);
+        $facture = facture::where('FACT_MntTTC', '>', '1000.000')->groupBy('FACT_CodeClient')->get();
+        $produit = Produit::paginate(5);
+        $users = Users::where('status', '=', 'active')->paginate(10);
         if($ticket->count()){
-            // return response()->json(['data' => $client]); // Use this by default
+            return response()->json(['data' => $client]); // Use this by default
             return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
-            // return $this->response->collection($produit, new ProduitTransformer()); // Use this if you using Fractal <=> Create a resource collection transformer
-        //    return $this->response->paginator($produit, new ProduitTransformer()); // Use this if you using Fractal Responding With Paginated Items 
+            return $this->response->collection($produit, new ProduitTransformer()); // Use this if you using Fractal <=> Create a resource collection transformer
+           return $this->response->paginator($produit, new ProduitTransformer()); // Use this if you using Fractal Responding With Paginated Items 
         }}
 
     /**

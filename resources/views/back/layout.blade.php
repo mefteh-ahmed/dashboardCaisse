@@ -24,6 +24,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css">  
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -98,7 +99,7 @@ desired effect
                     <a href="#">
                       <div class="pull-left">
                         <!-- User Image -->
-                        <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                        <img src="../adminlte/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                       </div>
                       <!-- Message title and timestamp -->
                       <h4>
@@ -265,14 +266,14 @@ desired effect
   <li class="header">Analyse</li>
   <!-- Optionally, you can add icons to the links -->
   <li class="treeview">
-    <a href="#"><i class="fa fa-pie-chart"></i> <span>Dashboard Vente</span>
+    <a href="#"><i class="fa fa-pie-chart"></i> <span>Vente</span>
       <span class="pull-right-container">
           <i class="fa fa-angle-left pull-right"></i>
         </span>
     </a>
     <ul class="treeview-menu">
                                   <li class="nav-item ">
-                                    <a class="nav-link" href="{{ URL::to('api/chart') }}">
+                                    <a class="nav-link" href="{{URL::to('api/chart') }}">
                       
                                         <span class="sidebar-normal">Totale</span>
                                     </a>
@@ -304,7 +305,7 @@ desired effect
     </ul>
   </li>
   <li class="treeview">
-    <a href="{{ URL::to('api/chartachat') }}"><i class="fa fa-pie-chart"></i> <span>Dashboard Achat</span>
+    <a href="{{ URL::to('api/chartachat') }}"><i class="fa fa-pie-chart"></i> <span>Achat</span>
       <span class="pull-right-container">
           <i class="fa fa-angle-left pull-right"></i>
         </span>
@@ -323,19 +324,34 @@ desired effect
                                     </a>
                                 </li>
       <li class="nav-item ">
-                                    <a class="nav-link" href="{{ URL::to('api/parFamille') }}">
-                      
-                                        <span class="sidebar-normal">Par Famille</span>
-                                    </a>
-                                </li>
-      <li class="nav-item ">
-                                    <a class="nav-link" href="{{ URL::to('api/parMarque') }}">
-                      
-                                        <span class="sidebar-normal">Par Marque</span>
-                                    </a>
-                                </li>
-      <li class="nav-item ">
                                     <a class="nav-link" href="{{ URL::to('api/parFournisseur') }}">
+                      
+                                        <span class="sidebar-normal">Par Fournisseur</span>
+                                    </a>
+                                </li>
+    </ul>
+  </li>
+  <li class="treeview">
+    <a href="{{ URL::to('api/chartachat') }}"><i class="fa fa-pie-chart"></i> <span> Retour d'achat</span>
+      <span class="pull-right-container">
+          <i class="fa fa-angle-left pull-right"></i>
+        </span>
+    </a>
+    <ul class="treeview-menu">
+      <li class="nav-item ">
+                                    <a class="nav-link" href="{{ URL::to('api/chartRetourAchat') }}">
+                      
+                                        <span class="sidebar-normal">Total</span>
+                                    </a>
+                                </li>
+      <li class="nav-item ">
+                                    <a class="nav-link" href="{{ URL::to('api/parProduitRetour') }}">
+                      
+                                        <span class="sidebar-normal">Par Produit</span>
+                                    </a>
+                                </li>
+      <li class="nav-item ">
+                                    <a class="nav-link" href="{{ URL::to('api/parFournisseurRetour') }}">
                       
                                         <span class="sidebar-normal">Par Fournisseur</span>
                                     </a>
@@ -472,11 +488,14 @@ desired effect
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
-<script>
+  <script>
     $(document).ready(function() {
   $(function() {
     $('#datetimepicker6').datetimepicker();

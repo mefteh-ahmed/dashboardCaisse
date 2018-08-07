@@ -11,9 +11,9 @@
   <label for="sel1">Select catégorie:</label>
   <select class="form-control" id="sel1">
   <option value="0">Sélectionner catégorie</option>
-    <option value="1">les articles les plus achetés</option>
-    <option value="2">les familles les plus achetés</option>
-    <option value="3">les marques les plus achetés</option>
+    <option value="1">les articles les plus retourné</option>
+    <option value="2">les familles les plus retourné</option>
+    <option value="3">les marques les plus retourné</option>
   </select>
 </div>
 </div>
@@ -74,6 +74,6 @@
          </div>
    </div>
 </div>
-@include('achat.chartAchat.chart')
+@include('retourAchat.chartAchat.chart')
 
 @endsection

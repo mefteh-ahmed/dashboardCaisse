@@ -129,10 +129,10 @@ class VenteController extends Controller
                 $join->on('LigneTicket.LT_Exerc', '=', 'Ticket .TIK_Exerc');
                 $join->on('LigneTicket.LT_IdCarnet', '=', 'Ticket .TIK_IdCarnet');
             })
-            ->select( DB::raw("sUM(LigneTicket.LT_MtTTC) as TotaleVente ,article.ART_Designation,FORMAT ( Ticket.TIK_DateHeureTicket,  'yyyy-MM-dd hh:mm:ss', 'en-US' ) as year"))
+            ->select( DB::raw("sUM(LigneTicket.LT_MtTTC) as TotaleVente ,FORMAT ( Ticket.TIK_DateHeureTicket,  'yyyy-MM-dd', 'en-US' ) as year,sum(LigneTicket.LT_Qte) as qte"))
             ->whereRaw(DB::raw("TIK_DateHeureTicket between '$request->from' and '$request->to'
             and( [Ticket].[TIK_Annuler] <> 1 or [Ticket].[TIK_Annuler] is null) and LigneTicket.LT_CodArt='$request->art' "))
-            ->groupBy(DB::raw("LigneTicket.LT_CodArt,article.ART_Designation,FORMAT ( Ticket.TIK_DateHeureTicket,  'yyyy-MM-dd hh:mm:ss', 'en-US' )"))->orderByRaw(DB::raw('sum(LigneTicket.LT_MtTTC) DESC' ))
+            ->groupBy(DB::raw("LigneTicket.LT_CodArt,FORMAT ( Ticket.TIK_DateHeureTicket,  'yyyy-MM-dd', 'en-US' )"))->orderByRaw(DB::raw('sum(LigneTicket.LT_MtTTC) DESC' ))
             ->take($request->req)->get();
            
                 return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers

@@ -105,7 +105,6 @@ $(function() {
 </div>
  </div>
   <div class="row">
-    
     <div class="col-sm-4">
     <h3>Totale des ventes En Dinar <span class="text-primary"><div id="a">0.000</div></span></h3>
     </div>

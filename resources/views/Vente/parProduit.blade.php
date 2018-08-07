@@ -272,14 +272,16 @@ var chart = c3.generate({
                     
       
   </div> 
-  <select name="select1" class="selectpicker" data-show-subtext="true" data-live-search="true">
+  <select name="select1"id="select1" class="selectpicker" data-show-subtext="true" data-live-search="true">
   @foreach($ALLfamille as $fam)
 <option value='{{ $fam->FAM_Code }}'>{{ $fam->FAM_Lib }}</option>
   @endforeach
       
 </select>
-<select id ="select2"class="selectpicker" data-show-subtext="true" data-live-search="true"> 
+<select id ="select2" name ="select2" class="selectpicker" data-live-search="true"> 
+<option>Articles</option>
 </select>
+<div id="chart5"></div>
 <script type="text/javascript">
     
        
@@ -287,12 +289,29 @@ var chart = c3.generate({
     $(document).ready(function() {
 
 $('select[name="select1"]').on('change', function(){
+
     var countryId = $(this).val();
     if(countryId) {
-        for (i = 0; i < 10; i++)
-{ 
-     $('#select2').html( '<option value="'+i+'">'+'Option '+i+'</option>' );
-}
+let dropdown = $('#select2');
+
+dropdown.empty();
+
+dropdown.append('<option selected="true" disabled>select Article</option>');
+dropdown.prop('selectedIndex', 0);
+
+const url = '/api/ALLarticle/'+countryId;
+
+// Populate dropdown with list of provinces
+$.getJSON(url, function (data) {
+
+  $.each(data, function (key, entry) {
+
+    dropdown.append($('<option></option>').attr('value', entry.ART_Code).text(entry.ART_Designation));
+  })
+  $('#select2').selectpicker('refresh');
+
+
+});
     }
 
 });
@@ -300,6 +319,49 @@ $('select[name="select1"]').on('change', function(){
 });
     
     </script>
-
+<script type="text/javascript">
+$(document).ready(function() {
+$('select[name="select2"]').on('change', function(){
+    var from= $("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD HH:mm:ss');
+  var to=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD HH:mm:ss');
+  var art = $(this).val();
+      chart = c3.generate({
+    data: {
+        x: 'year',
+      
+        url: '/api/articlevente/'+art+'/'+from+'/'+to,
+        mimeType: 'json',
+        type: 'bar',
+        keys: {
+            x: 'year',
+            value: ['TotaleVente','qte']
+        }
+        ,axes: {
+            qte: 'y2'
+        }
+    },
+    axis: {
+        x: {
+            type: "timeseries",
+            tick: { 
+                        format: '%Y-%m-%d',
+        
+                    }
+        },y: {
+            label: 'TotaleVente',
+            tick: {
+          format: d3.format(".3f") // ADD
+        }
+        },
+        y2: {
+            show: true,
+            label: 'qte Totale'
+            
+        }
+    },bindto: '#chart5'
+});
+});
+});
+    </script>
 
 @endsection

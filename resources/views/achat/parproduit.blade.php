@@ -73,7 +73,101 @@
            </div>
          </div>
    </div>
+   <select name="select1"id="select1" class="selectpicker" data-show-subtext="true" data-live-search="true">
+  <option>Select Famille</option>
+
+  @foreach($ALLfamille as $fam)
+<option value='{{ $fam->FAM_Code }}'>{{ $fam->FAM_Lib }}</option>
+  @endforeach
+      
+</select>
+<select id ="select2" name ="select2" class="selectpicker" data-live-search="true"> 
+<option>Select Articles</option>
+</select>
+<div id="chart5"></div>
+<script type="text/javascript">
+    
+       
+    
+    $(document).ready(function() {
+
+$('select[name="select1"]').on('change', function(){
+
+    var countryId = $(this).val();
+    if(countryId) {
+let dropdown = $('#select2');
+
+dropdown.empty();
+
+dropdown.append('<option selected="true" disabled>select Article</option>');
+dropdown.prop('selectedIndex', 0);
+
+const url = '/api/ALLarticle/'+countryId;
+
+// Populate dropdown with list of provinces
+$.getJSON(url, function (data) {
+
+  $.each(data, function (key, entry) {
+
+    dropdown.append($('<option></option>').attr('value', entry.ART_Code).text(entry.ART_Designation));
+  })
+  $('#select2').selectpicker('refresh');
+
+
+});
+    }
+
+});
+
+});
+    
+    </script>
+<script type="text/javascript">
+$(document).ready(function() {
+$('select[name="select2"]').on('change', function(){
+    var from= $("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD HH:mm:ss');
+  var to=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD HH:mm:ss');
+  var art = $(this).val();
+      chart = c3.generate({
+    data: {
+        x: 'year',
+      
+        url: '/api/articleachat/'+art+'/'+from+'/'+to,
+        mimeType: 'json',
+        type: 'bar',
+        keys: {
+            x: 'year',
+            value: ['TotaleAchat','qte']
+        }
+        ,axes: {
+            qte: 'y2'
+        }
+    },
+    axis: {
+        x: {
+            type: "timeseries",
+            tick: { 
+                        format: '%Y-%m-%d',
+        
+                    }
+        },y: {
+            label: 'TotaleAchat',
+            tick: {
+          format: d3.format(".3f") // ADD
+        }
+        },
+        y2: {
+            show: true,
+            label: 'qte Totale'
+            
+        }
+    },bindto: '#chart5'
+});
+});
+});
+    </script>
 </div>
+
 @include('achat.chartAchat.chart')
 
 @endsection

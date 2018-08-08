@@ -63,6 +63,8 @@ $api->version('v1', ['middleware' => 'cors'],function ($api) {
     $api->get('/filterProduit', 'App\Http\Controllers\Api\AchatController@filterProduit');
     $api->get('/TotaleAchatDate/{from}/{to}', 'App\Http\Controllers\Api\AchatController@TotaleAchatDate');
     $api->get('/TotaleAchat/{from}/{to}', 'App\Http\Controllers\Api\AchatController@TotaleAchat');
+    $api->get('/articleachat/{art}/{from}/{to}', 'App\Http\Controllers\Api\AchatController@articleachat');
+
 
    $api->get('/chartRetourAchat', 'App\Http\Controllers\Api\RetourAchatController@index');
     $api->get('/TotaleRetourExercice', 'App\Http\Controllers\Api\RetourAchatController@TotaleRetourExercice');

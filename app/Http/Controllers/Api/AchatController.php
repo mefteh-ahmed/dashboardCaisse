@@ -25,7 +25,8 @@ public function index() {
      return view('achat.dashboardachat',compact('ticketa'),['title'=>"Total"]);
      }
 public function Produit() { 
-    return view('achat.parproduit',['title'=>"Par Produit"]);
+        $ALLfamille = DB::table('famille')->select('famille.FAM_Code','famille.FAM_Lib')->get();
+    return view('achat.parproduit',compact('ALLfamille', 'ALLfamille'),['title'=>"Par Produit"]);
 
    }
 public function filterProduit(Request $request){
@@ -53,7 +54,16 @@ public function Marque() {
      *
      * @return \Illuminate\Http\Response
      */
+    public function articleachat(Request $request) { 
+        $ticket = DB::table('View_BonEntree_Lignebn_Art_fr')
+        ->select( DB::raw("sUM(LIG_BonEntree_MntTTC) as TotaleAchat ,FORMAT (BON_ENT_Date,  'yyyy-MM-dd', 'en-US' ) as year,sum(LIG_BonEntree_Qte) as qte"))
+        ->whereRaw(DB::raw("BON_ENT_Date between '$request->from' and '$request->to' and ART_Code='$request->art' "))
+        ->groupBy(DB::raw("ART_Code,FORMAT ( BON_ENT_Date,  'yyyy-MM-dd', 'en-US' )"))->orderByRaw(DB::raw('sum(LIG_BonEntree_MntTTC) DESC' ))
+        ->take($request->req)->get();
+       
+            return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
 
+    }
 public function TotalAchat() { 
             $ticket = DB::table('LigneTicket')->select(DB::raw("SUM(LT_PACHAT*LT_Qte) as TotaleAchat"))->get();
             if($ticket->count()){

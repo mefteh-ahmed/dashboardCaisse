@@ -13,7 +13,10 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Ticket;
 class ArticleController extends Controller
 {    use Helpers;
-
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *

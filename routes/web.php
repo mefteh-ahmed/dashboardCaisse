@@ -40,3 +40,36 @@
 // Route::get('/TotaleTick', 'Api\LigneTicketController@TotaleTick')->name('TotaleTick');
 // Route::get('/TotalVenteDate', 'Api\LigneTicketController@TotalVenteDate')->name('TotalVenteDate');
 // Route::get('/test', 'Api\AchatController@test')->name('test');
+
+/*
+|--------------------------------------------------------------------------
+| Application Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register all of the routes for an application.
+| It's a breeze. Simply tell Laravel the URIs it should respond to
+| and give it the controller to call when that URI is requested.
+|
+*/
+
+Route::get('/', function () {
+    return view('dashboard');
+})->middleware('auth');
+Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
+Route::auth();
+Route::get('/', 'DashboardController@index');
+Route::resource('profil', 'profilUser');
+Route::post('Restaurantchaine/search', 'ChainedeRestaurationController@search')->name('chaine.search');
+Route::resource('chaine', 'ChainedeRestaurationController');
+Route::post('Restaurant/search', 'RestaurantController@search')->name('restaurant.search');
+Route::resource('restaurant', 'RestaurantController');
+
+
+Route::post('RestaurantDB/search', 'RestaurantDataBaseController@search')->name('restaurantDB.search');
+Route::resource('restaurantDB', 'RestaurantDataBaseController');
+
+
+Route::post('userRestaurant/search', 'UserRestaurantController@search')->name('clientASM.search');
+Route::resource('clientASM', 'UserRestaurantController');
+
+

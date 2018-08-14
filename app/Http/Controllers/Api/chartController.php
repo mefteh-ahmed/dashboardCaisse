@@ -11,7 +11,10 @@ use App\Transformer\ProduitTransformer;
 use Illuminate\Support\Facades\DB;
 class chartController extends Controller
 {        use Helpers;
-
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *

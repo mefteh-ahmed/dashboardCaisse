@@ -12,7 +12,10 @@ use Illuminate\Support\Facades\DB;
 use App\Models\LigneTicket;
 class VenteController extends Controller
 {    use Helpers;
-
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *

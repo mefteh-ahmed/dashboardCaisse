@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\api;
-
+use Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Dingo\Api\Routing\Helpers;
+use App\Helpers\DatabaseConnection;
+
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Response;
 
@@ -13,9 +15,10 @@ use App\Models\LigneTicket;
 class VenteController extends Controller
 {    use Helpers;
     public function __construct()
-    {
+    {$connection= new DatabaseConnection ();
         $this->middleware('auth');
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -23,8 +26,9 @@ class VenteController extends Controller
      */
    
     public function index() { 
+        $connection= new DatabaseConnection ();
         // $LigneTicket = LigneTicket::all();
-        $ticket = DB::table('LigneTicket')->take(1000)->get();
+        $ticket = $connection->setConnection()->table('LigneTicket')->take(1000)->get();
 
         // $facture = facture::select('FACT_NomPrenomCli','FACT_CodeClient',sum('FACT_MntTTC as sum'))
         // ->groupBy('FACT_CodeClient','FACT_NomPrenomCli')->get();
@@ -33,9 +37,9 @@ class VenteController extends Controller
         // $facture = facture::where('FACT_MntTTC', '>', '1000.000')->groupBy('FACT_CodeClient')->get();
         // $produit = Produit::paginate(5);
         //$users = Users::where('status', '=', 'active')->paginate(10);
-        if($LigneTicket->count()){
+        if($ticket->count()){
             // return response()->json(['data' => $client]); // Use this by default
-            return $this->response->array($LigneTicket->toArray()); // Use this if you using Dingo Api Routing Helpers
+            return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
             // return $this->response->collection($produit, new ProduitTransformer()); // Use this if you using Fractal <=> Create a resource collection transformer
         //    return $this->response->paginator($produit, new ProduitTransformer()); // Use this if you using Fractal Responding With Paginated Items 
         }}
@@ -45,7 +49,8 @@ class VenteController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function TotalVentefilter(Request $request) { 
-        $ticket = DB::table('LigneTicket')
+        $connection= new DatabaseConnection ();
+        $ticket = $connection->setConnection()->table('LigneTicket')
         ->join('Ticket', function($join)
         {
             $join->on('LigneTicket.LT_NumTicket', '=', 'Ticket.TIK_NumTicket ');
@@ -60,7 +65,8 @@ class VenteController extends Controller
             return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
 }
     public function TotalAchatfilter(Request $request) { 
-        $ticket = DB::table('LigneTicket')
+        $connection= new DatabaseConnection ();
+        $ticket = $connection->setConnection()->table('LigneTicket')
             ->join('Ticket', function($join)
                  {
                     $join->on('LigneTicket.LT_NumTicket', '=', 'Ticket.TIK_NumTicket ');
@@ -75,21 +81,26 @@ class VenteController extends Controller
                 return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
             }
     public function TotalVente() { 
-            $ticket = DB::table('LigneTicket')->select(DB::raw("SUM(LT_MtTTC) as TotaleVente"))
+        $connection= new DatabaseConnection ();
+            $ticket = $connection->setConnection()->table('LigneTicket')->select(DB::raw("SUM(LT_MtTTC) as TotaleVente"))
             ->where('LT_Annuler', '<>', true)->orWhereNull('LT_Annuler')->get();
             if($ticket->count()){
                 return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
   
         }}
     public function TotalAchat() { 
-            $ticket = DB::table('LigneTicket')->select(DB::raw("SUM(LT_PACHAT*LT_Qte) as TotaleAchat"))
+        $connection= new DatabaseConnection ();
+
+            $ticket = $connection->setConnection()->table('LigneTicket')->select(DB::raw("SUM(LT_PACHAT*LT_Qte) as TotaleAchat"))
             ->where('LT_Annuler', '<>', true)->orWhereNull('LT_Annuler')->get();
             if($ticket->count()){
                 return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
   
         }}
     public function TotalExercice() { 
-            $ticket = DB::table('LigneTicket')
+        $connection= new DatabaseConnection ();
+
+            $ticket = $connection->setConnection()->table('LigneTicket')
             ->select(DB::raw("LT_Exerc, SUM(LT_MtTTC) as TotaleVente ,SUM(LT_PACHAT*LT_Qte) as TotaleAchat"))
             ->where('LT_Annuler', '<>', true)->orWhereNull('LT_Annuler')
             ->groupBy(DB::raw("LT_Exerc"))->get();
@@ -98,7 +109,9 @@ class VenteController extends Controller
   
         }}
     public function TotalVenteDate(Request $request) { 
-            $ticket = DB::table('LigneTicket')
+        $connection= new DatabaseConnection ();
+
+            $ticket = $connection->setConnection()->table('LigneTicket')
             ->join('Ticket', function($join)
         {
             $join->on('LigneTicket.LT_NumTicket', '=', 'Ticket.TIK_NumTicket ');
@@ -115,7 +128,9 @@ class VenteController extends Controller
   
         }
         public function ALLarticle(Request $request) { 
-            $ALLarticle = DB::table('article')
+            $connection= new DatabaseConnection ();
+
+            $ALLarticle = $connection->setConnection()->table('article')
             ->select('article.ART_Code','article.ART_Designation')
             ->where('article.ART_Famille', '=', $request->codfamm)
             ->get();
@@ -124,7 +139,9 @@ class VenteController extends Controller
   
         }
         public function article(Request $request) { 
-            $ticket = DB::table('LigneTicket')
+            $connection= new DatabaseConnection ();
+
+            $ticket = $connection->setConnection()->table('LigneTicket')
             ->join('article', 'LigneTicket.LT_CodArt', '=', 'article.ART_Code')
             ->join('Ticket', function($join)
             {
@@ -142,7 +159,9 @@ class VenteController extends Controller
   
         }
     public function Top10art(Request $request) { 
-            $ticket = DB::table('LigneTicket')
+        $connection= new DatabaseConnection ();
+
+            $ticket = $connection->setConnection()->table('LigneTicket')
             ->join('article', 'LigneTicket.LT_CodArt', '=', 'article.ART_Code')
             ->join('Ticket', function($join)
             {
@@ -160,8 +179,9 @@ class VenteController extends Controller
   
         }
     public function Top10fam(Request $request) { 
-    
-            $ticket = DB::table('LigneTicket')
+        $connection= new DatabaseConnection ();
+
+            $ticket = $connection->setConnection()->table('LigneTicket')
             ->join('article', 'LigneTicket.LT_CodArt', '=', 'article.ART_Code')
             ->join('famille', 'article.ART_Famille', '=', 'famille.FAM_Code')
             ->join('Ticket', function($join)
@@ -179,7 +199,9 @@ class VenteController extends Controller
   
         }
     public function Top10Marque(Request $request) { 
-            $ticket = DB::table('LigneTicket')
+        $connection= new DatabaseConnection ();
+
+            $ticket = $connection->setConnection()->table('LigneTicket')
             ->join('article', 'LigneTicket.LT_CodArt', '=', 'article.ART_Code')
             ->join('marque', 'article.ART_Marque', '=', 'marque.MAR_Code')
             ->join('Ticket', function($join)
@@ -198,7 +220,9 @@ class VenteController extends Controller
   
         }
     public function CaParVendeur(Request $request) { 
-            $ticket = DB::table('Ticket')
+        $connection= new DatabaseConnection ();
+
+            $ticket = $connection->setConnection()->table('Ticket')
             ->join('SessionCaisse', 'Ticket.TIK_IdSCaisse', '=', 'SessionCaisse.SC_IdSCaisse')
             ->join('Utilisateur', 'SessionCaisse.SC_CodeUtilisateur', '=', 'Utilisateur.Code_Ut')
             ->select( DB::raw("CONCAT(Utilisateur.Nom ,' ', Utilisateur.Prenom) as nom, SUM(Ticket.TIK_MtTTC) as TotaleVente"))
@@ -211,7 +235,9 @@ class VenteController extends Controller
   
         }
     public function NBTickParCaisse(Request $request) { 
-            $ticket = DB::table('Ticket')
+        $connection= new DatabaseConnection ();
+
+            $ticket = $connection->setConnection()->table('Ticket')
             ->join('SessionCaisse', 'Ticket.TIK_IdSCaisse', '=', 'SessionCaisse.SC_IdSCaisse')
             ->join('Caisse', 'SessionCaisse.SC_Caisse', '=', 'Caisse.CAI_IdCaisse')
             ->select( DB::raw("Caisse.CAI_DesCaisse , Count(*) as NBTick,SUM(Ticket.TIK_MtTTC) as TotaleVente"))
@@ -223,7 +249,9 @@ class VenteController extends Controller
   
         }
     public function TotaleTick(Request $request) { 
-            $ticket = DB::table('Ticket')
+        $connection= new DatabaseConnection ();
+
+            $ticket = $connection->setConnection()->table('Ticket')
             
             ->select( DB::raw(" Count(*) as NBTick"))
             ->whereRaw(DB::raw("TIK_DateHeureTicket between '$request->from' and '$request->to'
@@ -234,7 +262,9 @@ class VenteController extends Controller
   
         }
     public function Reglement(Request $request) { 
-            $TotalRecu = DB::table('ReglementCaisse')
+        $connection= new DatabaseConnection ();
+
+            $TotalRecu = $connection->setConnection()->table('ReglementCaisse')
             ->join('Ticket', function($join)
             {
                 $join->on('ReglementCaisse.REGC_NumTicket', '=', 'Ticket.TIK_NumTicket ');
@@ -247,7 +277,6 @@ class VenteController extends Controller
             ->whereRaw(DB::raw("TIK_DateHeureTicket between '$request->from' and '$request->to'
             and( [Ticket].[TIK_Annuler] <> 1 or [Ticket].[TIK_Annuler] is null)"))
             ->get();
-            
             return $this->response->array($TotalRecu->toArray()); // Use this if you using Dingo Api Routing Helpers
 
         }

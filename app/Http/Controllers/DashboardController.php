@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Restaurant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Auth;
 
 class DashboardController extends Controller
 {
@@ -26,10 +27,12 @@ class DashboardController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $restaurants = DB::table('restaurant')->select((DB::raw('count(id) as totalerest')))->get();
+     {
+        $var=Auth::user()->role;
+        if($var==0){
+        $restaurants = DB::table('magasin')->select((DB::raw('count(id) as totalerest')))->get();
         $dbs = DB::table('dbrestaurant')->select((DB::raw('count(id) as totaledb')))->get();
-        $user = DB::table('users')->select((DB::raw('count(id) as totaleuser')))->get();
+        $user = DB::table('users')->select((DB::raw('count(id) as totaleuser')))->where('role',1)->get();
         $chaines = DB::table('chaine_restauration')->select((DB::raw('count(id) as totalechaine')))->get();
 
         return view('dashboard', array(
@@ -37,8 +40,16 @@ class DashboardController extends Controller
             'chaines' => $chaines,
             'dbs' => $dbs,
             'user' => $user));
+        }
+        else {
+           return redirect('/dashboard');
+        }
 
 
+    }
+    public function table()
+    {
+        return view('table');
     }
 
 }

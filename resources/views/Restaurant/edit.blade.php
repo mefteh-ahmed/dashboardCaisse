@@ -6,7 +6,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">modifier Magasin</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ route('restaurant.update', ['id' => $restaurant->id]) }}">
+                    <form class="form-horizontal" role="form" method="POST" action="{{ route('magasin.update', ['id' => $restaurant->id]) }}">
                         <input type="hidden" name="_method" value="PATCH">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 

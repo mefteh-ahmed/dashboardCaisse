@@ -1,15 +1,16 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\DB;
 use App\ChainedeRestauration;
 use Illuminate\Http\Request;
 use  Validator;
 use App\Http\Requests;
-
+use Illuminate\Support\Facades\Response;
+use Dingo\Api\Routing\Helpers;
 class ChainedeRestaurationController extends Controller
 {
-
+    use Helpers;
     protected $redirectTo = '/chaine';
 
 
@@ -20,11 +21,21 @@ class ChainedeRestaurationController extends Controller
 
     public function index()
     {
-        $chaine = ChainedeRestauration::paginate(5);
+        $chaine = ChainedeRestauration::get();
 
         return view('ChaineDeRestauration.index', ['chaines' => $chaine]);
     }
+   /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function get()
+    {
+        $chaine= ChainedeRestauration::all();
 
+        return $this->response->array($chaine->toArray()); 
+       }
 
     public function store(Request $request)
     {
@@ -86,6 +97,7 @@ class ChainedeRestaurationController extends Controller
         $query = ChainedeRestauration::where('nom_chaine', 'like', '%' . $name . '%')
             ->paginate(5);
         return view('ChaineDeRestauration.index', ['chaines' => $query]) ;
+
 
     }
 

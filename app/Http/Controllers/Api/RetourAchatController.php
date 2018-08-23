@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\api;
+use App\Helpers\DatabaseConnection;
+use Auth;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -16,6 +18,7 @@ class RetourAchatController extends Controller
         {
             $this->middleware('auth');
         }
+    
     /**
      * Display a listing of the resource.
      *
@@ -23,29 +26,55 @@ class RetourAchatController extends Controller
      */
    
 public function index() { 
-      
+        $var=Auth::user()->role;
+        if($var==1){
      return view('retourAchat.dashboardAchat',['title'=>"Total"]);
+}
+else {
+   return redirect('/');
+}
      }
 public function Produit() { 
+        $var=Auth::user()->role;
+        if($var==1){
     return view('retourAchat.parproduit',['title'=>"Par Produit"]);
-
+}
+else {
+   return redirect('/');
+}
    }
 
 public function Famille() { 
+        $var=Auth::user()->role;
+        if($var==1){
     return view('retourAchat.parfamille',['title'=>"Par Famille"]);
-
+}
+else {
+   return redirect('/');
+}
  }
 public function Marque() { 
+        $var=Auth::user()->role;
+        if($var==1){
     return view('retourAchat.parmarque',['title'=>"Par Marque"]);
-
+}
+else {
+   return redirect('/');
+}
  }
  public function Fournisseur() { 
+        $var=Auth::user()->role;
+        if($var==1){
     return view('retourAchat.parfournisseur',['title'=>"Par Fournisseur"]);
-
+}
+else {
+   return redirect('/');
+}
  }
  public function filterProduit(Request $request){
- 
-        $articles = DB::table('View_BonRetour_Lignebn_Art_fr')
+        $connection= new DatabaseConnection ();
+
+        $articles = $connection->setConnection()->table('View_BonRetour_Lignebn_Art_fr')
          ->select(DB::raw(" sum(LIG_BonEntree_Qte) as LIG_BonEntree_Qte,ART_Designation"))
           ->groupBy(DB::raw("LIG_BonEntree_CodeArt,ART_Designation"))
           ->orderByRaw(DB::raw('LIG_BonEntree_Qte DESC' ))->take(5)->get();
@@ -59,7 +88,9 @@ public function Marque() {
 
 
 public function TotaleRetourExercice() { 
-        $tickets = DB::table('View_BonRetour_Lignebn_Art_fr') 
+        $connection= new DatabaseConnection ();
+
+        $tickets = $connection->setConnection()->table('View_BonRetour_Lignebn_Art_fr') 
                                       ->select(DB::raw(" BOR_Exercice as year,sum(LIG_BonEntree_MntTTC) as TotaleRetourAchat"))
                                       ->groupBy(DB::raw("BOR_Exercice"))
                                       ->get();
@@ -68,7 +99,9 @@ public function TotaleRetourExercice() {
   
         }
 public function TotaleretourAchatDate(Request $request) { 
-        $tickets = DB::table('View_BonRetour_Lignebn_Art_fr') 
+        $connection= new DatabaseConnection ();
+
+        $tickets = $connection->setConnection()->table('View_BonRetour_Lignebn_Art_fr') 
                                         ->select(DB::raw(" FORMAT ( BOR_date,  'yyyy-MM-dd', 'en-US' ) as year,sum(LIG_BonEntree_MntTTC) as TotaleRetourAchat"))
                                         ->whereRaw(DB::raw("BOR_date between '$request->from' and '$request->to'"))
                                         ->groupBy(DB::raw("FORMAT ( BOR_date, 'yyyy-MM-dd', 'en-US' )"))
@@ -78,7 +111,9 @@ public function TotaleretourAchatDate(Request $request) {
               
         }
 public function TotaleretourAchat(Request $request) { 
-        $tickets = DB::table('View_BonRetour_Lignebn_Art_fr') 
+        $connection= new DatabaseConnection ();
+
+        $tickets = $connection->setConnection()->table('View_BonRetour_Lignebn_Art_fr') 
                                         ->select(DB::raw("sum(LIG_BonEntree_MntTTC) as TotaleRetourAchat"))
                                         ->whereRaw(DB::raw("BOR_date between '$request->from' and '$request->to'"))
                                         ->get();
@@ -86,7 +121,9 @@ public function TotaleretourAchat(Request $request) {
         }
 
 public function Top10artretourAchat(Request $request) { 
-            $articles = DB::table('View_BonRetour_Lignebn_Art_fr')
+        $connection= new DatabaseConnection ();
+
+            $articles = $connection->setConnection()->table('View_BonRetour_Lignebn_Art_fr')
             ->select(DB::raw(" sum(LIG_BonEntree_MntTTC) as TotaleretourAchat,ART_Designation"))
             ->whereRaw(DB::raw("BOR_date between '$request->from' and '$request->to'"))
                  ->groupBy(DB::raw("LIG_BonEntree_CodeArt,ART_Designation"))
@@ -96,8 +133,10 @@ public function Top10artretourAchat(Request $request) {
                 return $this->response->array($articles->toArray()); // Use this if you using Dingo Api Routing Helpers
     
         }
-public function Top10FamilretourAchat(Request $request) { 
-            $familles = DB::table('View_BonRetour_Lignebn_Art_fr')
+public function Top10FamilretourAchat(Request $request) {
+        $connection= new DatabaseConnection ();
+ 
+            $familles = $connection->setConnection()->table('View_BonRetour_Lignebn_Art_fr')
             ->select(DB::raw("FAM_Code,FAM_Lib,sum(LIG_BonEntree_MntTTC) as TotaleRetourAchat"))
             ->whereRaw(DB::raw("BOR_date between '$request->from' and '$request->to'"))
                  ->groupBy(DB::raw("FAM_Code,FAM_Lib"))
@@ -110,7 +149,9 @@ public function Top10FamilretourAchat(Request $request) {
     
         }
 public function Top10MarqueretourAchat(Request $request) { 
-            $familles = DB::table('View_BonRetour_Lignebn_Art_fr')
+        $connection= new DatabaseConnection ();
+
+            $familles = $connection->setConnection()->table('View_BonRetour_Lignebn_Art_fr')
             ->select(DB::raw("MAR_Code,MAR_Designation,sum(LIG_BonEntree_MntTTC) as TotaleRetourAchat"))
             ->whereRaw(DB::raw("BOR_date between '$request->from' and '$request->to'"))
                  ->groupBy(DB::raw("MAR_Code,MAR_Designation"))
@@ -122,7 +163,9 @@ public function Top10MarqueretourAchat(Request $request) {
     
         }
 public function Top10Fournisseurretour(Request $request) { 
-            $familles = DB::table('View_BonRetour_Lignebn_Art_fr')
+        $connection= new DatabaseConnection ();
+
+            $familles = $connection->setConnection()->table('View_BonRetour_Lignebn_Art_fr')
             ->select(DB::raw("BOR_codefrs,FRS_Nomf,sum(LIG_BonEntree_MntTTC) as TotaleRetourAchat"))
             ->whereRaw(DB::raw("BOR_date between '$request->from' and '$request->to'"))
             ->groupBy(DB::raw("BOR_codefrs,FRS_Nomf"))

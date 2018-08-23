@@ -1,7 +1,7 @@
 <script>
 var chart = c3.generate({
     data: {
-        url: '/api/prodParYear',
+        url: '/prodParYear',
         mimeType: 'json',
             keys: {
                x: 'year', // it's possible to specify 'x' when category axis
@@ -29,7 +29,7 @@ var chart = c3.generate({
 </script>
 
 <script>
-$.getJSON('/api/prodParYear', function(jsonData) {
+$.getJSON('/prodParYear', function(jsonData) {
 var measdata = jsonData.map(o => {
           return  [o['year'], o['TotaleAchat']] ;
         });
@@ -51,7 +51,7 @@ function changeFunc2() {
 
   var from= $("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD HH:mm:ss');
   var to=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD HH:mm:ss');
-  $.getJSON('/api/TotaleAchat/'+from+'/'+to, function(data1)
+  $.getJSON('/TotaleAchat/'+from+'/'+to, function(data1)
   {
     var totale=data1[0].TotaleAchat;
     document.getElementById("a").innerHTML =numeral(totale).format('0,0.000');
@@ -60,7 +60,7 @@ function changeFunc2() {
     data: {
         x: 'year',
       
-        url: '/api/TotaleAchatDate/'+from+'/'+to,
+        url: '/TotaleAchatDate/'+from+'/'+to,
         mimeType: 'json',
         keys: {
             x: 'year',
@@ -88,7 +88,7 @@ function changeFunc() {
   if(document.getElementById('sel1').value==1){
 var chart = c3.generate({
     data: {
-        url: '/api/Top10artAchat/'+document.getElementById('sel2').value+'/'+from+'/'+to,
+        url: '/Top10artAchat/'+document.getElementById('sel2').value+'/'+from+'/'+to,
         mimeType: 'json',
             keys: {
                x: 'ART_Designation', // it's possible to specify 'x' when category axis
@@ -114,7 +114,7 @@ var chart = c3.generate({
         },bindto: '#chart1'
 });
 
-$.getJSON('/api/Top10artAchat/'+document.getElementById('sel2').value+'/'+from+'/'+to, function(jsonData) {
+$.getJSON('/Top10artAchat/'+document.getElementById('sel2').value+'/'+from+'/'+to, function(jsonData) {
 var measdata = jsonData.map(o => {
           return  [o['ART_Designation'], o['TotaleAchat']] ;
         });
@@ -134,7 +134,7 @@ var chart = c3.generate({
 else if (document.getElementById('sel1').value==2) {
     var chart = c3.generate({
     data: {
-        url: '/api/Top10Famil/'+document.getElementById('sel2').value+'/'+from+'/'+to,
+        url: '/Top10Famil/'+document.getElementById('sel2').value+'/'+from+'/'+to,
         mimeType: 'json',
             keys: {
                x: 'FAM_Lib', // it's possible to specify 'x' when category axis
@@ -159,7 +159,7 @@ else if (document.getElementById('sel1').value==2) {
             }
         },bindto: '#chart1'
 });
-$.getJSON('/api/Top10Famil/'+document.getElementById('sel2').value+'/'+from+'/'+to, function(jsonData) {
+$.getJSON('/Top10Famil/'+document.getElementById('sel2').value+'/'+from+'/'+to, function(jsonData) {
 var measdata = jsonData.map(o => {
           return  [o['FAM_Lib'], o['TotaleAchat']] ;
         });
@@ -179,7 +179,7 @@ var chart = c3.generate({
 }else if (document.getElementById('sel1').value==3){
     var chart = c3.generate({
     data: {
-        url: '/api/Top10Marque/'+document.getElementById('sel2').value+'/'+from+'/'+to,
+        url: '/Top10Marque/'+document.getElementById('sel2').value+'/'+from+'/'+to,
         mimeType: 'json',
             keys: {
                x: 'MAR_Designation', // it's possible to specify 'x' when category axis
@@ -204,7 +204,7 @@ var chart = c3.generate({
             }
         },bindto: '#chart1'
 });
-$.getJSON('/api/Top10Marque/'+document.getElementById('sel2').value+'/'+from+'/'+to, function(jsonData) {
+$.getJSON('/Top10Marque/'+document.getElementById('sel2').value+'/'+from+'/'+to, function(jsonData) {
 var measdata = jsonData.map(o => {
           return  [o['MAR_Designation'], o['TotaleAchat']] ;
         });
@@ -233,7 +233,7 @@ var from= $("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD
 var to=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD HH:mm:ss');
 var chart = c3.generate({
     data: {
-        url: '/api/Top10Fournisseur/'+document.getElementById('sel2').value+'/'+from+'/'+to,
+        url: '/Top10Fournisseur/'+document.getElementById('sel2').value+'/'+from+'/'+to,
         mimeType: 'json',
             keys: {
                x: 'FRS_Nomf', // it's possible to specify 'x' when category axis

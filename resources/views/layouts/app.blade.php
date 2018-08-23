@@ -16,7 +16,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <b>ASM</b>ADMIN</a>
+        <b>Dashboard</b>Caisse</a>
     </div>
     <!-- /.login-logo -->
 </div>

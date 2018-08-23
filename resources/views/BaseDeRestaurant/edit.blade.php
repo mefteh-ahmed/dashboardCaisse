@@ -6,7 +6,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">modifier Base</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ route('restaurantDB.update', ['id' => $restaurantDb->id]) }}">
+                    <form class="form-horizontal" role="form" method="POST" action="{{ route('magasinDB.update', ['id' => $restaurantDb->id]) }}">
                         <input type="hidden" name="_method" value="PATCH">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="form-group{{ $errors->has('DB_HOST') ? ' has-error' : '' }}">

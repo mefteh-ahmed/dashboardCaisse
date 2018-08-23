@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use Auth;
 
 use App\Http\Requests;
 
@@ -28,7 +29,12 @@ class profilUser extends Controller
      */
     public function index()
     {
-        return view('profil.index');
+        $var=Auth::user()->role;
+        if($var==0){
+        return view('profil.index');}
+        else {
+            return redirect('/dashboard');
+         } 
     }
     public function edit($id)
     {

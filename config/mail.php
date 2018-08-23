@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'from' => ['address' => 'asmtest2018@gmail.com', 'name' => 'Do not Reply'],
+    'from' => ['address' => 'asmtest2018@gmail.com', 'name' => 'Asm Administration'],
     /*
     |--------------------------------------------------------------------------
     | E-Mail Encryption Protocol

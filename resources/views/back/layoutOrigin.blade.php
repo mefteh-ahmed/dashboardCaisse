@@ -273,7 +273,7 @@ desired effect
     </a>
     <ul class="treeview-menu">
                                   <li class="nav-item ">
-                                    <a class="nav-link" href="{{URL::to('api/chart') }}">
+                                    <a class="nav-link" href="{{URL::to('chart') }}">
                       
                                         <span class="sidebar-normal">Totale</span>
                                     </a>

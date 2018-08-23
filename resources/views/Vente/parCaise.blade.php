@@ -8,10 +8,10 @@ function changeFunc() {
   var from= $("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD HH:mm:ss');
   var to=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD HH:mm:ss');
   
-  $.getJSON('/api/TotalVentefilter/'+from+'/'+to, function(data1)
+  $.getJSON('/TotalVentefilter/'+from+'/'+to, function(data1)
   {
     var totale=data1[0].TotaleVente;
-    $.getJSON('/api/TotaleTick/'+from+'/'+to, function(data)
+    $.getJSON('/TotaleTick/'+from+'/'+to, function(data)
   {
     var totaletik=data[0].NBTick;
     document.getElementById("a").innerHTML =totaletik;
@@ -22,7 +22,7 @@ function changeFunc() {
   })
 var chart = c3.generate({
     data: {
-        url: '/api/NBTickParCaisse/'+from+'/'+to,
+        url: '/NBTickParCaisse/'+from+'/'+to,
         mimeType: 'json',
             keys: {
                x: 'CAI_DesCaisse', // it's possible to specify 'x' when category axis

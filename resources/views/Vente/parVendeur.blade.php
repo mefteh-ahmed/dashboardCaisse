@@ -47,7 +47,7 @@ function changeFunc() {
   var to=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD HH:mm:ss');
   var chart = c3.generate({
     data: {
-        url: '/api/CaParVendeur/'+from+'/'+to,
+        url: '/CaParVendeur/'+from+'/'+to,
         mimeType: 'json',
             keys: {
               

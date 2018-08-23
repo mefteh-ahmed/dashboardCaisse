@@ -48,7 +48,7 @@ function changeFunc() {
  if(document.getElementById('sel1').value==1){
     var chart = c3.generate({
     data: {
-        url: '/api/Top10art/'+document.getElementById('sel2').value+'/'
+        url: '/Top10art/'+document.getElementById('sel2').value+'/'
         +from+'/'+to,
         mimeType: 'json',
             keys: {
@@ -75,7 +75,7 @@ function changeFunc() {
         },bindto: '#chart'
 });
 
-$.getJSON('/api/Top10art/'+document.getElementById('sel2').value+'/'+from+'/'+to, function(jsonData) {
+$.getJSON('/Top10art/'+document.getElementById('sel2').value+'/'+from+'/'+to, function(jsonData) {
 var measdata = jsonData.map(o => {
           return  [o['ART_Designation'], o['TotaleVente']] ;
         });
@@ -95,7 +95,7 @@ var chart = c3.generate({
  {
     var chart = c3.generate({
     data: {
-        url: '/api/Top10fam/'+document.getElementById('sel2').value
+        url: '/Top10fam/'+document.getElementById('sel2').value
         +'/'
         +from+'/'+to,
         mimeType: 'json',
@@ -122,7 +122,7 @@ var chart = c3.generate({
             }
         },bindto: '#chart'
 });
-$.getJSON('/api/Top10fam/'+document.getElementById('sel2').value
+$.getJSON('/Top10fam/'+document.getElementById('sel2').value
 +'/'+from+'/'+to, function(jsonData) {
 var measdata = jsonData.map(o => {
           return  [o['FAM_Lib'], o['TotaleVente']] ;
@@ -144,7 +144,7 @@ var chart = c3.generate({
  {
     var chart = c3.generate({
     data: {
-        url: '/api/Top10mar/'+document.getElementById('sel2').value
+        url: '/Top10mar/'+document.getElementById('sel2').value
         +'/'+from+'/'+to,
         mimeType: 'json',
             keys: {
@@ -171,7 +171,7 @@ var chart = c3.generate({
         },bindto: '#chart'
 });
 
-$.getJSON('/api/Top10mar/'+document.getElementById('sel2').value
+$.getJSON('/Top10mar/'+document.getElementById('sel2').value
 +'/'+from+'/'+to, function(jsonData) {
 var measdata = jsonData.map(o => {
           return  [o['MAR_Designation'], o['TotaleVente']] ;
@@ -301,7 +301,7 @@ dropdown.empty();
 dropdown.append('<option selected="true" disabled>select Article</option>');
 dropdown.prop('selectedIndex', 0);
 
-const url = '/api/ALLarticle/'+countryId;
+const url = '/ALLarticle/'+countryId;
 
 // Populate dropdown with list of provinces
 $.getJSON(url, function (data) {
@@ -331,7 +331,7 @@ $('select[name="select2"]').on('change', function(){
     data: {
         x: 'year',
       
-        url: '/api/articlevente/'+art+'/'+from+'/'+to,
+        url: '/articlevente/'+art+'/'+from+'/'+to,
         mimeType: 'json',
         type: 'bar',
         keys: {

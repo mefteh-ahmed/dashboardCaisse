@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\DB;
+use Auth;
 
 class RestaurantDataBaseController extends Controller
 {
@@ -20,12 +21,17 @@ class RestaurantDataBaseController extends Controller
     
     public function index()
     {
+        $var=Auth::user()->role;
+        if($var==0){
         $restaurantD = DB::table('dbrestaurant')
             ->leftJoin('magasin', 'dbrestaurant.id_magasin', '=', 'magasin.id')
             ->select('dbrestaurant.id', 'dbrestaurant.DB_HOST','dbrestaurant.DB_DATABASE','dbrestaurant.DB_USERNAME','dbrestaurant.DB_PASSWORD','magasin.nom as resto_name', 'magasin.id as resto_id')
-            ->paginate(5);
+            ->get();
 
-        return view('BaseDeRestaurant.index', ['restaurantsD' => $restaurantD]);
+        return view('BaseDeRestaurant.index', ['restaurantsD' => $restaurantD]);}
+        else {
+            return redirect('/dashboard');
+         } 
 
     }
 

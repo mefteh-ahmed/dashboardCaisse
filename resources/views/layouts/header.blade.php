@@ -6,7 +6,7 @@
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini">A<b>S</b>M Admin</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg">{{ config('app.name', 'ASM admin') }}</span>
+      <span class="logo-lg">{{ config('', 'ASM admin') }}</span>
     </a>
 
     <!-- Header Navbar -->
@@ -25,7 +25,7 @@
               <!-- The user image in the navbar-->
               <img src="{{ asset("/bower_components/AdminLTE/dist/img/useravatar.jpg") }}" class="user-image" alt="User Image">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
-              <span class="hidden-xs">{{ Auth::user()->username }}</span>
+              <span class="hidden-xs">{{ Auth::user()->role }}</span>
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
@@ -46,10 +46,9 @@
                  <div class="pull-left">
                     <a href="{{ url('/profil') }}" class="btn btn-default btn-flat">Profile</a>
                   </div>
-                 <div class="pull-right">
-              <a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a>
-                    </a>
-                 </div>
+                  <div class="pull-right">
+                  <a href="{{ url('/logout') }}" class="btn btn-default btn-flat">Sign out</a>
+                </div>
                 @endif
               </li>
             </ul>

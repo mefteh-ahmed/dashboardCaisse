@@ -36,7 +36,10 @@
             <li class="active"><a href="/"><i class="fa fa-link"></i> <span>Dashboard</span></a></li>
 
                <li class="nav-item ">
-      <a href="{{ route('restaurant.index') }}"><i class="fa fa-glass"></i> <span> Magasins </span></a>
+      <a href="{{ route('chaine.index') }}"><i class="fa fa-glass"></i> <span> Chaine de Magasin </span></a>
+                                </li>
+               <li class="nav-item ">
+      <a href="{{ route('magasin.index') }}"><i class="fa fa-glass"></i> <span> Magasins </span></a>
                                 </li>
                               
             <li class="nav-item "><a href="{{ route('clientASM.index') }}"><i class="fa fa-group"></i> <span>Client ASM</span></a>
@@ -44,7 +47,7 @@
        
  
     <li class="nav-item ">
-      <a href="{{ route('restaurantDB.index') }}"><i class="fa fa-glass"></i> <span> BaseConfigMagasin </span></a>
+      <a href="{{ route('magasinDB.index') }}"><i class="fa fa-glass"></i> <span> BaseConfigMagasin </span></a>
                                 </li>
     
    

@@ -102,7 +102,7 @@ dropdown.empty();
 dropdown.append('<option selected="true" disabled>select Article</option>');
 dropdown.prop('selectedIndex', 0);
 
-const url = '/api/ALLarticle/'+countryId;
+const url = '/ALLarticle/'+countryId;
 
 // Populate dropdown with list of provinces
 $.getJSON(url, function (data) {
@@ -132,7 +132,7 @@ $('select[name="select2"]').on('change', function(){
     data: {
         x: 'year',
       
-        url: '/api/articleachat/'+art+'/'+from+'/'+to,
+        url: '/articleachat/'+art+'/'+from+'/'+to,
         mimeType: 'json',
         type: 'bar',
         keys: {

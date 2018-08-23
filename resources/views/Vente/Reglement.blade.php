@@ -43,9 +43,9 @@ function changeFunc() {
   var from= $("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD HH:mm:ss');
   var to=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD HH:mm:ss');
 
-  $.getJSON('/api/reglement/'+from+'/'+to, function(data)
+  $.getJSON('/reglement/'+from+'/'+to, function(data)
   {
-    $.getJSON('/api/TotalVentefilter/'+from+'/'+to, function(data1)
+    $.getJSON('/TotalVentefilter/'+from+'/'+to, function(data1)
   {
     var totale=data1[0].TotaleVente;
     document.getElementById("f").innerHTML =numeral(totale).format('0,0.000');

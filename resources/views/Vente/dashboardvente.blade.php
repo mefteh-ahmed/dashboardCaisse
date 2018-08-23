@@ -6,11 +6,11 @@ function changeFunc() {
   
   var from= $("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD HH:mm:ss');
   var to=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD HH:mm:ss');
-  $.getJSON('/api/TotalVentefilter/'+from+'/'+to, function(data1)
+  $.getJSON('/TotalVentefilter/'+from+'/'+to, function(data1)
   {
     var totale=data1[0].TotaleVente;
     document.getElementById("a").innerHTML =numeral(totale).format('0,0.000');
-    $.getJSON('/api/TotalAchatfilter/'+from+'/'+to, function(data)
+    $.getJSON('/TotalAchatfilter/'+from+'/'+to, function(data)
   {
     var TotaleAchat=data[0].TotaleAchat;
     document.getElementById("b").innerHTML =numeral(TotaleAchat).format('0,0.000');
@@ -23,7 +23,7 @@ function changeFunc() {
     data: {
         x: 'year',
       
-        url: '/api/TotalVenteDate/'+from+'/'+to,
+        url: '/TotalVenteDate/'+from+'/'+to,
         mimeType: 'json',
         keys: {
             x: 'year',
@@ -134,7 +134,7 @@ $(function() {
 <script>
 var chart = c3.generate({
     data: {
-        url: '/api/tolalex',
+        url: '/tolalex',
         mimeType: 'json',
             keys: {
                x: 'LT_Exerc', // it's possible to specify 'x' when category axis

@@ -14,7 +14,7 @@
 
             <label for="input" class="col-sm-3 control-label">Nom : </label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" name="name" id="name" placeholder="Nom" required>
+              <input type="text" class="form-control" name="name" id="name" placeholder="Nom" >
             </div>
           </div>
         </div>

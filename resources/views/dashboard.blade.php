@@ -88,7 +88,7 @@ desired effect
                 </h3>
               @endforeach
 
-              <p>Chaine de restauration</p>
+              <p>Chaine de magasin</p>
             </div>
             <div class="icon">
               <i class="ion ion-bag"></i>
@@ -106,12 +106,12 @@ desired effect
               <h3 class="title">{{$r->totalerest}}
               </h3>
             @endforeach
-            <p>Restaurant</p>
+            <p>Magasin</p>
           </div>
           <div class="icon">
             <i class="ion ion-stats-bars"></i>
           </div>
-          <a href="/restaurant" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+          <a href="/magasin" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
         </div>
       </div>
         <div class="col-lg-3 col-xs-6">
@@ -146,7 +146,7 @@ desired effect
             <div class="icon">
               <i class="ion ion-pie-graph"></i>
             </div>
-            <a href="/restaurantDB" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="/magasinDB" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
       </div>

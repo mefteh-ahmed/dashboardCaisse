@@ -6,7 +6,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Ajouter une Base </div>
                 <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ route('restaurantDB.store') }}">
+                    <form class="form-horizontal" role="form" method="POST" action="{{ route('magasinDB.store') }}">
                         {{ csrf_field() }}
                         <div class="form-group{{ $errors->has('DB_HOST') ? ' has-error' : '' }}">
                             <label for="name" class="col-md-4 control-label">DB_HOST</label>

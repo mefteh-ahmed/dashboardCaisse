@@ -16,11 +16,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- Ionicons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
 <!-- Theme style -->
-<link rel="stylesheet" href="../adminlte/css/AdminLTE.min.css">
+<link rel="stylesheet" href="../../adminlte/css/AdminLTE.min.css">
 <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
       page. However, you can choose any other skin. Make sure you
       apply the skin class to the body tag so the changes take effect. -->
-<link rel="stylesheet" href="../adminlte/css/skins/skin-red.min.css">
+<link rel="stylesheet" href="../../adminlte/css/skins/skin-red.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css">  
@@ -67,7 +67,7 @@ desired effect
   <header class="main-header">
 
     <!-- Logo -->
-    <a href="/api" class="logo">
+    <a href="/dashboard" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>A</b>LT</span>
       <!-- logo for regular state and mobile devices -->
@@ -97,17 +97,17 @@ desired effect
             <!-- Menu Toggle Button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <!-- The user image in the navbar-->
-              <img src="../adminlte/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <img src="../../adminlte/img/user2-160x160.jpg" class="user-image" alt="User Image">
           <!-- hidden-xs hides the username on small devices so only the image appears. -->
-           <span class="hidden-xs">Ahmed Mefteh</span>
+           <span class="hidden-xs"> {{ Auth::user()->name }}</span>
 </a>
 <ul class="dropdown-menu">
  <!-- The user image in the menu -->
  <li class="user-header">
- <img src="../adminlte/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+ <img src="../../adminlte/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                 <p>
-                Ahmed Mefteh - Analyst Programmer
-                  <small>Member since Nov. 2012</small>
+                {{ Auth::user()->email }}
+                  
                 </p>
               </li>
               <!-- Menu Body -->
@@ -115,10 +115,10 @@ desired effect
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <a href="{{ url('/profilC') }}" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="{{ url('/logout') }}" class="btn btn-default btn-flat">Sign out</a>
                 </div>
               </li>
             </ul>
@@ -138,10 +138,10 @@ desired effect
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel">
       <div class="pull-left image">
- <img src="../adminlte/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+ <img src="../../adminlte/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 </div>
         <div class="pull-left info">
-          <p>Ahmed Mefteh</p>
+          <p> {{ Auth::user()->name }}</p>
           <!-- Status -->
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
@@ -171,31 +171,31 @@ desired effect
     </a>
     <ul class="treeview-menu">
                                   <li class="nav-item ">
-                                    <a class="nav-link" href="{{URL::to('api/chart') }}">
+                                    <a class="nav-link" href="{{URL::to('chart') }}">
                       
                                         <span class="sidebar-normal">Totale</span>
                                     </a>
                                 </li>
                                 <li class="nav-item ">
-                                    <a class="nav-link" href="{{ URL::to('api/produit') }}">
+                                    <a class="nav-link" href="{{ URL::to('produit') }}">
                       
                                         <span class="sidebar-normal"> Par Produit</span>
                                     </a>
                                 </li>
                                 <li class="nav-item ">
-                                    <a class="nav-link" href="{{ URL::to('api/vendeur') }}">
+                                    <a class="nav-link" href="{{ URL::to('vendeur') }}">
                       
                                         <span class="sidebar-normal">Par Vendeur</span>
                                     </a>
                                 </li>
                                 <li class="nav-item ">
-                                    <a class="nav-link" href="{{ URL::to('api/caisse') }}">
+                                    <a class="nav-link" href="{{ URL::to('caisse') }}">
                       
                                         <span class="sidebar-normal">Par Caisse</span>
                                     </a>
                                 </li>
                                 <li class="nav-item ">
-                                    <a class="nav-link" href="{{ URL::to('api/reglement') }}">
+                                    <a class="nav-link" href="{{ URL::to('reglement') }}">
                       
                                         <span class="sidebar-normal">réglement</span>
                                     </a>
@@ -203,26 +203,26 @@ desired effect
     </ul>
   </li>
   <li class="treeview">
-    <a href="{{ URL::to('api/chartachat') }}"><i class="fa fa-pie-chart"></i> <span>Achat</span>
+    <a href="{{ URL::to('chartachat') }}"><i class="fa fa-pie-chart"></i> <span>Achat</span>
       <span class="pull-right-container">
           <i class="fa fa-angle-left pull-right"></i>
         </span>
     </a>
     <ul class="treeview-menu">
       <li class="nav-item ">
-                                    <a class="nav-link" href="{{ URL::to('api/chartachat') }}">
+                                    <a class="nav-link" href="{{ URL::to('chartachat') }}">
                       
                                         <span class="sidebar-normal">Total</span>
                                     </a>
                                 </li>
       <li class="nav-item ">
-                                    <a class="nav-link" href="{{ URL::to('api/parProduit') }}">
+                                    <a class="nav-link" href="{{ URL::to('parProduit') }}">
                       
                                         <span class="sidebar-normal">Par Produit</span>
                                     </a>
                                 </li>
       <li class="nav-item ">
-                                    <a class="nav-link" href="{{ URL::to('api/parFournisseur') }}">
+                                    <a class="nav-link" href="{{ URL::to('parFournisseur') }}">
                       
                                         <span class="sidebar-normal">Par Fournisseur</span>
                                     </a>
@@ -230,26 +230,26 @@ desired effect
     </ul>
   </li>
   <li class="treeview">
-    <a href="{{ URL::to('api/chartachat') }}"><i class="fa fa-pie-chart"></i> <span> Retour d'achat</span>
+    <a href="{{ URL::to('chartachat') }}"><i class="fa fa-pie-chart"></i> <span> Retour d'achat</span>
       <span class="pull-right-container">
           <i class="fa fa-angle-left pull-right"></i>
         </span>
     </a>
     <ul class="treeview-menu">
       <li class="nav-item ">
-                                    <a class="nav-link" href="{{ URL::to('api/chartRetourAchat') }}">
+                                    <a class="nav-link" href="{{ URL::to('chartRetourAchat') }}">
                       
                                         <span class="sidebar-normal">Total</span>
                                     </a>
                                 </li>
       <li class="nav-item ">
-                                    <a class="nav-link" href="{{ URL::to('api/parProduitRetour') }}">
+                                    <a class="nav-link" href="{{ URL::to('parProduitRetour') }}">
                       
                                         <span class="sidebar-normal">Par Produit</span>
                                     </a>
                                 </li>
       <li class="nav-item ">
-                                    <a class="nav-link" href="{{ URL::to('api/parFournisseurRetour') }}">
+                                    <a class="nav-link" href="{{ URL::to('parFournisseurRetour') }}">
                       
                                         <span class="sidebar-normal">Par Fournisseur</span>
                                     </a>
@@ -382,18 +382,17 @@ desired effect
 <!-- Bootstrap 3.3.7 -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <!-- AdminLTE App -->
-<script src="../adminlte/js/adminlte.min.js"></script>
+<script src="../../adminlte/js/adminlte.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-
-  <script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<script>
     $(document).ready(function() {
   $(function() {
     $('#datetimepicker6').datetimepicker();

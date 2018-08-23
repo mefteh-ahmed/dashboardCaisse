@@ -8,7 +8,7 @@
             </h1>
             <ol class="breadcrumb">
                 <li><a href="/"><i class="fa fa-dashboard"></i> Retour</a></li>
-                <li class="active">Base de Restauration </li>
+                <li class="active">Base de Magasin </li>
             </ol>
         </section>
     @yield('action-content')

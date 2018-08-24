@@ -27,7 +27,7 @@ class RetourAchatController extends Controller
    
 public function index() { 
         $var=Auth::user()->role;
-        if($var==1){
+        if($var!=0){
      return view('retourAchat.dashboardAchat',['title'=>"Total"]);
 }
 else {
@@ -36,7 +36,7 @@ else {
      }
 public function Produit() { 
         $var=Auth::user()->role;
-        if($var==1){
+        if($var!=0){
     return view('retourAchat.parproduit',['title'=>"Par Produit"]);
 }
 else {
@@ -46,7 +46,7 @@ else {
 
 public function Famille() { 
         $var=Auth::user()->role;
-        if($var==1){
+        if($var!=0){
     return view('retourAchat.parfamille',['title'=>"Par Famille"]);
 }
 else {
@@ -55,7 +55,7 @@ else {
  }
 public function Marque() { 
         $var=Auth::user()->role;
-        if($var==1){
+        if($var!=0){
     return view('retourAchat.parmarque',['title'=>"Par Marque"]);
 }
 else {
@@ -64,7 +64,7 @@ else {
  }
  public function Fournisseur() { 
         $var=Auth::user()->role;
-        if($var==1){
+        if($var!=0){
     return view('retourAchat.parfournisseur',['title'=>"Par Fournisseur"]);
 }
 else {

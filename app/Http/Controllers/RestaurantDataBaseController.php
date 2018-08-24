@@ -12,7 +12,7 @@ use Auth;
 
 class RestaurantDataBaseController extends Controller
 {
-    protected $redirectTo = '/restaurantDB';
+    protected $redirectTo = '/magasinDB';
 
     public function __construct()
     {
@@ -54,7 +54,7 @@ class RestaurantDataBaseController extends Controller
             'id_magasin' => $request['id_magasin'],
         ]);
 
-        return redirect()->intended('/restaurantDB');
+        return redirect()->intended('/magasinDB');
     }
 
 
@@ -97,12 +97,12 @@ class RestaurantDataBaseController extends Controller
         RestaurantDataBase::where('id', $id)
             ->update($input);
 
-        return redirect()->intended('/restaurantDB');
+        return redirect()->intended('/magasinDB');
     }
     public function destroy($id)
     {
         RestaurantDataBase::where('id', $id)->delete();
-        return redirect()->intended('/restaurantDB');
+        return redirect()->intended('/magasinDB');
     }
 
     public function search(Request $request) {

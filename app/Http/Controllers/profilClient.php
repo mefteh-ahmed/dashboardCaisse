@@ -30,7 +30,7 @@ class profilClient extends Controller
     public function index()
     {
         $var=Auth::user()->role;
-        if($var==1){
+        if($var!=0){
         return view('profilClient.index',['title'=>"Profil"]);}
         else {
            return redirect('/');
@@ -53,12 +53,27 @@ class profilClient extends Controller
         $this->validate($request, [
             'name' => 'required|max:20',
             'email' => 'required|max:60',
-            'password' => 'required|max:60',
             ]);
         $input = [
             'name' => $request['name'],
-            'password' => bcrypt($request['password']),
             'email' => $request['email'],
+        ];
+        User::where('id', $id)
+            ->update($input);
+
+        return redirect()->intended('/profilC');
+    }
+    public function updatepass(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $this->validate($request, [
+         
+            'password' => 'required|max:60',
+            ]);
+        $input = [
+      
+            'password' => bcrypt($request['password']),
+        
         ];
         User::where('id', $id)
             ->update($input);

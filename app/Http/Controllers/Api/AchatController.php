@@ -26,7 +26,7 @@ class AchatController extends Controller
    
 public function index() { 
         $var=Auth::user()->role;
-        if($var==1){
+        if($var!=0){
         $connection= new DatabaseConnection ();
        $ticketa = $connection->setConnection()->table('LigneTicket')->select(DB::raw('SUM(LT_PACHAT*LT_Qte) as TotaleAchat'))->get();
        $ticketa->toArray();
@@ -38,7 +38,7 @@ else {
      }
 public function Produit() { 
         $var=Auth::user()->role;
-        if($var==1){
+        if($var!=0){
         $connection= new DatabaseConnection ();
 
         $ALLfamille = $connection->setConnection()->table('famille')->select('famille.FAM_Code','famille.FAM_Lib')->get();
@@ -59,7 +59,7 @@ public function filterProduit(Request $request){
    }
 public function Famille() { 
         $var=Auth::user()->role;
-        if($var==1){
+        if($var!=0){
     return view('achat.parfamille',['title'=>"Par Famille"]);
 }
 else {
@@ -68,7 +68,7 @@ else {
  }
 public function Marque() { 
         $var=Auth::user()->role;
-        if($var==1){
+        if($var!=0){
     return view('achat.parmarque',['title'=>"Par Marque"]);
 }
 else {
@@ -77,7 +77,7 @@ else {
  }
  public function Fournisseur() { 
         $var=Auth::user()->role;
-        if($var==1){
+        if($var!=0){
     return view('achat.parfournisseur',['title'=>"Par Fournisseur"]);
 }
 else {

@@ -95,7 +95,7 @@ class UserRestaurantController extends Controller
 
         return view('Client.edit', ['restaurant' => $restaurant, 'client' => $client]);
     }
-    public function updatePW(Request $request, $id)
+    public function updatepass(Request $request, $id)
     {
         $client = UserRestaurant::findOrFail($id);
 

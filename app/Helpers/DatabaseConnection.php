@@ -27,6 +27,7 @@ class DatabaseConnection  extends Controller
         return DB::connection('onthefly');
     }
 }  */
+
 namespace App\Helpers;
 use Config;
 use DB;
@@ -36,8 +37,18 @@ use App\Http\Controllers\Controller;
 class DatabaseConnection  extends Controller
 {
     public static function setConnection()
-    {$var=Auth::user()->id_magasin;
-            $params = DB::connection('mysql')->select("SELECT * from dbrestaurant where id_magasin=$var" );
+    {
+        
+       if(Auth::user()->role==2)
+       {
+        $value=Auth::user()->id_magasin;
+       }else
+       if(Auth::user()->role==1)
+       {     
+              $value =session()->get('id_magasin', 'id_magasin');
+    }
+
+            $params = DB::connection('mysql')->select("SELECT * from dbrestaurant where id_magasin=$value" );
 
 
         config(['database.connections.onthefly' => [

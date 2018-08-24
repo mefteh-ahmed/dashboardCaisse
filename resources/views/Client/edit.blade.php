@@ -91,8 +91,10 @@
         </button>
       </div>
       <div class="modal-body">
-      <form class="form-horizontal" role="form" method="POST" action="{{ route('clientASM.updatePW', $client->id) }}">
-                        <input type="hidden" name="_method" value="PATCH">
+      <form class="form-horizontal" role="form" method="POST" action="{{ route('clientASM.updatepass',  $client->id) }}">
+                        <!-- <input type="hidden" name="_method" value="PATCH"> -->
+                        <meta name="csrf_token" content="{ csrf_token() }" />
+
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
       <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                             <label for="password" class="col-md-4 control-label">password</label>

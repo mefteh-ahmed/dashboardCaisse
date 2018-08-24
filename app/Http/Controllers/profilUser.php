@@ -53,12 +53,27 @@ class profilUser extends Controller
         $this->validate($request, [
             'name' => 'required|max:20',
             'email' => 'required|max:60',
-            'password' => 'required|max:60',
             ]);
         $input = [
             'name' => $request['name'],
-            'password' => bcrypt($request['password']),
             'email' => $request['email'],
+        ];
+        User::where('id', $id)
+            ->update($input);
+
+        return redirect()->intended('/profil');
+    }
+    public function updatepass(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $this->validate($request, [
+         
+            'password' => 'required|max:60',
+            ]);
+        $input = [
+      
+            'password' => bcrypt($request['password']),
+        
         ];
         User::where('id', $id)
             ->update($input);

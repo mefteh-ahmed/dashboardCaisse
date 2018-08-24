@@ -86,7 +86,7 @@ class chartController extends Controller
 
     public function reglement()
     { $var=Auth::user()->role;
-        if($var==1){
+        if($var!=0){
         $connection= new DatabaseConnection ();
 
         $TotalRecu = $connection->setConnection()->table('ReglementCaisse')

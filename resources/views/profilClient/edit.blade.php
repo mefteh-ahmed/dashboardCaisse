@@ -39,19 +39,6 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">password</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="text" class="form-control" name="password" value="" required autofocus>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
                     
                 
                         <div class="form-group">

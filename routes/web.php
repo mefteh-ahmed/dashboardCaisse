@@ -52,8 +52,12 @@
 |
 */
 Route::get('/dashboard', 'Back\AdminController@index');
-Route::get('produit', 'Api\ProduitController@index');
+Route::get('/list', 'Back\AdminController@listMagasin');
+Route::get('/magasinRoute/{id}', 'Back\AdminController@magasinRoute');
+
+    Route::get('produit', 'Api\ProduitController@index');
     Route::get('/home', 'Api\HomeController@index');
+
     Route::get('chart', 'Api\chartController@index');
     Route::get('/produit', 'Api\chartController@produit');
     Route::get('/vendeur', 'Api\chartController@vendeur');
@@ -115,6 +119,7 @@ Route::get('produit', 'Api\ProduitController@index');
 
 
     Route::resource('profilC', 'profilClient');
+    Route::post('profilC/updatepass/{id}', 'profilClient@updatepass')->name('profilC.updatepass');
 
 
 
@@ -132,6 +137,8 @@ Route::get('/getMagByChaine/{from}', 'RestaurantController@getMagByChaine');
 
 Route::resource('profil', 'profilUser');
 Route::post('Restaurantchaine/search', 'ChainedeRestaurationController@search')->name('chaine.search');
+Route::post('profil/updatepass/{id}', 'profilUser@updatepass')->name('profil.updatepass');
+
 Route::resource('chaine', 'ChainedeRestaurationController');
 Route::post('magasin/search', 'RestaurantController@search')->name('magasin.search');
 Route::resource('magasin', 'RestaurantController');
@@ -143,7 +150,7 @@ Route::resource('magasinDB', 'RestaurantDataBaseController');
 
 Route::post('userRestaurant/search', 'UserRestaurantController@search')->name('clientASM.search');
 Route::resource('clientASM', 'UserRestaurantController');
-Route::post('{id}/updatePW', 'UserRestaurantController@updatePW')->name('clientASM.updatePW');;
+Route::post('clientASM/updatepass/{id}', 'UserRestaurantController@updatepass')->name('clientASM.updatepass');
 
 
 

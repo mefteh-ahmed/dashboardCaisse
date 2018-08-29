@@ -116,8 +116,8 @@ desired effect
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="{{ url('/profilC') }}" class="btn btn-default btn-flat">Profile</a>
-                </div>
+                  <a href="{{ url('/profilAdminClient') }}" class="btn btn-default btn-flat">Profile</a>
+                </div>  
                 <div class="pull-right">
                   <a href="{{ url('/logout') }}" class="btn btn-default btn-flat">Sign out</a>
                 </div>
@@ -161,112 +161,16 @@ desired effect
       <!-- /.search form -->
 
      <!-- Sidebar Menu -->
-<ul class="sidebar-menu" data-widget="tree">
-  <li class="header">Statistique</li>
-  <?php if(Auth::user()->role==1){ ?>
+  <ul class="sidebar-menu" data-widget="tree">
+    <li class="header">Statistique</li>
+    <?php if(Auth::user()->role==1){ ?>
     <li class="nav-item ">
                                     <a class="nav-link" href="{{URL::to('list') }}">
                       
-                                        <span class="sidebar-normal">liste de magasins</span>
+                                        <span class="sidebar-normal">Magasin List</span>
                                     </a>
                                 </li>
     <?php } ?>
-  <!-- Optionally, you can add icons to the links -->
-  <li class="treeview">
-    <a href="#"><i class="fa fa-pie-chart"></i> <span>Vente</span>
-      <span class="pull-right-container">
-          <i class="fa fa-angle-left pull-right"></i>
-        </span>
-    </a>
-  
-    <ul class="treeview-menu">
-                                  <li class="nav-item ">
-                                    <a class="nav-link" href="{{URL::to('chart') }}">
-                      
-                                        <span class="sidebar-normal">Totale</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a class="nav-link" href="{{ URL::to('produit') }}">
-                      
-                                        <span class="sidebar-normal"> Par Produit</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a class="nav-link" href="{{ URL::to('vendeur') }}">
-                      
-                                        <span class="sidebar-normal">Par Caisier</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a class="nav-link" href="{{ URL::to('caisse') }}">
-                      
-                                        <span class="sidebar-normal">Par Caisse</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a class="nav-link" href="{{ URL::to('caisse') }}">
-                      
-                                        <span class="sidebar-normal">Par Commercial</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a class="nav-link" href="{{ URL::to('reglement') }}">
-                      
-                                        <span class="sidebar-normal">réglement</span>
-                                    </a>
-                                </li>
-    </ul>
-  </li>
-  <li class="treeview">
-    <a href="{{ URL::to('chartachat') }}"><i class="fa fa-pie-chart"></i> <span>Achat</span>
-      <span class="pull-right-container">
-          <i class="fa fa-angle-left pull-right"></i>
-        </span>
-    </a>
-    <ul class="treeview-menu">
-      <li class="nav-item ">
-                                    <a class="nav-link" href="{{ URL::to('chartachat') }}">
-                      
-                                        <span class="sidebar-normal">Total</span>
-                                    </a>
-                                </li>
-      <li class="nav-item ">
-                                    <a class="nav-link" href="{{ URL::to('parProduit') }}">
-                      
-                                        <span class="sidebar-normal">Par Produit</span>
-                                    </a>
-                                </li>
-      <li class="nav-item ">
-                                    <a class="nav-link" href="{{ URL::to('parFournisseur') }}">
-                      
-                                        <span class="sidebar-normal">Par Fournisseur</span>
-                                    </a>
-                                </li>
-
-                                <li class="nav-item ">
-                                    <a class="nav-link" href="{{ URL::to('chartRetourAchat') }}">
-                      
-                                        <span class="sidebar-normal">Total Retour</span>
-                                    </a>
-                                </li>
-      <li class="nav-item ">
-                                    <a class="nav-link" href="{{ URL::to('parProduitRetour') }}">
-                      
-                                        <span class="sidebar-normal">Retour Par Produit</span>
-                                    </a>
-                                </li>
-      <li class="nav-item ">
-                                    <a class="nav-link" href="{{ URL::to('parFournisseurRetour') }}">
-                      
-                                        <span class="sidebar-normal">Retour Par Fournisseur</span>
-                                    </a>
-                                </li>
-    </ul>
-  </li>
-
-</ul>
-
 <!-- /.sidebar-menu -->
     </section>
     <!-- /.sidebar -->
@@ -281,9 +185,9 @@ desired effect
         <small>Optional description</small>
       </h1> -->
       <ol class="breadcrumb">
-        
+<!--         
         <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-        <li class="active">{{$title}}</li>
+        <li class="active"></li> -->
       </ol>
     </section>
 
@@ -396,25 +300,9 @@ desired effect
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-  <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-  <script src="http://cdn.datatables.net/responsive/1.0.0/js/dataTables.responsive.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
-  <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/responsive/1.0.0/css/dataTables.responsive.css" />
-  <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
-<script src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <script>
     $(document).ready(function() {
   $(function() {
@@ -431,7 +319,6 @@ desired effect
   });
 });
 </script>
- 
 @yield('js')
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the

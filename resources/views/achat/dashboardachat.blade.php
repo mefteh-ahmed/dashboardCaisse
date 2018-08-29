@@ -28,7 +28,7 @@
 </div>
   <div class="row">
   <div class="col-sm-4">
-    <h3>Totale des achats En Dinar <span class="text-primary"><div id="a">0.000</div></span></h3>
+    <h3>Total des achats En Dinar <span class="text-primary"><div id="a">0.000</div></span></h3>
     </div>
   </div>
 
@@ -50,15 +50,16 @@
    </div>
   <div class="row">
    
-  <h4 class="text-primary">Récapitulatif des achats Par anneé</h4>
+  <h4 class="text-primary">Récapitulatif des achats Par Exercice</h4>
 
-     <div class="col-sm-4">
-          <div class="row" id="chart0">  </div>
-     </div>
+   
     
       <div class="col-sm-8">
           <div class="row" id="chart">  </div>
       </div>
+        <div class="col-sm-4">
+          <div class="row" id="chart0">  </div>
+     </div>
   </div>
  
   

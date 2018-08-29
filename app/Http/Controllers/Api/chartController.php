@@ -62,6 +62,19 @@ class chartController extends Controller
         if($var!=0){
       return view('Vente.parVendeur',['title'=>"Par Vendeur"]);
     }
+    
+    else {
+       return redirect('/');
+    }
+    }
+    public function Commercial()
+    {
+
+        $var=Auth::user()->role;
+        if($var!=0){
+      return view('Vente.parCommercial',['title'=>"Par Commercial"]);
+    }
+    
     else {
        return redirect('/');
     }

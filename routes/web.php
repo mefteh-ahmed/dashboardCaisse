@@ -61,6 +61,8 @@ Route::get('/magasinRoute/{id}', 'Back\AdminController@magasinRoute');
     Route::get('chart', 'Api\chartController@index');
     Route::get('/produit', 'Api\chartController@produit');
     Route::get('/vendeur', 'Api\chartController@vendeur');
+    Route::get('/Commercial', 'Api\chartController@Commercial');
+
     Route::get('/caisse', 'Api\chartController@caisse');
     Route::get('/reglement', 'Api\chartController@reglement');
     Route::get('/chartachat', 'Api\chartController@indexachat');
@@ -69,12 +71,22 @@ Route::get('/magasinRoute/{id}', 'Back\AdminController@magasinRoute');
     Route::get('/ligneticket', 'Api\VenteController@index');
     Route::get('/article', 'Api\ArticleController@index');
     Route::get('/tolalVente', 'Api\VenteController@TotalVente');
+    Route::get('/TotalVenteAnnuler/{from}/{to}', 'Api\VenteController@TotalVenteAnnuler');
+    Route::get('/TotalVenteAnnulerfilter/{from}/{to}', 'Api\VenteController@TotalVenteAnnulerfilter');
+
     Route::get('/tolalachat', 'Api\VenteController@TotalAchat');
     Route::get('/tolalex', 'Api\VenteController@TotalExercice');
     Route::get('/Top10art/{req}/{from}/{to}', 'Api\VenteController@Top10art');
     Route::get('/Top10fam/{req}/{from}/{to}', 'Api\VenteController@Top10fam');
     Route::get('/Top10mar/{req}/{from}/{to}', 'Api\VenteController@Top10Marque');
     Route::get('/CaParVendeur/{from}/{to}', 'Api\VenteController@CaParVendeur');
+    Route::get('/CaParCommercial/{from}/{to}', 'Api\VenteController@CaParCommercial');
+
+    Route::get('/CaAnnulerParCommercial/{from}/{to}', 'Api\VenteController@CaAnnulerParCommercial');
+
+    Route::get('/CaAnnulerParVendeur/{from}/{to}', 'Api\VenteController@CaAnnulerParVendeur');
+    
+   
     Route::get('/NBTickParCaisse/{from}/{to}', 'Api\VenteController@NBTickParCaisse');
     Route::get('/TotaleTick/{from}/{to}', 'Api\VenteController@TotaleTick');
     Route::get('/TotalVenteDate/{from}/{to}', 'Api\VenteController@TotalVenteDate');
@@ -121,7 +133,8 @@ Route::get('/magasinRoute/{id}', 'Back\AdminController@magasinRoute');
     Route::resource('profilC', 'profilClient');
     Route::post('profilC/updatepass/{id}', 'profilClient@updatepass')->name('profilC.updatepass');
 
-
+    Route::resource('profilAdminClient', 'profilAdminClient');
+    Route::post('profilAdminClient/updatepass/{id}', 'profilAdminClient@updatepass')->name('profilAdminClient.updatepass');
 
 
 

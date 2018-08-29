@@ -5,14 +5,14 @@ var chart = c3.generate({
         mimeType: 'json',
             keys: {
                x: 'year', // it's possible to specify 'x' when category axis
-                value: ['TotaleRetourAchat']
+                value: ['TotalRetourAchat']
             },type:'bar'
     },
     axis: {
         y: {
         label: { // ADD
-          text: 'Totale des achats ',
-          position: 'outer-middle'
+            text: "Totale des retour D'achats En Dinar ",
+    
         },
       
         tick: {
@@ -31,7 +31,7 @@ var chart = c3.generate({
 <script>
 $.getJSON('/TotaleRetourExercice', function(jsonData) {
 var measdata = jsonData.map(o => {
-          return  [o['year'], o['TotaleRetourAchat']] ;
+          return  [o['year'], o['TotalRetourAchat']] ;
         });
 var chart = c3.generate({
                         data: {
@@ -40,7 +40,6 @@ var chart = c3.generate({
 
                         },
                         donut: {
-                            title:  "Top 10 des articles les plus achetés "
                         },bindto: '#chart0'
 
                     })
@@ -64,7 +63,7 @@ function changeFunc2() {
         mimeType: 'json',
         keys: {
             x: 'year',
-            value: ['TotaleRetourAchat']
+            value: ['TotalRetourAchat']
         }
     },
     axis: {
@@ -92,14 +91,14 @@ var chart = c3.generate({
         mimeType: 'json',
             keys: {
                x: 'ART_Designation', // it's possible to specify 'x' when category axis
-                value: ['TotaleretourAchat']
+                value: ['TotalretourAchat']
             },type:'bar'
     },
     axis: {
         y: {
         label: { // ADD
-          text: 'Totale des achats ',
-          position: 'outer-middle'
+          text: "Totale des retour D'achats En Dinar ",
+    
         },
       
         tick: {
@@ -116,7 +115,7 @@ var chart = c3.generate({
 
 $.getJSON('/Top10artretourAchat/'+document.getElementById('sel2').value+'/'+from+'/'+to, function(jsonData) {
 var measdata = jsonData.map(o => {
-          return  [o['ART_Designation'], o['TotaleretourAchat']] ;
+          return  [o['ART_Designation'], o['TotalretourAchat']] ;
         });
 var chart = c3.generate({
                         data: {
@@ -138,14 +137,14 @@ else if (document.getElementById('sel1').value==2) {
         mimeType: 'json',
             keys: {
                x: 'FAM_Lib', // it's possible to specify 'x' when category axis
-                value: ['TotaleRetourAchat']
+                value: ['TotalRetourAchat']
             },type:'bar'
     },
     axis: {
         y: {
         label: { // ADD
-          text: 'Totale des achats ',
-          position: 'outer-middle'
+            text: "Totale des retour D'achats En Dinar ",
+    
         },
       
         tick: {
@@ -161,7 +160,7 @@ else if (document.getElementById('sel1').value==2) {
 });
 $.getJSON('/Top10FamilretourAchat/'+document.getElementById('sel2').value+'/'+from+'/'+to, function(jsonData) {
 var measdata = jsonData.map(o => {
-          return  [o['FAM_Lib'], o['TotaleRetourAchat']] ;
+          return  [o['FAM_Lib'], o['TotalRetourAchat']] ;
         });
 var chart = c3.generate({
                         data: {
@@ -183,14 +182,14 @@ var chart = c3.generate({
         mimeType: 'json',
             keys: {
                x: 'MAR_Designation', // it's possible to specify 'x' when category axis
-                value: ['TotaleRetourAchat']
+                value: ['TotalRetourAchat']
             },type:'bar'
     },
     axis: {
         y: {
         label: { // ADD
-          text: 'Totale des Retour achats ',
-          position: 'outer-middle'
+            text: "Totale des retour D'achats En Dinar ",
+    
         },
       
         tick: {
@@ -206,7 +205,7 @@ var chart = c3.generate({
 });
 $.getJSON('/Top10MarqueretourAchat/'+document.getElementById('sel2').value+'/'+from+'/'+to, function(jsonData) {
 var measdata = jsonData.map(o => {
-          return  [o['MAR_Designation'], o['TotaleRetourAchat']] ;
+          return  [o['MAR_Designation'], o['TotalRetourAchat']] ;
         });
 var chart = c3.generate({
                         data: {
@@ -237,14 +236,14 @@ var chart = c3.generate({
         mimeType: 'json',
             keys: {
                x: 'FRS_Nomf', // it's possible to specify 'x' when category axis
-                value: ['TotaleRetourAchat']
+                value: ['TotalRetourAchat']
             },type:'bar'
     },
     axis: {
         y: {
         label: { // ADD
-          text: 'Totale des  Retour achats ',
-          position: 'outer-middle'
+            text: "Totale des retour D'achats En Dinar ",
+    
         },
       
         tick: {
@@ -269,11 +268,11 @@ var chart = c3.generate({
 <script type="text/javascript">
 $(function() {
 
-    var start = moment().subtract(29, 'days');
+    var start = moment();
     var end = moment();
 
     function cb(start, end) {
-        $('#reportrange span').html(start.format('YYYY-MM-DD HH:mm:ss') + ' - ' + end.format('YYYY-MM-DD HH:mm:ss'));
+        $('#reportrange span').html(start.format('YYYY-MM-DD 00:00:00') + ' - ' + end.format('YYYY-MM-DD 23:59:59'));
     }
 
     $('#reportrange').daterangepicker({

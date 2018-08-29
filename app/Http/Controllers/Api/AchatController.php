@@ -93,7 +93,7 @@ else {
         $connection= new DatabaseConnection ();
 
         $ticket = $connection->setConnection()->table('View_BonEntree_Lignebn_Art_fr')
-        ->select( DB::raw("sUM(LIG_BonEntree_MntTTC) as TotaleAchat ,FORMAT (BON_ENT_Date,  'yyyy-MM-dd', 'en-US' ) as year,sum(LIG_BonEntree_Qte) as qte"))
+        ->select( DB::raw("sUM(LIG_BonEntree_MntTTC) as TotalAchat ,FORMAT (BON_ENT_Date,  'yyyy-MM-dd', 'en-US' ) as year,sum(LIG_BonEntree_Qte) as qte"))
         ->whereRaw(DB::raw("BON_ENT_Date between '$request->from' and '$request->to' and ART_Code='$request->art' "))
         ->groupBy(DB::raw("ART_Code,FORMAT ( BON_ENT_Date,  'yyyy-MM-dd', 'en-US' )"))->orderByRaw(DB::raw('sum(LIG_BonEntree_MntTTC) DESC' ))
         ->take($request->req)->get();
@@ -104,7 +104,7 @@ else {
 public function TotalAchat() { 
         $connection= new DatabaseConnection ();
 
-            $ticket = $connection->setConnection()->table('LigneTicket')->select(DB::raw("SUM(LT_PACHAT*LT_Qte) as TotaleAchat"))->get();
+            $ticket = $connection->setConnection()->table('LigneTicket')->select(DB::raw("SUM(LT_PACHAT*LT_Qte) as TotalAchat"))->get();
             if($ticket->count()){
                 return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
   
@@ -113,7 +113,7 @@ public function TotaleProdExercice() {
         $connection= new DatabaseConnection ();
 
         $tickets = $connection->setConnection()->table('View_BonEntree_Lignebn_Art_fr') 
-                                      ->select(DB::raw(" BON_ENT_Exer as year,sum(LIG_BonEntree_MntTTC) as TotaleAchat"))
+                                      ->select(DB::raw(" BON_ENT_Exer as year,sum(LIG_BonEntree_MntTTC) as TotalAchat"))
                                       ->groupBy(DB::raw("BON_ENT_Exer"))
                                       ->get();
    
@@ -124,7 +124,7 @@ public function TotaleAchatDate(Request $request) {
         $connection= new DatabaseConnection ();
 
         $tickets = $connection->setConnection()->table('View_BonEntree_Lignebn_Art_fr') 
-                                        ->select(DB::raw(" FORMAT ( BON_ENT_Date,  'yyyy-MM-dd', 'en-US' ) as year,sum(LIG_BonEntree_MntTTC) as TotaleAchat"))
+                                        ->select(DB::raw(" FORMAT ( BON_ENT_Date,  'yyyy-MM-dd', 'en-US' ) as year,sum(LIG_BonEntree_MntTTC) as TotalAchat"))
                                         ->whereRaw(DB::raw("BON_ENT_Date between '$request->from' and '$request->to'"))
                                         ->groupBy(DB::raw("FORMAT ( BON_ENT_Date, 'yyyy-MM-dd', 'en-US' )"))
                                         ->orderBy(DB::raw("FORMAT ( BON_ENT_Date, 'yyyy-MM-dd', 'en-US' )"))->get();
@@ -136,7 +136,7 @@ public function TotaleAchat(Request $request) {
         $connection= new DatabaseConnection ();
 
         $tickets = $connection->setConnection()->table('View_BonEntree_Lignebn_Art_fr') 
-                                        ->select(DB::raw("sum(LIG_BonEntree_MntTTC) as TotaleAchat"))
+                                        ->select(DB::raw("sum(LIG_BonEntree_MntTTC) as TotalAchat"))
                                         ->whereRaw(DB::raw("BON_ENT_Date between '$request->from' and '$request->to'"))
                                         ->get();
         return $this->response->array($tickets->toArray()); // Use this if you using Dingo Api Routing Helpers
@@ -146,7 +146,7 @@ public function Top10artAchat(Request $request) {
         $connection= new DatabaseConnection ();
 
             $articles = $connection->setConnection()->table('View_BonEntree_Lignebn_Art_fr')
-            ->select(DB::raw(" sum(LIG_BonEntree_MntTTC) as TotaleAchat,ART_Designation"))
+            ->select(DB::raw(" sum(LIG_BonEntree_MntTTC) as TotalAchat,ART_Designation"))
             ->whereRaw(DB::raw("BON_ENT_Date between '$request->from' and '$request->to'"))
                  ->groupBy(DB::raw("LIG_BonEntree_CodeArt,ART_Designation"))
                   ->orderByRaw(DB::raw('sum(LIG_BonEntree_MntTTC) DESC' ))->take($request->req)->get();
@@ -159,7 +159,7 @@ public function Top10Famil(Request $request) {
         $connection= new DatabaseConnection ();
  
             $familles = $connection->setConnection()->table('View_BonEntree_Lignebn_Art_fr')
-            ->select(DB::raw("ART_Famille,FAM_Lib,sum(LIG_BonEntree_MntTTC) as TotaleAchat"))
+            ->select(DB::raw("ART_Famille,FAM_Lib,sum(LIG_BonEntree_MntTTC) as TotalAchat"))
             ->whereRaw(DB::raw("BON_ENT_Date between '$request->from' and '$request->to'"))
                  ->groupBy(DB::raw("ART_Famille,FAM_Lib"))
                  ->orderByRaw(DB::raw('sum(LIG_BonEntree_MntTTC) DESC' ))->take($request->req)
@@ -174,7 +174,7 @@ public function Top10Marque(Request $request) {
         $connection= new DatabaseConnection ();
 
             $familles = $connection->setConnection()->table('View_BonEntree_Lignebn_Art_fr')
-            ->select(DB::raw("MAR_Code,MAR_Designation,sum(LIG_BonEntree_MntTTC) as TotaleAchat"))
+            ->select(DB::raw("MAR_Code,MAR_Designation,sum(LIG_BonEntree_MntTTC) as TotalAchat"))
             ->whereRaw(DB::raw("BON_ENT_Date between '$request->from' and '$request->to'"))
                  ->groupBy(DB::raw("MAR_Code,MAR_Designation"))
                  ->orderByRaw(DB::raw('sum(LIG_BonEntree_MntTTC) DESC' ))->take($request->req)
@@ -188,7 +188,7 @@ public function Top10Fournisseur(Request $request) {
         $connection= new DatabaseConnection ();
 
             $familles = $connection->setConnection()->table('View_BonEntree_Lignebn_Art_fr')
-            ->select(DB::raw("BON_ENT_CodeFrs,FRS_Nomf,sum(LIG_BonEntree_MntTTC) as TotaleAchat"))
+            ->select(DB::raw("BON_ENT_CodeFrs,FRS_Nomf,sum(LIG_BonEntree_MntTTC) as TotalAchat"))
             ->whereRaw(DB::raw("BON_ENT_Date between '$request->from' and '$request->to'"))
             ->groupBy(DB::raw("BON_ENT_CodeFrs,FRS_Nomf"))
             ->orderByRaw(DB::raw('sum(LIG_BonEntree_MntTTC) DESC' ))->take($request->req)

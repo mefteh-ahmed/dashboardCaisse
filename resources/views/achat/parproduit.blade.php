@@ -73,6 +73,8 @@
            </div>
          </div>
    </div>
+   <br>
+
    <select name="select1"id="select1" class="selectpicker" data-show-subtext="true" data-live-search="true">
   <option>Select Famille</option>
 
@@ -151,7 +153,7 @@ $('select[name="select2"]').on('change', function(){
         
                     }
         },y: {
-            label: 'TotaleAchat',
+            label: 'Total Achat En Dinar',
             tick: {
           format: d3.format(".3f") // ADD
         }

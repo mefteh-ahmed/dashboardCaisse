@@ -1,49 +1,11 @@
+
 @extends('back.layout')
 
 @section('main')
-
-
-<script type="text/javascript">
-$(function() {
-
-    var start = moment();
-    var end = moment();
-
-    function cb(start, end) {
-        $('#reportrange span').html(start.format('YYYY-MM-DD 00:00:00') + ' - ' + end.format('YYYY-MM-DD 23:59:59'));
-    }
-
-    $('#reportrange').daterangepicker({
-        startDate: start,
-        endDate: end,
-        timePicker:true,
-        timePicker24Hour:true,
-        timePickerSeconds:true,
-        showDropdowns:true,
-        ranges: {
-           'Today': [moment(), moment()],
-           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-           'This Month': [moment().startOf('month'), moment().endOf('month')],
-           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-           'Last 365 jour': [moment().subtract(1, 'year')
-           .startOf('days')],
-           'Last year': [moment().subtract(1, 'year')
-           .startOf('year'), moment().subtract(1, 'year').endOf('year')]
-
-        }
-    }, cb);
-
-    cb(start, end);
-
-});
-</script>
-
 <script type="text/javascript" >
 function changeFunc() {
-  var from= $("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD HH:mm:ss');
-  var to=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD HH:mm:ss');
+  var from = moment().format('2017-07-17 00:00:00');
+    var to = moment().format('2017-07-17 23:59:59');
 
  if(document.getElementById('sel1').value==1){
     var chart = c3.generate({
@@ -190,13 +152,88 @@ var chart = c3.generate({
 }
 
 </script>
-</head>
-<body>
+<script type="text/javascript" >
+$(function() {
+  var from = moment().format('2017-07-17 00:00:00');
+    var to = moment().format('2017-07-17 23:59:59');
+  $.getJSON('/reglement/'+from+'/'+to, function(data)
+  {
+    $.getJSON('/TotalVentefilter/'+from+'/'+to, function(data1)
+  {
+    var totale=data1[0].TotaleVente;
+    document.getElementById("f").innerHTML =numeral(totale).format('0,0.000');
+    var credit=data1[0].TotaleVente-data[0].MontantTotale;
+    document.getElementById("g").innerHTML =numeral(credit).format('0,0.000');
+  })
+    var totale=data[0].MontantTotale;
+    var espece=data[0].Totalespece;
+    var cheque=data[0].Totalcheque;
+    var carte=data[0].Totalcarte;
+    var ticketResto=data[0].TotaltTicketResto;
+    
+    document.getElementById("a").innerHTML =numeral(totale).format('0,0.000');
+    document.getElementById("b").innerHTML =numeral(espece).format('0,0.000');
+    document.getElementById("c").innerHTML =numeral(cheque).format('0,0.000');
+    document.getElementById("d").innerHTML =numeral(carte).format('0,0.000');
+    document.getElementById("e").innerHTML =numeral(ticketResto).format('0,0.000');
+
+
+})
+  });
+ 
+
+</script>
+<script type="text/javascript" >
+$(function() {
+  var from = moment().format('2017-07-17 00:00:00');
+    var to = moment().format('2017-07-17 23:59:59');
+ 
+
+  $.getJSON('/TotalVentefilter/'+from+'/'+to, function(data1)
+  {
+    var totale=data1[0].TotaleVente;
+    document.getElementById("h").innerHTML =numeral(totale).format('0,0.000');
+    $.getJSON('/TotalAchatfilter/'+from+'/'+to, function(data)
+  {
+    var TotaleAchat=data[0].TotaleAchat;
+    document.getElementById("j").innerHTML =numeral(TotaleAchat).format('0,0.000');
+ var gain =totale-TotaleAchat;
+ document.getElementById("k").innerHTML =numeral(gain).format('0,0.000');
+
+  })
+  })
+
+});
+</script>
+
+<!-- You need an element with an id called "chart" to set a place where your chart will render-->
+<!-- <div id="chart"></div> -->
 <div class="content">
 
+<div class='col-sm-6'>
 <div class="row">
-<div class="col-md-4">
+
+    <div class='col-md-8'>
+    <h3 class="text-primary">Récapitulatif des ventes D'aujourd'hui</h2>
+    </div>
+
+     
+ </div>
+  <div class="row">
+    <div class="col-sm-4">
+    <h3>Totale des ventes En Dinar <span class="text-primary"><div id="h">0.000</div></span></h3>
+    </div>
+    <div class="col-sm-4">
+    <h3>Coût d'achat en dinar <span class="text-primary"><div id="j">0.000</div></span></h3>
+    </div>
+    <div class="col-sm-4">
+    <h3>Gain En Dinar  <span class="text-primary"><div id="k">0.000</div></span></h3>
+    </div>
+  </div>
+  <div class="row">
+<div class="col-md-6">
 <div class="form-group">
+
   <label for="sel1">Select catégorie:</label>
   <select class="form-control" id="sel1">
   <option value="0">Sélectionner catégorie</option>
@@ -206,7 +243,7 @@ var chart = c3.generate({
   </select>
 </div>
 </div>
-<div class="col-md-2">
+<div class="col-md-4">
 <div class="form-group">
   <label for="sel1">TOP:</label>
   <select class="form-control" id="sel2">
@@ -216,16 +253,6 @@ var chart = c3.generate({
   </select>
 </div>
 </div>
-    <div class='col-md-4'>
-      <div class="form-group">
-      <label for="sel1">entre:</label>
-
-<div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
-    <i class="fa fa-calendar"></i>&nbsp;
-    <span></span> <i class="fa fa-caret-down"></i>
-</div>
-      </div>
-      </div>
 <div class="col-md-2">
     <div class="form-group mx-sm-3 mb-2">
         <label for="sel1">Valider:</label>
@@ -233,14 +260,10 @@ var chart = c3.generate({
 
 </div>
 </div>
+
 </div>
-
-  
-
-<br>
-
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-12">
                         
                                     <div id="chart" class="se-pre-con">
                                         
@@ -253,114 +276,92 @@ var chart = c3.generate({
                                    </div>
                          
                         </div>
-                        <div class="col-md-4">
-                     
-                                    <div id="chart1" class="se-pre-con">
-                                    <div class="margin-0-auto text-center"><img src="../adminlte/img/analytics.png" style="margin-bottom: 15px  height: auto; 
-    width: auto; 
-    max-width: 50px; 
-    max-height: 50px;" alt="">
-                <div translate="NO_DATA_TO_DISPLAY" class="text-center">Aucune donnée à afficher</div>
-              </div>   
-                                   </div>
-                       
-                        </div>
-                    </div>
+                                        </div>
                     
       
   </div> 
-  <select name="select1"id="select1" class="selectpicker" data-show-subtext="true" data-live-search="true">
-  <option>Select Famille</option>
 
-  @foreach($ALLfamille as $fam)
-<option value='{{ $fam->FAM_Code }}'>{{ $fam->FAM_Lib }}</option>
-  @endforeach
-      
-</select>
-<select id ="select2" name ="select2" class="selectpicker" data-live-search="true"> 
-<option>Select Articles</option>
-</select>
-<div id="chart5"></div>
-<script type="text/javascript">
+  
     
-       
-    
-    $(document).ready(function() {
+<div class='col-sm-6'>
+<div class='col-md-10'>
+    <h3 class="text-primary">Récapitulatif des Reglement D'aujourd'hui</h2>
+    </div>
+    <div class="row">
 
-$('select[name="select1"]').on('change', function(){
+<div class="col-lg-3 col-xs-6">
+  <!-- small box -->
+  <div class="small-box bg-aqua">
+    <div class="inner" >
+      <h3><div id="b">0.000</div></h3>
+      <p>espèce</p>
+    </div>
+    <div class="icon">
+      <i class="ion ion-bag"></i>
+    </div>
+  </div>
+</div>
+<!-- ./col -->
+<div class="col-lg-3 col-xs-6">
+  <!-- small box -->
+  <div class="small-box bg-yellow">
+    <div class="inner">
+      <h3><div id="c">0.000</div></h3>
 
-    var countryId = $(this).val();
-    if(countryId) {
-let dropdown = $('#select2');
+      <p>chéque</p>
+    </div>
+    <div class="icon">
+      <i class="ion ion-stats-bars"></i>
+    </div>
+  </div>
+</div>
+<!-- ./col -->
+<div class="col-lg-3 col-xs-6">
+  <!-- small box -->
+  <div class="small-box bg-green">
+    <div class="inner">
+      <h3><div id="d">0.000</div></h3>
 
-dropdown.empty();
+      <p>carte bancaire</p>
+    </div>
+    <div class="icon">
+      <i class="ion ion-person-add"></i>
+    </div>
+  </div>
+</div>
+<!-- ./col -->
+<div class="col-lg-3 col-xs-6">
+  <!-- small box -->
+  <div class="small-box bg-red">
+    <div class="inner">
+      <h3><div id="e">0.000</div></h3>
 
-dropdown.append('<option selected="true" disabled>select Article</option>');
-dropdown.prop('selectedIndex', 0);
+      <p>Ticket Resto</p>
+    </div>
+    <div class="icon">
+      <i class="ion ion-pie-graph"></i>
+    </div>
+  </div>
+</div>
+<!-- ./col -->
+</div>
+<div class="row">
 
-const url = '/ALLarticle/'+countryId;
+<h4>Totale des ventes En Dinar <span class="text-primary"><div id="f">0,000</div></span></h4>
+</div>
+<div class="row">
+<h4>Totale des Réglement En Dinar<span class="text-primary">   <div id="a">
+0,000</div></span></h4> 
 
-// Populate dropdown with list of provinces
-$.getJSON(url, function (data) {
+</div>
+<div class="row">
+<h4>Credit En Dinar<span class="text-danger"><div id="g">
+0,000  </div></h4> 
+</div>
+</div>
+ 
 
-  $.each(data, function (key, entry) {
-
-    dropdown.append($('<option></option>').attr('value', entry.ART_Code).text(entry.ART_Designation));
-  })
-  $('#select2').selectpicker('refresh');
 
 
-});
-    }
-
-});
-
-});
-    
-    </script>
-<script type="text/javascript">
-$(document).ready(function() {
-$('select[name="select2"]').on('change', function(){
-    var from= $("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD HH:mm:ss');
-  var to=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD HH:mm:ss');
-  var art = $(this).val();
-      chart = c3.generate({
-    data: {
-        x: 'year',
-      
-        url: '/articlevente/'+art+'/'+from+'/'+to,
-        mimeType: 'json',
-        type: 'bar',
-        keys: {
-            x: 'year',
-            value: ['TotaleVente','qte']
-        }
-        ,axes: {
-            qte: 'y2'
-        }
-    },
-    axis: {
-        x: {
-            type: "timeseries",
-            tick: { 
-                        format: '%Y-%m-%d',
-        
-                    }
-        },y: {
-            label: 'Totale Vente En Dinar',
-            tick: {
-          format: d3.format(".3f") // ADD
-        }
-        },
-        y2: {
-            show: true,
-            label: 'qte Totale'
-            
-        }
-    },bindto: '#chart5'
-});
-});
-});
-    </script>
-
+</html>
 @endsection

@@ -5,14 +5,13 @@ var chart = c3.generate({
         mimeType: 'json',
             keys: {
                x: 'year', // it's possible to specify 'x' when category axis
-                value: ['TotaleAchat']
+                value: ['TotalAchat']
             },type:'bar'
     },
     axis: {
         y: {
         label: { // ADD
-          text: 'Totale des achats ',
-          position: 'outer-middle'
+          text: 'Totale des achats En Dinar',
         },
       
         tick: {
@@ -31,7 +30,7 @@ var chart = c3.generate({
 <script>
 $.getJSON('/prodParYear', function(jsonData) {
 var measdata = jsonData.map(o => {
-          return  [o['year'], o['TotaleAchat']] ;
+          return  [o['year'], o['TotalAchat']] ;
         });
 var chart = c3.generate({
                         data: {
@@ -40,7 +39,6 @@ var chart = c3.generate({
 
                         },
                         donut: {
-                            title:  "Top 10 des articles les plus achetés "
                         },bindto: '#chart0'
 
                     })
@@ -64,12 +62,23 @@ function changeFunc2() {
         mimeType: 'json',
         keys: {
             x: 'year',
-            value: ['TotaleAchat']
+            value: ['TotalAchat']
         }
     },
-    axis: {
+    axis: { 
+         y: {
+        label: { // ADD
+          text: 'Totale des achats En Dinar ',
+         
+        },
+      
+        tick: {
+          format: d3.format(".3f") // ADD
+        }
+      },
         x: {
             type: "timeseries",
+         
             tick: { 
                         format: '%Y-%m-%d',
                         
@@ -92,14 +101,14 @@ var chart = c3.generate({
         mimeType: 'json',
             keys: {
                x: 'ART_Designation', // it's possible to specify 'x' when category axis
-                value: ['TotaleAchat']
+                value: ['TotalAchat']
             },type:'bar'
     },
     axis: {
         y: {
         label: { // ADD
-          text: 'Totale des achats ',
-          position: 'outer-middle'
+          text: 'Totale des achats En Dinar ',
+         
         },
       
         tick: {
@@ -116,7 +125,7 @@ var chart = c3.generate({
 
 $.getJSON('/Top10artAchat/'+document.getElementById('sel2').value+'/'+from+'/'+to, function(jsonData) {
 var measdata = jsonData.map(o => {
-          return  [o['ART_Designation'], o['TotaleAchat']] ;
+          return  [o['ART_Designation'], o['TotalAchat']] ;
         });
 var chart = c3.generate({
                         data: {
@@ -138,14 +147,13 @@ else if (document.getElementById('sel1').value==2) {
         mimeType: 'json',
             keys: {
                x: 'FAM_Lib', // it's possible to specify 'x' when category axis
-                value: ['TotaleAchat']
+                value: ['TotalAchat']
             },type:'bar'
     },
     axis: {
         y: {
         label: { // ADD
-          text: 'Totale des achats ',
-          position: 'outer-middle'
+            text: 'Totale des achats En Dinar',
         },
       
         tick: {
@@ -161,7 +169,7 @@ else if (document.getElementById('sel1').value==2) {
 });
 $.getJSON('/Top10Famil/'+document.getElementById('sel2').value+'/'+from+'/'+to, function(jsonData) {
 var measdata = jsonData.map(o => {
-          return  [o['FAM_Lib'], o['TotaleAchat']] ;
+          return  [o['FAM_Lib'], o['TotalAchat']] ;
         });
 var chart = c3.generate({
                         data: {
@@ -183,14 +191,13 @@ var chart = c3.generate({
         mimeType: 'json',
             keys: {
                x: 'MAR_Designation', // it's possible to specify 'x' when category axis
-                value: ['TotaleAchat']
+                value: ['TotalAchat']
             },type:'bar'
     },
     axis: {
         y: {
         label: { // ADD
-          text: 'Totale des achats ',
-          position: 'outer-middle'
+            text: 'Totale des achats En Dinar',
         },
       
         tick: {
@@ -206,7 +213,7 @@ var chart = c3.generate({
 });
 $.getJSON('/Top10Marque/'+document.getElementById('sel2').value+'/'+from+'/'+to, function(jsonData) {
 var measdata = jsonData.map(o => {
-          return  [o['MAR_Designation'], o['TotaleAchat']] ;
+          return  [o['MAR_Designation'], o['TotalAchat']] ;
         });
 var chart = c3.generate({
                         data: {
@@ -237,14 +244,13 @@ var chart = c3.generate({
         mimeType: 'json',
             keys: {
                x: 'FRS_Nomf', // it's possible to specify 'x' when category axis
-                value: ['TotaleAchat']
+                value: ['TotalAchat']
             },type:'bar'
     },
     axis: {
         y: {
         label: { // ADD
-          text: 'Totale des achats ',
-          position: 'outer-middle'
+            text: 'Totale des achats En Dinar',
         },
       
         tick: {
@@ -269,11 +275,11 @@ var chart = c3.generate({
 <script type="text/javascript">
 $(function() {
 
-    var start = moment().subtract(29, 'days');
+    var start = moment();
     var end = moment();
 
     function cb(start, end) {
-        $('#reportrange span').html(start.format('YYYY-MM-DD HH:mm:ss') + ' - ' + end.format('YYYY-MM-DD HH:mm:ss'));
+        $('#reportrange span').html(start.format('YYYY-MM-DD 00:00:00') + ' - ' + end.format('YYYY-MM-DD 23:59:59'));
     }
 
     $('#reportrange').daterangepicker({

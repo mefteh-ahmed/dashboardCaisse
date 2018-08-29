@@ -6,11 +6,11 @@
 <script type="text/javascript">
 $(function() {
 
-    var start = moment().subtract(29, 'days');
+    var start = moment();
     var end = moment();
 
     function cb(start, end) {
-        $('#reportrange span').html(start.format('YYYY-MM-DD HH:mm:ss') + ' - ' + end.format('YYYY-MM-DD HH:mm:ss'));
+      $('#reportrange span').html(start.format('YYYY-MM-DD 00:00:00') + ' - ' + end.format('YYYY-MM-DD 23:59:59'));
     }
 
     $('#reportrange').daterangepicker({

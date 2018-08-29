@@ -70,14 +70,7 @@
                            
                         </table>
                 
-                <div class="row">
-                    <div class="col-sm-5">
-                        <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">liste
-                            de {{count($clients)}}/ {{count($clients)}} Clients
-                        </div>
-                    </div>
-                   
-                </div>
+              
             </div>
             </div>
         </div>

@@ -1,3 +1,6 @@
+@extends('back.layout1')
+
+@section('main')
 <html>
 <head>
   <meta charset="utf-8">
@@ -27,3 +30,4 @@
 </body>
 
 </html>
+@endsection

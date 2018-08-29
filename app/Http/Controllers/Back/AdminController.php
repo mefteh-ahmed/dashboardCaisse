@@ -21,8 +21,7 @@ class AdminController extends Controller
     public function index()
     { 
         $var=Auth::user()->role;
-        echo($var);
-        if($var!=0){
+         if($var!=0){
         return view('back.index',['title'=>"dashboard"]);
     }
     else {

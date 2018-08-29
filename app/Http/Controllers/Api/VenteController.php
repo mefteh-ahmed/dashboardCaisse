@@ -64,6 +64,23 @@ class VenteController extends Controller
         
             return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
 }
+public function TotalVenteAnnulerfilter(Request $request) { 
+    $connection= new DatabaseConnection ();
+    $ticket = $connection->setConnection()->table('LigneTicket')
+    ->join('Ticket', function($join)
+    {
+        $join->on('LigneTicket.LT_NumTicket', '=', 'Ticket.TIK_NumTicket ');
+        $join->on('LigneTicket.LT_Exerc', '=', 'Ticket .TIK_Exerc');
+        $join->on('LigneTicket.LT_IdCarnet', '=', 'Ticket .TIK_IdCarnet');
+    })
+
+    ->select(DB::raw("SUM(LT_MtTTC) as TotaleVenteAnnuler"))
+   ->whereRaw(DB::raw("TIK_DateHeureTicket between '$request->from' and '$request->to'
+        and( [Ticket].[TIK_Annuler] = 1)"))->get();
+    
+        return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
+}
+
     public function TotalAchatfilter(Request $request) { 
         $connection= new DatabaseConnection ();
         $ticket = $connection->setConnection()->table('LigneTicket')
@@ -80,6 +97,7 @@ class VenteController extends Controller
     
                 return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
             }
+            
     public function TotalVente() { 
         $connection= new DatabaseConnection ();
             $ticket = $connection->setConnection()->table('LigneTicket')->select(DB::raw("SUM(LT_MtTTC) as TotaleVente"))
@@ -88,9 +106,10 @@ class VenteController extends Controller
                 return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
   
         }}
+     
     public function TotalAchat() { 
         $connection= new DatabaseConnection ();
-
+ 
             $ticket = $connection->setConnection()->table('LigneTicket')->select(DB::raw("SUM(LT_PACHAT*LT_Qte) as TotaleAchat"))
             ->where('LT_Annuler', '<>', true)->orWhereNull('LT_Annuler')->get();
             if($ticket->count()){
@@ -108,6 +127,24 @@ class VenteController extends Controller
                 return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
   
         }}
+        public function TotalVenteAnnulerDate(Request $request) { 
+            $connection= new DatabaseConnection ();
+
+            $ticket = $connection->setConnection()->table('LigneTicket')
+            ->join('Ticket', function($join)
+        {
+            $join->on('LigneTicket.LT_NumTicket', '=', 'Ticket.TIK_NumTicket ');
+            $join->on('LigneTicket.LT_Exerc', '=', 'Ticket .TIK_Exerc');
+            $join->on('LigneTicket.LT_IdCarnet', '=', 'Ticket .TIK_IdCarnet');
+        })
+            ->select(DB::raw("FORMAT ( Ticket.TIK_DateHeureTicket,  'yyyy-MM-dd', 'en-US' ) as year,SUM(LigneTicket.LT_MtTTC) as TotaleVenteAnnuler"))
+            ->whereRaw(DB::raw("TIK_DateHeureTicket between '$request->from' and '$request->to'
+            and( [Ticket].[TIK_Annuler] = 1)"))
+            
+            ->groupBy(DB::raw("FORMAT ( Ticket.TIK_DateHeureTicket, 'yyyy-MM-dd', 'en-US' )"))
+            ->orderBy(DB::raw("FORMAT ( Ticket.TIK_DateHeureTicket, 'yyyy-MM-dd', 'en-US' )"))->get();
+                return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
+  }
     public function TotalVenteDate(Request $request) { 
         $connection= new DatabaseConnection ();
 
@@ -234,6 +271,47 @@ class VenteController extends Controller
                 return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
   
         }
+        public function CaParCommercial(Request $request) { 
+            $connection= new DatabaseConnection ();
+    
+                $ticket = $connection->setConnection()->table('Ticket')
+                ->select( DB::raw("TIK_DESIG_COMMERCIAL, SUM(Ticket.TIK_MtTTC) as TotaleVente"))
+                ->whereRaw(DB::raw("TIK_DateHeureTicket between '$request->from' and '$request->to'
+                and( [Ticket].[TIK_Annuler] <> 1 or [Ticket].[TIK_Annuler] is null)and (TIK_DESIG_COMMERCIAL is not null)"))
+                ->groupBy(DB::raw("TIK_DESIG_COMMERCIAL"))
+                ->orderByRaw(DB::raw('sum(Ticket.TIK_MtTTC) DESC' ))->get();
+          
+                    return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
+      
+            }
+        public function CaAnnulerParVendeur(Request $request) { 
+            $connection= new DatabaseConnection ();
+    
+                $ticket = $connection->setConnection()->table('Ticket')
+                ->join('SessionCaisse', 'Ticket.TIK_IdSCaisse', '=', 'SessionCaisse.SC_IdSCaisse')
+                ->join('Utilisateur', 'SessionCaisse.SC_CodeUtilisateur', '=', 'Utilisateur.Code_Ut')
+                ->select( DB::raw("CONCAT(Utilisateur.Nom ,' ', Utilisateur.Prenom) as nom, SUM(Ticket.TIK_MtTTC) as TotaleVente"))
+                ->whereRaw(DB::raw("TIK_DateHeureTicket between '$request->from' and '$request->to'
+                and( [Ticket].[TIK_Annuler] = 1)"))
+                ->groupBy(DB::raw("SessionCaisse.SC_CodeUtilisateur,Utilisateur.Nom,Utilisateur.Prenom"))
+                ->orderByRaw(DB::raw('sum(Ticket.TIK_MtTTC) DESC' ))->get();
+            
+                    return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
+      
+            }
+            public function CaAnnulerParCommercial(Request $request) { 
+                $connection= new DatabaseConnection ();
+    
+                $ticket = $connection->setConnection()->table('Ticket')
+                ->select( DB::raw("TIK_DESIG_COMMERCIAL, SUM(Ticket.TIK_MtTTC) as TotaleVente"))
+                ->whereRaw(DB::raw("TIK_DateHeureTicket between '$request->from' and '$request->to'
+                and( [Ticket].[TIK_Annuler] = 1)and (TIK_DESIG_COMMERCIAL is not null)"))
+                ->groupBy(DB::raw("TIK_DESIG_COMMERCIAL"))
+                ->orderByRaw(DB::raw('sum(Ticket.TIK_MtTTC) DESC' ))->get();
+            
+                    return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
+      
+                }
     public function NBTickParCaisse(Request $request) { 
         $connection= new DatabaseConnection ();
 

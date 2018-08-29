@@ -37,12 +37,13 @@ var chart = c3.generate({
            
                type: 'category',
                
-            },y: {
+            }
+            ,y: {
             label: 'Nombre de ticket'
         },
         y2: {
             show: true,
-            label: 'Vente Totale'
+            label: 'Vente Totale En Dinar'
         }
         },bindto: '#chart7'
 });
@@ -51,12 +52,12 @@ var chart = c3.generate({
 <script type="text/javascript">
 $(function() {
 
-    var start = moment().subtract(29, 'days');
+    var start = moment();
     var end = moment();
 
     function cb(start, end) {
-        $('#reportrange span').html(start.format('YYYY-MM-DD HH:mm:ss') + ' - ' + end.format('YYYY-MM-DD HH:mm:ss'));
-    }
+        $('#reportrange span').html(start.format('YYYY-MM-DD 00:00:00') + ' - ' + end.format('YYYY-MM-DD 23:59:59'));
+            }
 
     $('#reportrange').daterangepicker({
         startDate: start,
@@ -86,6 +87,9 @@ $(function() {
 </script>
 <div class="content">
  <div class="row">
+ <div class="col-md-4">
+                    <h3 class="text-primary">Nombre de passage par Caisse </h2> 
+                    </div>
  <div class='col-md-4'>
       <div class="form-group">
       <label for="sel1">Choisir Période:</label>
@@ -107,7 +111,6 @@ $(function() {
  </div>
     <div class="row">
                     <div class="col-md-8">
-                    <h3 class="text-primary">Nombre de passage par Caisse </h2> 
 
                                 <div id="chart7">
                                 <div class="margin-0-auto text-center"><img src="../adminlte/img/analytics.png" style="margin-bottom: 15px  height: auto; 
@@ -121,7 +124,7 @@ $(function() {
                     </div>
 
                     <div class="col-md-4">
-                    <h3 class="text-primary">Nombre Totale de passage </h3>
+                    <h3 class="text-primary">Nombre Total de passage </h3>
 
                          <h2> <div id="a">0</div></h2>
                          <h3 class="text-primary">Panier Moyen en dinar</h3>

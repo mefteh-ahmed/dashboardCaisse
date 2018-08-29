@@ -1,6 +1,5 @@
 @extends('back.layout')
 
-  
 @section('main')
 
 <!-- You need an element with an id called "chart" to set a place where your chart will render-->
@@ -30,7 +29,7 @@
 </div>
 <br>
 <div class="row">
-<div class="col-md-8">
+<div class="col-md-6">
     <div class="row" id="chart6">     
     <div class="margin-0-auto text-center"><img src="../adminlte/img/analytics.png" style="margin-bottom: 15px  height: auto; 
     width: auto; 
@@ -51,22 +50,16 @@
                          <table id="example2" class="display nowrap" style="width:100%">
                             <thead>
                             <tr>
-                          <th></th>
-                              <th>
-                              Nom
+                              
+                            <th>Nom Du Commercial
                                 </th>
-                                <th>
-                                TotaleVente
+                                <th>Chiffre D'affaire Annuler
                                 </th>
                             </tr>
                             </thead>
                             <tbody>
-                         <tr>
-                         <td></td>
-                         <td>Nom</td>
-                         <td>TotaleVente</td>
-                         </tr>
-                     
+                             <tr>
+                             </tr>
                             </tbody>
                          
                            
@@ -82,14 +75,16 @@ function changeFunc() {
   var to=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD HH:mm:ss');
   var chart = c3.generate({
     data: {
-        url: '/CaParVendeur/'+from+'/'+to,
+        url: '/CaParCommercial/'+from+'/'+to,
         mimeType: 'json',
             keys: {
               
-               x: 'nom', // it's possible to specify 'x' when category axis
+               x: 'TIK_DESIG_COMMERCIAL', // it's possible to specify 'x' when category axis
                 value: ['TotaleVente'],
             }
-    },
+    }, line: {
+    connectNull: false,
+},
     axis: {
         y: {
         label: { // ADD
@@ -114,35 +109,25 @@ $.getJSON('/TotalVenteAnnulerfilter/'+from+'/'+to, function(data)
  
 
   })
-//   $.ajax({
-// 		type: "GET", //rest Type
-// 		dataType: 'json', //mispelled
-// 		url: '/CaAnnulerParVendeur/'+from+'/'+to,
-// 		async: true,
-// 		contentType: "application/json; charset=utf-8",
-// 		success: function (msg) {
-// 			msg.forEach(function (m/*, index */){
-// 				var ligne = $("<tr></tr>");
-// 				ligne.append($("<td>" + m.nom + "</td>"));
-// 				ligne.append($("<td>" + m.TotaleVente + "</td>"));
-// 				$("tbody").append(ligne);
-// 			})
-// 		}
-// 	});
-    $('#example2').DataTable( {
-        ajax: {
-           url: '/CaAnnulerParVendeur/'+from+'/'+to,
-           method: "GET",
-           dataSrc: 'cellarViews.cellarView',
-processing: true,
-        },
-        columns: [
-            { data: "b.nom" },
-            { data: "b.TotaleVente" },
-            
-            /*and so on, keep adding data elements here for all your columns.*/
-        ],
-        "bDestroy": true } );
+  $.ajax({
+		type: "GET", //rest Type
+		dataType: 'json', //mispelled
+		url: '/CaAnnulerParCommercial/'+from+'/'+to,
+		async: true,
+		contentType: "application/json; charset=utf-8",
+		success: function (msg) {
+            $("tbody").empty();
+			msg.forEach(function (m/*, index */){
+				var ligne = $("<tr></tr>");
+				ligne.append($("<td>" + m.TIK_DESIG_COMMERCIAL + "</td>"));
+				ligne.append($("<td>" + m.TotaleVente + "</td>"));
+				
+				$("tbody").append(ligne);
+                
+			})
+
+		}
+	});
 }
 </script>
 <script type="text/javascript">

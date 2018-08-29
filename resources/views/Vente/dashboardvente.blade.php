@@ -30,7 +30,16 @@ function changeFunc() {
             value: ['TotaleVente','TotaleAchat']
         }
     },
-    axis: {
+    axis: {  y: {
+        label: { // ADD
+          text: 'Totale des Ventes En dinar ',
+          
+        },
+      
+        tick: {
+          format: d3.format(".3f") // ADD
+        }
+      },
         x: {
             type: "timeseries",
             tick: { 
@@ -45,12 +54,12 @@ function changeFunc() {
 <script type="text/javascript">
 $(function() {
 
-    var start = moment().subtract(29, 'days');
+    var start = moment();
     var end = moment();
 
     function cb(start, end) {
-        $('#reportrange span').html(start.format('YYYY-MM-DD HH:mm:ss') + ' - ' + end.format('YYYY-MM-DD HH:mm:ss'));
-    }
+        $('#reportrange span').html(start.format('YYYY-MM-DD 00:00:00') + ' - ' + end.format('YYYY-MM-DD 23:59:59'));
+            }
 
     $('#reportrange').daterangepicker({
         startDate: start,
@@ -109,7 +118,7 @@ $(function() {
     <h3>Totale des ventes En Dinar <span class="text-primary"><div id="a">0.000</div></span></h3>
     </div>
     <div class="col-sm-4">
-    <h3>Totale des Achats En Dinar <span class="text-primary"><div id="b">0.000</div></span></h3>
+    <h3>Coût d'achat en dinar <span class="text-primary"><div id="b">0.000</div></span></h3>
     </div>
     <div class="col-sm-4">
     <h3>Gain En Dinar  <span class="text-primary"><div id="c">0.000</div></span></h3>
@@ -144,8 +153,8 @@ var chart = c3.generate({
     axis: {
         y: {
         label: { // ADD
-          text: 'Totale des Ventes ',
-          position: 'outer-middle'
+          text: 'Totale des Ventes En Dinar',
+     
         },
       
         tick: {
@@ -159,10 +168,6 @@ var chart = c3.generate({
             }
         },bindto: '#chart'
 });
-</script>
-<script>
-
-
 </script>
 </html>
 @endsection

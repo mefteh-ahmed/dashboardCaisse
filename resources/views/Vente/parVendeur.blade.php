@@ -61,11 +61,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                         <tr>
-                         <td></td>
-                         <td>Nom</td>
-                         <td>TotaleVente</td>
-                         </tr>
+                            
                      
                             </tbody>
                          
@@ -114,73 +110,29 @@ $.getJSON('/TotalVenteAnnulerfilter/'+from+'/'+to, function(data)
  
 
   })
-//   $.ajax({
-// 		type: "GET", //rest Type
-// 		dataType: 'json', //mispelled
-// 		url: '/CaAnnulerParVendeur/'+from+'/'+to,
-// 		async: true,
-// 		contentType: "application/json; charset=utf-8",
-// 		success: function (msg) {
-// 			msg.forEach(function (m/*, index */){
-// 				var ligne = $("<tr></tr>");
-// 				ligne.append($("<td>" + m.nom + "</td>"));
-// 				ligne.append($("<td>" + m.TotaleVente + "</td>"));
-// 				$("tbody").append(ligne);
-// 			})
-// 		}
-// 	});
-    $('#example2').DataTable( {
-        ajax: {
-           url: '/CaAnnulerParVendeur/'+from+'/'+to,
-           method: "GET",
-           dataSrc: 'cellarViews.cellarView',
-processing: true,
-        },
-        columns: [
-            { data: "b.nom" },
-            { data: "b.TotaleVente" },
-            
-            /*and so on, keep adding data elements here for all your columns.*/
-        ],
-        "bDestroy": true } );
+
+  $.ajax({
+		type: "GET", //rest Type
+		dataType: 'json', //mispelled
+		url: '/CaAnnulerParVendeur/'+from+'/'+to,
+		async: true,
+		contentType: "application/json; charset=utf-8",
+		success: function (msg) {
+        
+         $("#example2").DataTable().rows().remove().draw();
+			msg.forEach(function (m/*, index */){
+                
+				$("#example2").DataTable().row.add([
+   '', m.nom, m.TotaleVente
+]).draw();
+			})
+		}
+	});
+
 }
 </script>
-<script type="text/javascript">
-$(function() {
 
-    var start = moment();
-    var end = moment();
 
-    function cb(start, end) {
-        $('#reportrange span').html(start.format('YYYY-MM-DD 00:00:00') + ' - ' + end.format('YYYY-MM-DD 23:59:59'));
-            }
-
-    $('#reportrange').daterangepicker({
-        startDate: start,
-        endDate: end,
-        timePicker:true,
-        timePicker24Hour:true,
-        timePickerSeconds:true,
-        showDropdowns:true,
-        ranges: {
-           'Today': [moment(), moment()],
-           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-           'This Month': [moment().startOf('month'), moment().endOf('month')],
-           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-           'Last 365 jour': [moment().subtract(1, 'year')
-           .startOf('days')],
-           'Last year': [moment().subtract(1, 'year')
-           .startOf('year'), moment().subtract(1, 'year').endOf('year')]
-
-        }
-    }, cb);
-
-    cb(start, end);
-
-});
-</script>
 
 
 @endsection

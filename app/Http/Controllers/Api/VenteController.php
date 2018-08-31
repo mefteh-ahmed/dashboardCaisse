@@ -284,6 +284,46 @@ public function TotalVenteAnnulerfilter(Request $request) {
                     return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
       
             }
+            public function CaParCommercialByArticle(Request $request) { 
+                $connection= new DatabaseConnection ();
+        
+                $ticket = $connection->setConnection()->table('LigneTicket')
+                ->join('article', 'LigneTicket.LT_CodArt', '=', 'article.ART_Code')
+                ->join('Ticket', function($join)
+                {
+                    $join->on('LigneTicket.LT_NumTicket', '=', 'Ticket.TIK_NumTicket ');
+                    $join->on('LigneTicket.LT_Exerc', '=', 'Ticket .TIK_Exerc');
+                    $join->on('LigneTicket.LT_IdCarnet', '=', 'Ticket .TIK_IdCarnet');
+                })
+                    ->select( DB::raw("article.ART_Designation,LigneTicket.LT_MtTTC ,SUM(LigneTicket.LT_MtTTC) as TotaleVente,SUM(LigneTicket.LT_PACHAT*LT_Qte) as TotaleAchat"))
+                    ->whereRaw(DB::raw("TIK_DateHeureTicket between '$request->from' and '$request->to'
+                    and( [Ticket].[TIK_Annuler] <> 1 or [Ticket].[TIK_Annuler] is null)and (TIK_DESIG_COMMERCIAL is not null)and (Ticket.TIK_DESIG_COMMERCIAL ='$request->comm')"))
+                    ->groupBy(DB::raw("article.ART_Designation,LigneTicket.LT_MtTTC"))
+                    ->orderByRaw(DB::raw('sum(LigneTicket.LT_MtTTC) DESC' ))->get();
+              
+                        return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
+          
+                }
+                public function CaParCommercialByClient(Request $request) { 
+                    $connection= new DatabaseConnection ();
+            
+                    $ticket = $connection->setConnection()->table('Ticket')
+                    ->join('Client', 'Ticket.TIK_CodClt', '=', 'Client.CLI_Code')
+                    ->join('LigneTicket', function($join)
+                    {
+                        $join->on('LigneTicket.LT_NumTicket', '=', 'Ticket.TIK_NumTicket ');
+                        $join->on('LigneTicket.LT_Exerc', '=', 'Ticket .TIK_Exerc');
+                        $join->on('LigneTicket.LT_IdCarnet', '=', 'Ticket .TIK_IdCarnet');
+                    })
+                        ->select( DB::raw("Client.CLI_NomPren ,SUM(LigneTicket.LT_MtTTC) as TotaleVente,SUM(LigneTicket.LT_PACHAT*LT_Qte) as TotaleAchat"))
+                        ->whereRaw(DB::raw("TIK_DateHeureTicket between '$request->from' and '$request->to'
+                        and( [Ticket].[TIK_Annuler] <> 1 or [Ticket].[TIK_Annuler] is null)and (TIK_DESIG_COMMERCIAL is not null)and (Ticket.TIK_DESIG_COMMERCIAL ='$request->cli')"))
+                        ->groupBy(DB::raw("Client.CLI_NomPren"))
+                        ->orderByRaw(DB::raw('sum(LigneTicket.LT_MtTTC) DESC' ))->get();
+                  
+                            return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
+              
+                    }
         public function CaAnnulerParVendeur(Request $request) { 
             $connection= new DatabaseConnection ();
     

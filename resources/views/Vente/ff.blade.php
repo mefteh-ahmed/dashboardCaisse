@@ -27,7 +27,6 @@
 </div>
 </div>
 </div>
-</div>
 <br>
 <div class="row" id="chart" style="display: none;">
 <div   id="chart6" style="display: none;" >   
@@ -52,16 +51,14 @@
 
 <div   id="load" style="display: none;" >
    
-<i class="fa fa-spinner fa-spin" style=" position: fixed;
-  z-index: 999;
-  height: 4em;
-  width: 4em;
-  overflow: show;
-  margin: auto;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;">Loading</i>
+    <div class="margin-0-auto text-center"><img src="../adminlte/img/analytics.png" style="margin-bottom: 15px  height: auto; 
+    width: auto; 
+    max-width: 50px; 
+    max-height: 50px;" alt="">
+    
+    
+                <div translate="NO_DATA_TO_DISPLAY" class="text-center">Aucune donnée à afficher</div>
+                </div>
               </div>                 
            </div>   
               <div class="row">  
@@ -95,7 +92,7 @@
                     </div>
                 </div>  
                 
- 
+  </div>
 <br>
 
  
@@ -120,16 +117,6 @@
                                 </th>
                             </tr>
                             </thead>
-                            <tfoot>
-            <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-               
-        </tfoot>
                             <tbody>
                             
                             </tbody>
@@ -160,7 +147,6 @@
                                 </th>
                                 <th>% Marge
                                 </th>
-                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -185,7 +171,6 @@ function changeFunc2() {
 
 if($('select[name="select1"]').val()=="Par Article"){
      $('#r').attr('style','display: block');
-     $('#m').attr('style','display: none');
     var table = $('#article').DataTable( {
         destroy: true,
                 lengthChange: false,
@@ -231,12 +216,8 @@ $.each(data, function (key, entry) {
 }else
 if($('select[name="select1"]').val()=="Par Client"){
     $('#m').attr('style','display: block');
-    $('#r').attr('style','display: none');
-
     var table = $('#client').DataTable( {
-        
         destroy: true,
-        
                 lengthChange: false,
         dom: 'Bfrtip', select: true,
         buttons: [
@@ -274,7 +255,7 @@ $.each(data, function (key, entry) {
     pour+="%";
     
 	$("#client").DataTable().row.add([
-   '', entry.CLI_NomPren,numeral( entry.TotaleVente).format('0,0.000'), numeral(entry.TotaleAchat).format('0,0.000'),marge,pour,''
+   '', entry.CLI_NomPren,numeral( entry.TotaleVente).format('0,0.000'), numeral(entry.TotaleAchat).format('0,0.000'),marge,pour
 ]).draw();
 
 })
@@ -285,21 +266,9 @@ $.each(data, function (key, entry) {
 }
 }
 function changeFunc() {
-
     $('#load').attr('style','display: block');
     $('#chart').attr('style','display: none');
     $('#chart6').attr('style','display: none');
-    $('#z').attr('style','display: none');
-    $('#m').attr('style','display: none');
-    $('#r').attr('style','display: none');
-    var from= $("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD HH:mm:ss');
-  var to=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD HH:mm:ss');
-    var start_time = new Date().getTime();
-
-jQuery.get('/CaParCommercial/'+from+'/'+to,
-    function(data, status, xhr) {
-        var request_time = new Date().getTime() - start_time;
-        
   setTimeout(function() {
     // rest of code here
 
@@ -308,10 +277,6 @@ jQuery.get('/CaParCommercial/'+from+'/'+to,
     $('#z').attr('style','display: block');
     $('#chart').attr('style','display: block');
     $('#chart6').attr('style','display: block');
-    
-}, request_time); }
-   
-);
 
     var table = $('#example2').DataTable( {
         destroy: true,
@@ -342,7 +307,6 @@ jQuery.get('/CaParCommercial/'+from+'/'+to,
   var chart = c3.generate({
     data: {
         url: '/CaParCommercial/'+from+'/'+to,
-        
         mimeType: 'json',
             keys: {
               
@@ -369,7 +333,6 @@ jQuery.get('/CaParCommercial/'+from+'/'+to,
             }
         },bindto: '#chart6'
 });
-
 ///////////////////////totale des ticket Annuler//////////////////////////////
 $.getJSON('/TotalVenteAnnulerfilter/'+from+'/'+to, function(data)
   {
@@ -384,7 +347,6 @@ $.getJSON('/TotalVenteAnnulerfilter/'+from+'/'+to, function(data)
 		dataType: 'json', //mispelled
 		url: '/CaAnnulerParCommercial/'+from+'/'+to,
 		async: true,
-
 		contentType: "application/json; charset=utf-8",
 		success: function (msg) {
         
@@ -421,12 +383,13 @@ $('#select2').selectpicker('refresh');
 });
 
 
+}, 2000);
 }
 </script>
 <script type="text/javascript">
 $(function() {
    
-  
+  $("#laod").hide();
     var start = moment();
     var end = moment();
 

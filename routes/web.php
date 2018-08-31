@@ -86,7 +86,9 @@ Route::get('/magasinRoute/{id}', 'Back\AdminController@magasinRoute');
 
     Route::get('/CaAnnulerParVendeur/{from}/{to}', 'Api\VenteController@CaAnnulerParVendeur');
     
-   
+    Route::get('/CaParCommercialByArticle/{from}/{to}/{comm}', 'Api\VenteController@CaParCommercialByArticle');
+    Route::get('/CaParCommercialByClient/{from}/{to}/{cli}', 'Api\VenteController@CaParCommercialByClient');
+
     Route::get('/NBTickParCaisse/{from}/{to}', 'Api\VenteController@NBTickParCaisse');
     Route::get('/TotaleTick/{from}/{to}', 'Api\VenteController@TotaleTick');
     Route::get('/TotalVenteDate/{from}/{to}', 'Api\VenteController@TotalVenteDate');

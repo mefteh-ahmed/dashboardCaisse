@@ -172,14 +172,14 @@ desired effect
                                 </li>
     <?php } ?>
   <!-- Optionally, you can add icons to the links -->
-  <li class="treeview">
+  <li class="treeview expanted"  >
     <a href="#"><i class="fa fa-pie-chart"></i> <span>Vente</span>
       <span class="pull-right-container">
           <i class="fa fa-angle-left pull-right"></i>
         </span>
     </a>
   
-    <ul class="treeview-menu">
+    <ul class="treeview-menu show in">
                                   <li class="nav-item ">
                                     <a class="nav-link" href="{{URL::to('chart') }}">
                       
@@ -205,7 +205,7 @@ desired effect
                                     </a>
                                 </li>
                                 <li class="nav-item ">
-                                    <a class="nav-link" href="{{ URL::to('caisse') }}">
+                                    <a class="nav-link" href="{{ URL::to('Commercial') }}">
                       
                                         <span class="sidebar-normal">Par Commercial</span>
                                     </a>
@@ -415,6 +415,7 @@ desired effect
 <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
 <script src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js"></script>
+<script src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
 <script>
     $(document).ready(function() {
   $(function() {
@@ -431,7 +432,107 @@ desired effect
   });
 });
 </script>
+     <script>
+        $(document).ready(function() {
+            var table = $('#example2').DataTable( {
+                lengthChange: false,
+        dom: 'Bfrtip', select: true,
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        responsive: {
+            details: {
+                type: 'column',
+                target: 'tr'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+        } ],
+        order: [ 1, 'asc' ]
+    } );
  
+    var table = $('#article').DataTable( {
+      
+                lengthChange: false,
+        dom: 'Bfrtip', select: true,
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        
+        responsive: {
+            details: {
+                type: 'column',
+                target: 'tr'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+        } ],
+        order: [ 1, 'asc' ]
+    } );
+    var table = $('#client').DataTable( {
+                lengthChange: false,
+        dom: 'Bfrtip', select: true,
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        responsive: {
+            details: {
+                type: 'column',
+                target: 'tr'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+        } ],
+        order: [ 1, 'asc' ]
+    } );
+
+} );
+        </script>
+<script type="text/javascript">
+$(function() {
+
+    var start = moment();
+    var end = moment();
+
+    function cb(start, end) {
+        $('#reportrange span').html(start.format('YYYY-MM-DD 00:00:00') + ' - ' + end.format('YYYY-MM-DD 23:59:59'));
+            }
+
+    $('#reportrange').daterangepicker({
+        startDate: start,
+        endDate: end,
+        timePicker:true,
+        timePicker24Hour:true,
+        timePickerSeconds:true,
+        showDropdowns:true,
+        ranges: {
+           'Today': [moment(), moment()],
+           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+           'This Month': [moment().startOf('month'), moment().endOf('month')],
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+           'Last 365 jour': [moment().subtract(1, 'year')
+           .startOf('days')],
+           'Last year': [moment().subtract(1, 'year')
+           .startOf('year'), moment().subtract(1, 'year').endOf('year')]
+
+        }
+    }, cb);
+
+    cb(start, end);
+
+});
+</script>
 @yield('js')
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the

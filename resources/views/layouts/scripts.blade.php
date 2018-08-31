@@ -41,8 +41,9 @@
         } ],
         order: [ 1, 'asc' ]
     } );
-    table.buttons().container()
-        .appendTo( '#example_wrapper .col-sm-6:eq(0)' );
+ 
+       
+
 } );
         </script>
 <script  src="{{ asset ("/bower_components/AdminLTE/plugins/slimScroll/jquery.slimscroll.min.js") }}" type="text/javascript" ></script>

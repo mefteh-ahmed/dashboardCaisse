@@ -52,6 +52,7 @@
                                 @endif
                             </div>
                         </div>
+
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label for="email" class="col-md-4 control-label">Email</label>
 
@@ -63,6 +64,17 @@
                                         <strong>{{ $errors->first('email') }}</strong>
                                     </span>
                                 @endif
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">chaines de Restauration</label>
+                            <div class="col-md-6">
+                                <select class="form-control" name="id_chaine">
+                                <option value="0">Pas de Chaine</option>
+                                    @foreach ($chaines as $c)
+                                        <option value="{{$c->id}}">{{$c->nom_chaine}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">

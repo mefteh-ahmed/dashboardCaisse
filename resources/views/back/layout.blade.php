@@ -7,7 +7,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Starter</title>
+  <title>Tableaux De Bord Client</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -216,15 +216,21 @@ desired effect
                                         <span class="sidebar-normal">réglement</span>
                                     </a>
                                 </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="{{ URL::to('depence') }}">
+                      
+                                        <span class="sidebar-normal">Dépence</span>
+                                    </a>
+                                </li>
     </ul>
   </li>
-  <li class="treeview">
+  <li class="treeview expanted">
     <a href="{{ URL::to('chartachat') }}"><i class="fa fa-pie-chart"></i> <span>Achat</span>
       <span class="pull-right-container">
           <i class="fa fa-angle-left pull-right"></i>
         </span>
     </a>
-    <ul class="treeview-menu">
+    <ul class="treeview-menu show in">
       <li class="nav-item ">
                                     <a class="nav-link" href="{{ URL::to('chartachat') }}">
                       
@@ -454,60 +460,26 @@ desired effect
         order: [ 1, 'asc' ]
     } );
  
-    var table = $('#article').DataTable( {
-      
-                lengthChange: false,
-        dom: 'Bfrtip', select: true,
-        buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
-        ],
-        
-        responsive: {
-            details: {
-                type: 'column',
-                target: 'tr'
-            }
-        },
-        columnDefs: [ {
-            className: 'control',
-            orderable: false,
-            targets:   0
-        } ],
-        order: [ 1, 'asc' ]
-    } );
-    var table = $('#client').DataTable( {
-                lengthChange: false,
-        dom: 'Bfrtip', select: true,
-        buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
-        ],
-        responsive: {
-            details: {
-                type: 'column',
-                target: 'tr'
-            }
-        },
-        columnDefs: [ {
-            className: 'control',
-            orderable: false,
-            targets:   0
-        } ],
-        order: [ 1, 'asc' ]
-    } );
+  
+ 
 
 } );
         </script>
 <script type="text/javascript">
 $(function() {
 
-    var start = moment();
-    var end = moment();
+var start = moment().startOf('day'); // This will return a copy of the Date that the moment uses
+
+var end =  moment().endOf('day'); // This will return a copy of the Date that the moment uses
+
+  
 
     function cb(start, end) {
-        $('#reportrange span').html(start.format('YYYY-MM-DD 00:00:00') + ' - ' + end.format('YYYY-MM-DD 23:59:59'));
+        $('#reportrange span').html(start.format('YYYY-MM-DD HH:mm:ss') + ' - ' + end.format('YYYY-MM-DD  HH:mm:ss'));
             }
 
     $('#reportrange').daterangepicker({
+
         startDate: start,
         endDate: end,
         timePicker:true,
@@ -515,16 +487,14 @@ $(function() {
         timePickerSeconds:true,
         showDropdowns:true,
         ranges: {
-           'Today': [moment(), moment()],
-           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-           'This Month': [moment().startOf('month'), moment().endOf('month')],
-           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-           'Last 365 jour': [moment().subtract(1, 'year')
-           .startOf('days')],
-           'Last year': [moment().subtract(1, 'year')
-           .startOf('year'), moment().subtract(1, 'year').endOf('year')]
+           "Aujourd'hui": [moment().startOf('day'), moment().endOf('day')],
+           'Hier': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
+           'Les 7 derniers jours': [moment().subtract(6, 'days'), moment()],
+           'Les 30 derniers jours': [moment().subtract(29, 'days'), moment()],
+           'Ce mois-ci': [moment().startOf('month'), moment().endOf('month')],
+           'Le mois dernier': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+           '365 derniers jours': [moment().subtract(1, 'year').startOf('days')],
+           "L'année dernière": [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')]
 
         }
     }, cb);
@@ -533,6 +503,126 @@ $(function() {
 
 });
 </script>
+ <script>
+ $(document).ready(function() {
+    $('#article').DataTable( {
+      aLengthMenu: [
+        [0,25, 50, 100, 200, -1],
+        [0,25, 50, 100, 200, "All"]
+    ],
+    dom: 'lBfrtip', select: true,
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        responsive: {
+            details: {
+                type: 'column',
+                target: 'tr'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+        } ],
+        order: [ 1, 'asc' ],
+     
+    iDisplayLength: -1,
+        "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+ 
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+ 
+            // Total over all pages
+            total = api
+                .column( 4 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Total over this page
+            pageTotal = api
+                .column( 4, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Update footer
+            $( api.column( 4 ).footer() ).html(
+                pageTotal +' ( '+ total +' total)'
+            );
+        }
+    } );
+} );
+ </script>
+ <script>
+ $(document).ready(function() {
+    $('#client').DataTable( {
+      aLengthMenu: [
+        [0,25, 50, 100, 200, -1],
+        [0,25, 50, 100, 200, "All"]
+    ],
+    dom: 'lBfrtip', select: true,
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        responsive: {
+            details: {
+                type: 'column',
+                target: 'tr'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+        } ],
+        order: [ 1, 'asc' ],
+     
+    iDisplayLength: -1,
+        "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+ 
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+ 
+            // Total over all pages
+            total = api
+                .column( 4 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Total over this page
+            pageTotal = api
+                .column( 4, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Update footer
+            $( api.column( 4 ).footer() ).html(
+              pageTotal +' ('+ total +' total)'
+            );
+        }
+    } );
+} );
+ </script>
 @yield('js')
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the

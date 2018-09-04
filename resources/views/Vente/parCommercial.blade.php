@@ -7,11 +7,11 @@
 <div class="content">
 <div class="row">
 <div class='col-md-4'>
-<h3 class="text-primary">Total des Vente par Vendeur :</h3>
+<h3 class="text-primary">Total des Ventes par commercial :</h3>
 </div>
 <div class='col-md-4'>
       <div class="form-group">
-      <label for="sel1">Choisir Période:</label>
+      <label for="sel1">Choisir La Période:</label>
 
 <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
     <i class="fa fa-calendar"></i>&nbsp;
@@ -30,9 +30,31 @@
 </div>
 <br>
 <div class="row" id="chart" style="display: none;">
-<div   id="chart6" style="display: none;" >   
+    <div   id="chart6"  >   
 </div> 
 <br>
+<div class="row">           
+                <div style="display: none;" id="z">
+                <h3 class="text-primary">Total des Ticket Annuler En Dinar </h3>
+
+                    <h2> <div class="col-sm-12" id="a">0</div></h2>
+                    <div class="col-sm-12">
+                         <table id="example2" class="display nowrap" style="width:100%">
+                            <thead>
+                            <tr>
+                              <th></th>
+                            <th>Nom Du Commercial
+                                </th>
+                                <th>Chiffre D'affaire Annuler
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>                   
+                            </tbody>       
+                        </table>
+                        </div>
+                    </div>
+                </div>  
 </br>
 <div class="row">
   <select id ="select2" name ="select2" class="selectpicker" data-live-search="true"> 
@@ -64,41 +86,8 @@
   right: 0;">Loading</i>
               </div>                 
            </div>   
-              <div class="row">  
-   
-  
-                 
-                         
-                <div style="display: none;" id="z">
-                <h3 class="text-primary">Total des Ticket Annuler En Dinar </h3>
-
-<h2> <div id="a">0</div></h2>
-                    <div class="col-sm-12">
-                         <table id="example2" class="display nowrap" style="width:100%">
-                            <thead>
-                            <tr>
-                              <th></th>
-                            <th>Nom Du Commercial
-                                </th>
-                                <th>Chiffre D'affaire Annuler
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            
-                            </tbody>
-                         
-                           
-                        </table>
-                      
-                        </div>
-                    </div>
-                </div>  
-                
- 
+                          
 <br>
-
- 
   <div class="row"  style="display: none;" id="r">
   <h2>Detaill par article</h2>
 
@@ -122,13 +111,9 @@
                             </thead>
                             <tfoot>
             <tr>
+                <th colspan="2" style="text-align:right">Total En Dinar:</th>
                 <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-               
+            </tr>
         </tfoot>
                             <tbody>
                             
@@ -160,13 +145,18 @@
                                 </th>
                                 <th>% Marge
                                 </th>
-                                <th></th>
+
                             </tr>
                             </thead>
                             <tbody>
                             
                             </tbody>
-                         
+                            <tfoot>
+            <tr>
+                <th colspan="4" style="text-align:right">Total En Dinar:</th>
+                <th></th>
+            </tr>
+        </tfoot>
                            
                         </table>
                         </div>
@@ -177,9 +167,9 @@
 
 <script type="text/javascript" >
 function changeFunc2() {
-  
+///////////////////////////////////////////////////////////Vente PAr article////////////////////////  
     var from= $("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD HH:mm:ss');
-  var to=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD HH:mm:ss');
+    var to=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD HH:mm:ss');
     let dropdown = $('#select2');
     let dropdown1 = $('#select1');
 
@@ -187,13 +177,16 @@ if($('select[name="select1"]').val()=="Par Article"){
      $('#r').attr('style','display: block');
      $('#m').attr('style','display: none');
     var table = $('#article').DataTable( {
+        
         destroy: true,
-                lengthChange: false,
-        dom: 'Bfrtip', select: true,
+        aLengthMenu: [
+        [0,25, 50, 100, 200, -1],
+        [0,25, 50, 100, 200, "All"]
+    ],
+    dom: 'lBfrtip', select: true,
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
         ],
-        
         responsive: {
             details: {
                 type: 'column',
@@ -205,7 +198,42 @@ if($('select[name="select1"]').val()=="Par Article"){
             orderable: false,
             targets:   0
         } ],
-        order: [ 1, 'asc' ]
+        order: [ 1, 'asc' ],
+     
+    iDisplayLength: -1,
+        "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+ 
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+ 
+            // Total over all pages
+            total = api
+                .column( 2 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Total over this page
+            pageTotal = api
+                .column( 2, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Update footer
+            $( api.column( 2 ).footer() ).html(
+                pageTotal +' ( '+ total +' total)'
+            );
+        }
+   
     } );
     
 
@@ -228,21 +256,23 @@ $.each(data, function (key, entry) {
 
 
 });
-}else
+}
+////////////////////////////vente par client//////////////////////////////
+else
 if($('select[name="select1"]').val()=="Par Client"){
     $('#m').attr('style','display: block');
     $('#r').attr('style','display: none');
 
-    var table = $('#client').DataTable( {
-        
+     var table = $('#client').DataTable( {
         destroy: true,
-        
-                lengthChange: false,
-        dom: 'Bfrtip', select: true,
+        aLengthMenu: [
+        [0,25, 50, 100, 200, -1],
+        [0,25, 50, 100, 200, "All"]
+    ],
+    dom: 'lBfrtip', select: true,
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
         ],
-        
         responsive: {
             details: {
                 type: 'column',
@@ -254,15 +284,46 @@ if($('select[name="select1"]').val()=="Par Client"){
             orderable: false,
             targets:   0
         } ],
-        order: [ 1, 'asc' ]
+        order: [ 1, 'asc' ],
+     
+    iDisplayLength: -1,
+        "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+ 
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+ 
+            // Total over all pages
+            total = api
+                .column( 4 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Total over this page
+            pageTotal = api
+                .column( 4, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Update footer
+            $( api.column( 4 ).footer() ).html(
+                pageTotal +' ( '+ total +' total)'
+            );
+        }
+   
     } );
-    
 
-    $('#article').show();
 
-    $("#article").DataTable().rows().remove().draw();
-
- com=   $('select[name="select2"]').val();
+com=   $('select[name="select2"]').val();
 const url = '/CaParCommercialByClient/'+from+'/'+to+'/'+com;
 
 // Populate dropdown with list of provinces
@@ -292,8 +353,9 @@ function changeFunc() {
     $('#z').attr('style','display: none');
     $('#m').attr('style','display: none');
     $('#r').attr('style','display: none');
+  //////////////////////////////////get request time/////////////////
     var from= $("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD HH:mm:ss');
-  var to=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD HH:mm:ss');
+    var to=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD HH:mm:ss');
     var start_time = new Date().getTime();
 
 jQuery.get('/CaParCommercial/'+from+'/'+to,
@@ -303,19 +365,17 @@ jQuery.get('/CaParCommercial/'+from+'/'+to,
   setTimeout(function() {
     // rest of code here
 
-      $('#load').attr('style','display: none');
-
+    $('#load').attr('style','display: none');
     $('#z').attr('style','display: block');
     $('#chart').attr('style','display: block');
     $('#chart6').attr('style','display: block');
-    
 }, request_time); }
    
 );
-
+///////////////////////////////////////////////////////////////////////////
     var table = $('#example2').DataTable( {
         destroy: true,
-                lengthChange: false,
+        lengthChange: false,
         dom: 'Bfrtip', select: true,
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
@@ -334,9 +394,7 @@ jQuery.get('/CaParCommercial/'+from+'/'+to,
         } ],
         order: [ 1, 'asc' ]
     } );
-    
-
-    $('#example2').show();
+ 
   var from= $("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD HH:mm:ss');
   var to=$("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD HH:mm:ss');
   var chart = c3.generate({
@@ -425,16 +483,19 @@ $('#select2').selectpicker('refresh');
 </script>
 <script type="text/javascript">
 $(function() {
-   
+
+var start = moment().startOf('day'); // This will return a copy of the Date that the moment uses
+
+var end =  moment().endOf('day'); // This will return a copy of the Date that the moment uses
+
   
-    var start = moment();
-    var end = moment();
 
     function cb(start, end) {
-        $('#reportrange span').html(start.format('YYYY-MM-DD 00:00:00') + ' - ' + end.format('YYYY-MM-DD 23:59:59'));
+        $('#reportrange span').html(start.format('YYYY-MM-DD HH:mm:ss') + ' - ' + end.format('YYYY-MM-DD  HH:mm:ss'));
             }
 
     $('#reportrange').daterangepicker({
+
         startDate: start,
         endDate: end,
         timePicker:true,
@@ -442,16 +503,14 @@ $(function() {
         timePickerSeconds:true,
         showDropdowns:true,
         ranges: {
-           'Today': [moment(), moment()],
-           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-           'This Month': [moment().startOf('month'), moment().endOf('month')],
-           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-           'Last 365 jour': [moment().subtract(1, 'year')
-           .startOf('days')],
-           'Last year': [moment().subtract(1, 'year')
-           .startOf('year'), moment().subtract(1, 'year').endOf('year')]
+           "Aujourd'hui": [moment(), moment()],
+           'Hier': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
+           'Les 7 derniers jours': [moment().subtract(6, 'days'), moment()],
+           'Les 30 derniers jours': [moment().subtract(29, 'days'), moment()],
+           'Ce mois-ci': [moment().startOf('month'), moment().endOf('month')],
+           'Le mois dernier': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+           '365 derniers jours': [moment().subtract(1, 'year').startOf('days')],
+           "L'année dernière": [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')]
 
         }
     }, cb);

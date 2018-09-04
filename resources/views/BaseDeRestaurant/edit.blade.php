@@ -41,7 +41,7 @@
                             <label for="DB_USERNAME" class="col-md-4 control-label">DB_USERNAME</label>
 
                             <div class="col-md-6">
-                                <input id="DB_USERNAME" type="text" class="form-control" name="DB_USERNAME" value="{{$restaurantDb->DB_USERNAME }}" required autofocus>
+                                <input id="DB_USERNAME" type="text" class="form-control" name="DB_USERNAME" value="{{$restaurantDb->DB_USERNAME }}"  autofocus>
 
                                 @if ($errors->has('DB_USERNAME'))
                                     <span class="help-block">
@@ -55,7 +55,7 @@
                             <label for="DB_PASSWORD" class="col-md-4 control-label">DB_PASSWORD</label>
 
                             <div class="col-md-6">
-                                <input id="DB_PASSWORD" type="text" class="form-control" name="DB_PASSWORD" value="{{ $restaurantDb->DB_PASSWORD }}" required autofocus>
+                                <input id="DB_PASSWORD" type="text" class="form-control" name="DB_PASSWORD" value="{{ $restaurantDb->DB_PASSWORD }}"  autofocus>
 
                                 @if ($errors->has('DB_PASSWORD'))
                                     <span class="help-block">

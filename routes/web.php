@@ -61,6 +61,8 @@ Route::get('/magasinRoute/{id}', 'Back\AdminController@magasinRoute');
     Route::get('chart', 'Api\chartController@index');
     Route::get('/produit', 'Api\chartController@produit');
     Route::get('/vendeur', 'Api\chartController@vendeur');
+    Route::get('/depence', 'Api\chartController@depence');
+
     Route::get('/Commercial', 'Api\chartController@Commercial');
 
     Route::get('/caisse', 'Api\chartController@caisse');
@@ -73,7 +75,12 @@ Route::get('/magasinRoute/{id}', 'Back\AdminController@magasinRoute');
     Route::get('/tolalVente', 'Api\VenteController@TotalVente');
     Route::get('/TotalVenteAnnuler/{from}/{to}', 'Api\VenteController@TotalVenteAnnuler');
     Route::get('/TotalVenteAnnulerfilter/{from}/{to}', 'Api\VenteController@TotalVenteAnnulerfilter');
+    Route::get('/Alldepence/{from}/{to}', 'Api\VenteController@Alldepence');
+    Route::get('/depencebyUser/{from}/{to}', 'Api\VenteController@depencebyUser');
+    Route::get('/Totaldepence/{from}/{to}', 'Api\VenteController@Totaldepence');
+    Route::get('/depencebyUserDetail/{from}/{to}/{cli}', 'Api\VenteController@depencebyUserDetail');
 
+    
     Route::get('/tolalachat', 'Api\VenteController@TotalAchat');
     Route::get('/tolalex', 'Api\VenteController@TotalExercice');
     Route::get('/Top10art/{req}/{from}/{to}', 'Api\VenteController@Top10art');

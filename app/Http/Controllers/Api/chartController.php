@@ -67,6 +67,18 @@ class chartController extends Controller
        return redirect('/');
     }
     }
+    public function depence()
+    {
+
+        $var=Auth::user()->role;
+        if($var!=0){
+      return view('Vente.depence',['title'=>"Dépence"]);
+    }
+    
+    else {
+       return redirect('/');
+    }
+    }
     public function Commercial()
     {
 

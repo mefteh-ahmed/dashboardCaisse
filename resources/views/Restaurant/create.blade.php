@@ -67,6 +67,7 @@
                             <label class="col-md-4 control-label">chaines de Restauration</label>
                             <div class="col-md-6">
                                 <select class="form-control" name="id_chaine">
+                                <option value="0">Pas de Chaine</option>
                                     @foreach ($chaines as $c)
                                         <option value="{{$c->id}}">{{$c->nom_chaine}}</option>
                                     @endforeach

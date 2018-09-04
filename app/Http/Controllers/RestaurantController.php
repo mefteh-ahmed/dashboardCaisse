@@ -49,7 +49,7 @@ class RestaurantController extends Controller
             'adresse' => 'required|max:60',
             'email'=>'required|email',
             'Telphone'=>'max:8',
-            'id_chaine' => 'required|max:60',
+            'id_chaine' => 'max:60',
         ];
         $this->validate($request, $constraints);
         Magasin::create([
@@ -75,8 +75,8 @@ class RestaurantController extends Controller
             return redirect()->intended('/magasin');
         }
        
-        $chaine = ChainedeRestauration::all();
-        return view('Restaurant.edit', ['chaine' => $chaine, 'restaurant' => $restaurant]);
+        $chaines = ChainedeRestauration::all();
+        return view('Restaurant.edit', ['chaines' => $chaines, 'restaurant' => $restaurant]);
     }
 
     public function update(Request $request, $id)
@@ -87,7 +87,7 @@ class RestaurantController extends Controller
             'adresse' => 'required|max:60',
             'Telphone' => 'required|max:60',
             'email' => 'required|email',
-            'id_chaine' => 'required|max:60'
+            'id_chaine' => 'max:60'
             ]);
         $input = [
             'nom' => $request['nom'],

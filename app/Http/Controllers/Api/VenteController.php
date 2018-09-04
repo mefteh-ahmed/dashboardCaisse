@@ -97,7 +97,53 @@ public function TotalVenteAnnulerfilter(Request $request) {
     
                 return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
             }
-            
+            public function Totaldepence(Request $request) { 
+                $connection= new DatabaseConnection ();
+                $ticket = $connection->setConnection()->table('depence_caisse')
+                ->join('DEPENCE', 'depence_caisse.DEP_Code', '=', 'DEPENCE.DEP_Code')
+                ->join('Utilisateur', 'depence_caisse.DEP_User', '=', 'Utilisateur.Code_Ut')
+
+        
+                        ->select(DB::raw("sum(depence_caisse.DEP_Montant)as depence "))
+                        ->whereRaw(DB::raw("depence_caisse.DDm between '$request->from' and '$request->to'"))
+                        ->get();
+
+                        return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
+                    }
+            public function Alldepence(Request $request) { 
+                $connection= new DatabaseConnection ();
+                $ticket = $connection->setConnection()->table('depence_caisse')
+                ->join('DEPENCE', 'depence_caisse.DEP_Code', '=', 'DEPENCE.DEP_Code')
+                ->join('Utilisateur', 'depence_caisse.DEP_User', '=', 'Utilisateur.Code_Ut')
+
+        
+                        ->select(DB::raw("DEPENCE.DEP_Lib,sum(depence_caisse.DEP_Montant)as depence "))
+                        ->whereRaw(DB::raw("depence_caisse.DDm between '$request->from' and '$request->to'"))
+                        ->groupBy(DB::raw("DEPENCE.DEP_Code,DEPENCE.DEP_Lib"))
+                        ->orderBy(DB::raw("sum(depence_caisse.DEP_Montant)"))->get();
+
+                        return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
+                    }
+            public function depencebyUser(Request $request) { 
+                $connection= new DatabaseConnection ();
+                $ticket = $connection->setConnection()->table('depence_caisse')
+                ->join('DEPENCE', 'depence_caisse.DEP_Code', '=', 'DEPENCE.DEP_Code')
+                ->join('Utilisateur', 'depence_caisse.DEP_User', '=', 'Utilisateur.Code_Ut')
+                ->select(DB::raw("sum(depence_caisse.DEP_Montant)as depence,CONCAT(Utilisateur.Nom ,' ', Utilisateur.Prenom) as Nom  "))
+                ->whereRaw(DB::raw("depence_caisse.DDm between '$request->from' and '$request->to'"))
+                ->groupBy(DB::raw("CONCAT(Utilisateur.Nom ,' ', Utilisateur.Prenom)"))->get();
+                return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
+                }
+                public function depencebyUserDetail(Request $request) { 
+                    $connection= new DatabaseConnection ();
+                    $ticket = $connection->setConnection()->table('depence_caisse')
+                    ->join('DEPENCE', 'depence_caisse.DEP_Code', '=', 'DEPENCE.DEP_Code')
+                    ->join('Utilisateur', 'depence_caisse.DEP_User', '=', 'Utilisateur.Code_Ut')
+                    ->select(DB::raw("sum(depence_caisse.DEP_Montant)as depence,CONCAT(Utilisateur.Nom ,' ', Utilisateur.Prenom) as Nom ,DEPENCE.DEP_Lib "))
+                    ->whereRaw(DB::raw("depence_caisse.DDm between '$request->from' and '$request->to' and (CONCAT(Utilisateur.Nom ,' ', Utilisateur.Prenom) ='$request->cli')"))
+                    ->groupBy(DB::raw("CONCAT(Utilisateur.Nom ,' ', Utilisateur.Prenom),DEPENCE.DEP_Lib"))->get();
+                    return $this->response->array($ticket->toArray()); // Use this if you using Dingo Api Routing Helpers
+                    }  
     public function TotalVente() { 
         $connection= new DatabaseConnection ();
             $ticket = $connection->setConnection()->table('LigneTicket')->select(DB::raw("SUM(LT_MtTTC) as TotaleVente"))
